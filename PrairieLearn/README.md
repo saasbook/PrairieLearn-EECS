@@ -22,3 +22,6 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+[![Build Status](https://travis-ci.org/fshamji/PrairieLearn-EECS.svg?branch=main
+)](https://travis-ci.org/fshamji/PrairieLearn-EECS)
