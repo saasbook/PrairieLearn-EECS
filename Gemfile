@@ -52,6 +52,8 @@ end
 # make sure the following gems are in your production group:
 group :production do
   gem 'pg'              # use PostgreSQL in production (Heroku)
+  gem 'rails_12factor'
+  gem 'heroku-deflater'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
