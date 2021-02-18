@@ -144,8 +144,6 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    heroku-deflater (0.6.3)
-      rack (>= 1.4.5)
     i18n (1.8.8)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -316,7 +314,6 @@ DEPENDENCIES
   cucumber-rails-training-wheels
   database_cleaner
   guard-rspec
-  heroku-deflater
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg
