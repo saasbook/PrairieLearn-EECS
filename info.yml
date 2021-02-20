@@ -6,7 +6,7 @@ project:
     pivotal:
       url: 'https://www.pivotaltracker.com/n/projects/2487654'
     heroku:
-      url: 'https://dashboard.heroku.com/apps/prairielearn-eecs'
+      url: 'https://prairielearn-eecs.herokuapp.com/'
     travis:
       url: 'https://travis-ci.com/github/fshamji/PrairieLearn-EECS/builds'
   members:
