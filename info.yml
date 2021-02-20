@@ -16,3 +16,9 @@ project:
       githubUsername: 'fshamji'
       pivotalUsername: 'fshamji'
       herokuEmail: 'fshamji@berkeley.edu'
+    member2:
+      name: 'Haolin'
+      surname: 'Zhu' 
+      githubUsername: 'haolinzhu'
+      pivotalUsername: 'haolinz'
+      herokuEmail: 'haolinz@berkeley.edu'
