@@ -1,0 +1,18 @@
+project:
+  name: 'prairielearn-eecs'
+  owner: 'cs169'
+  teamId: '9'
+  identities:
+    pivotal:
+      url: 'https://www.pivotaltracker.com/n/projects/2487654'
+    heroku:
+      url: 'https://dashboard.heroku.com/apps/prairielearn-eecs'
+    travis:
+      url: 'https://travis-ci.com/github/fshamji/PrairieLearn-EECS/builds'
+  members:
+    member1:
+      name: 'Faiz'
+      surname: 'Shamji' 
+      githubUsername: 'fshamji'
+      pivotalUsername: 'fshamji'
+      herokuEmail: 'fshamji@berkeley.edu'
