@@ -22,3 +22,9 @@ project:
       githubUsername: 'haolinzhu'
       pivotalUsername: 'haolinz'
       herokuEmail: 'haolinz@berkeley.edu'
+    member3:
+      name: 'Sanwu'
+      surname: 'Luo' 
+      githubUsername: 'ToxicSam'
+      pivotalUsername: 'Sanwu Luo'
+      herokuEmail: 'sanwuluo35@gmail.com'
