@@ -28,3 +28,9 @@ project:
       githubUsername: 'ToxicSam'
       pivotalUsername: 'Sanwu Luo'
       herokuEmail: 'sanwuluo35@gmail.com'
+    member4:
+      name: 'David'
+      surname: 'Oh' 
+      githubUsername: 'klutzx92'
+      pivotalUsername: 'klutzx92'
+      herokuEmail: 'klutzx92@berkeley.edu'
