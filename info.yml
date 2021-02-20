@@ -16,27 +16,3 @@ project:
       githubUsername: 'fshamji'
       pivotalUsername: 'fshamji'
       herokuEmail: 'fshamji@berkeley.edu'
-    member2:
-      name: 'Haolin'
-      surname: 'Zhu' 
-      githubUsername: 'haolinzhu'
-      pivotalUsername: 'haolinz'
-      herokuEmail: 'haolinz@berkeley.edu'
-    member3:
-      name: 'Sanwu'
-      surname: 'Luo' 
-      githubUsername: 'ToxicSam'
-      pivotalUsername: 'Sanwu Luo'
-      herokuEmail: 'sanwuluo35@gmail.com'
-    member4:
-      name: 'David'
-      surname: 'Oh' 
-      githubUsername: 'klutzx92'
-      pivotalUsername: 'klutzx92'
-      herokuEmail: 'klutzx92@berkeley.edu'
-    member5:
-      name: 'Timotius'
-      surname: 'Vincent' 
-      githubUsername: 'timotiusvincent'
-      pivotalUsername: 'Timotius Vincent'
-      herokuEmail: 'timotiusvincent@berkeley.edu'
