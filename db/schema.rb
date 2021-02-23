@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2021_02_21_220727) do
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
+    t.integer "points"
   end
 
 end
