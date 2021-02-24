@@ -1,0 +1,61 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  width: 100%;
+  background: #62BFED;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+#name {
+  margin-left: 2%;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.col {
+  margin-top: 2%;
+  float: right;
+}
+
+.leftcol {
+  width: 30%;
+  height: auto;
+}
+
+.leftcol p, .middlecol p, .rightcol p {
+  text-align: center;
+}
+
+.middlecol {
+  height:auto;
+  width: 40%;
+}
+
+.rightcol {
+  width: 30%;
+  height: auto;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 160%;
+}
+
+.question_title {
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select {
+  padding: 8px 25px;
+  margin: 8px 0;
+}
+
+.leftcoltxt {
+  margin-left: 5%;
+}
