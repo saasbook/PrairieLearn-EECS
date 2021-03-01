@@ -59,3 +59,20 @@ input, select {
 .leftcoltxt {
   margin-left: 5%;
 }
+
+.container {
+  margin: 2%;
+  height: 500px;
+}
+
+.draggable {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-style: solid;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.draggable-text {
+  font-size: medium;
+}

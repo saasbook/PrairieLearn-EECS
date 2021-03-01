@@ -44,15 +44,76 @@
       </form>
     </div>
     <div class="col middlecol">
-      <p>Selected Questions</p>
+      <p class="test">Selected Questions</p>
+      <div class="container">
+      </div>
     </div>
     <div class="col leftcol">
       <p>Questions</p>
-      <div class='leftcoltxt question_title'><% @questions.each do |question| %>
-            <tr>
-              <td><%= question.title %></td>
-            </tr>
-      <% end %></div>
+      <div class="container">
+        <div class='question_title'><% @questions.each do |question| %>
+          <tr>
+            <p class="draggable draggable-text" draggable="true"><td><%= question.title %></td></p>
+          </tr>
+        <% end %></div>
+      </div>
     </div>
+
+    <script>
+        const draggables = document.querySelectorAll('.draggable')
+        const containers = document.querySelectorAll('.container')
+
+        for (let i = 0; i < draggables.length; i ++) {
+          const draggable = draggables[i];
+
+          draggable.addEventListener('dragstart', function () {
+            draggedItem = draggable;
+            setTimeout(function () {
+              draggable.style.display = 'none';
+            }, 0)
+          });
+
+          draggable.addEventListener('dragend', function () {
+            draggedItem = draggable;
+            setTimeout(function () {
+              draggable.style.display = 'block';
+              draggedItem = null;
+            }, 0)
+          });
+
+          for (let j = 0; j < containers.length; j ++) {
+            const container = containers[j];
+
+            container.addEventListener('dragover', function (e) {
+              e.preventDefault();
+            });
+            container.addEventListener('dragenter', function (e) {
+              e.preventDefault();
+            });
+            container.addEventListener('drop', function (e) {
+              this.append(draggedItem);
+            });
+          }
+        }
+        // draggables.forEach(draggable => {
+        //  draggable.addEventListener('dragstart', () => {
+        //    draggable.classList.add('dragging')
+        //  })
+
+        //  draggable.addEventListener('dragend', () => {
+        //    draggable.classList.add('dragging')
+        //  })
+        //})
+
+        //containers.forEach(container => {
+        //  container.addEventListener('dragover', e => {
+        //    e.preventDefault()
+        //    const draggable = document.querySelector('.dragging')
+        //    container.appendChild(draggable)
+        //  })
+        //})
+
+    </script>
+      
   </body>
 </html>
