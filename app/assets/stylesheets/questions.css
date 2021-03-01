@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -26,20 +25,26 @@ nav {
 .leftcol {
   width: 30%;
   height: auto;
+  position: absolute;
 }
 
-.leftcol p, .middlecol p, .rightcol p {
+.leftcol p,.middlecol p, .rightcol p {
   text-align: center;
 }
 
 .middlecol {
-  height:auto;
+  height: 700px;
   width: 40%;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .rightcol {
   width: 30%;
-  height: auto;
+  height: 700px;
+
 }
 
 p {
