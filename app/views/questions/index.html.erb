@@ -10,49 +10,58 @@
         <div id="name" style="font-size:23px">Create New Assessment</div>
       </div>
     </nav>
+
     <div class="col rightcol">
       <p>Configurations</p>
-      <form>
+      <form >
+      	<div class='configs' style="overflow:scroll; height:600px;">
           <label class='question_title'>Assessment name:</label><br>
-          <input type="text"><br><br>
+          <input type="text" name=assessment_name size=36><br><br>
 
-          <label class='question_title'>Type:</label><br>
+          <label class='question_title'>Type:</label>
           <select>
             <option>Exam</option>
-            <option>Quiz</option>
             <option>Homework</option>
-            <option>Vitamin</option>
-            <option>Worksheet</option>
-          </select><br><br>
+          </select>
+          <label class='question_title'>Credit:</label>
+          <input type="text" value="100" name="assessment_credit" size=4><br><br>
 
-          <label class='question_title'>Credit:</label><br>
-          <input type="text" value="100"><br><br>
+          <div class="access forms">
+            <label class='question_title'>Allow access to:</label><br>
+            <select>
+              <option>Student</option>
+              <option>TA</option>
+              <option>Instructor</option>
+            </select><br>
+            <label class='question_title'>Start date:</label><br>
+            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
+            <input type="time" min="00:00" max="23:59"><br>
 
-          <label class='question_title'>Allow access to:</label><br>
-          <select>
-            <option>Student</option>
-            <option>TA</option>
-            <option>Instructor</option>
-          </select><br>
-          <label class='question_title'>Start date:</label><br>
-          <input type="date" value="2021-02-23" min="2021-02-23" max="2021-12-31"><br>
-          <label class='question_title'>End date:</label><br>
-          <input type="date" value="2021-02-26" min="2021-02-23" max="2021-12-31"><br>
-          <input type="button" value="+"><br><br>
+            <label class='question_title'>End date:</label><br>
+            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
+            <input type="time" min="00:00" max="23:59"><br>
+            <input type="button" value="+">
+            <input type="button" value="-"><br><br>
+          </div>
+        </div><br>
 
-          <input class='question_title' type="button" value="Submit"<br>
+        <input class='question_title' type="button" value="Save"<br>
+        <input class='question_title' type="button" value="Export"<br><br>
       </form>
     </div>
+
     <div class="col middlecol">
       <p>Selected Questions</p>
     </div>
+
     <div class="col leftcol">
       <p>Questions</p>
       <div class='leftcoltxt question_title'><% @questions.each do |question| %>
-            <tr>
-              <td><%= question.title %></td>
-            </tr>
+        <tr>
+          <td><%= question.title %></td>
+        </tr>
       <% end %></div>
     </div>
+
   </body>
 </html>
