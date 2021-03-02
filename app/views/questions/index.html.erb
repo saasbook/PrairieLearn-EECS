@@ -80,7 +80,7 @@
       <div class="container">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
-            <p class="draggable draggable-text" draggable="true"><td><%= question.title %></td></p>
+            <p class="draggable draggable-text" draggable="true"><td><%= question.title %></td><span class="close">&times;</span></p>
           </tr>
         <% end %></div>
       </div>
@@ -108,6 +108,12 @@
             }, 0)
           });
 
+          const close = draggable.getElementsByClassName("close")
+          close[0].style.display = "none";
+          close[0].onclick = function() {
+            containers[0].removeChild(draggable);
+          }
+
           for (let j = 0; j < containers.length; j ++) {
             const container = containers[j];
 
@@ -118,6 +124,12 @@
               e.preventDefault();
             });
             container.addEventListener('drop', function (e) {
+              const temp = draggedItem.getElementsByClassName("close");
+              if (temp[0].style.display == "block") {
+                temp[0].style.display = "none";
+              } else {
+                temp[0].style.display = "block";
+              }
               this.append(draggedItem);
             });
           }
