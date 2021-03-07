@@ -1,19 +1,21 @@
 language: ruby
-dist: focal
-rvm:
-- 2.6.5
 cache:
+  bundler: true
   directories:
-  - node_modules
-  - vendor/bundle
+    - node_modules
 before_install:
 - gem install bundler:2.1.4
-- nvm install 12.13.1
-before_script:
-- bundle install
+- nvm install
+install:
+- bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle} 
+- npm install                         # Install npm dependencies
+#- npm install karma-firefox-launcher codeclimate-test-reporter
+- gem install cucumber
+- gem install rspec
 script:
 - bundle exec rake db:drop
 - RAILS_ENV=test bundle exec rake db:migrate --trace
 - bundle exec rake db:test:prepare
+- npm test
 - bundle exec rspec
 - bundle exec cucumber
