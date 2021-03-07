@@ -34,5 +34,9 @@ module PrairieLearn
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.middleware.use OmniAuth::Builder do
+        provider :github, Rails.application.credentials.github[:github_client_id], Rails.application.credentials.github[:github_client_secret]
+    end
   end
 end
