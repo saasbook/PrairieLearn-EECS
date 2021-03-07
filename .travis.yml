@@ -32,7 +32,7 @@ install:
   - gem install rspec
 
 # Setup the database
-before_script: bundle exec rake db:create db:migrate
+before_script: bundle exec rake db:create db:migrate --trace
 
 # Run the test suites
 script:
