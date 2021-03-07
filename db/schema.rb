@@ -22,8 +22,6 @@ ActiveRecord::Schema.define(version: 2021_03_03_060013) do
     t.string "email"
     t.string "username"
     t.string "provider"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
