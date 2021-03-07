@@ -10,11 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_21_220727) do
+ActiveRecord::Schema.define(version: 2021_03_03_060013) do
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.integer "points"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "uid"
+    t.string "email"
+    t.string "username"
+    t.string "provider"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
 end

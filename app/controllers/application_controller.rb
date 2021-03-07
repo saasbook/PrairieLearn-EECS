@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::Base
-  def show
-    render "homepage"
+  before_action :authenticated
+
+  private
+
+  def authenticated
+    @authenticated = !session[:current_user_id].nil?
   end
 end
