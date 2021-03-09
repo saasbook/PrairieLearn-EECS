@@ -78,7 +78,3 @@ input, select {
 .draggable-text {
   font-size: medium;
 }
-
-.test {
-  resize: both !important;
-}
