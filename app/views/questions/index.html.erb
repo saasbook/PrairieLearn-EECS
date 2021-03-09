@@ -5,7 +5,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-  </head>
+  
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    </head>
   <body>
     <nav>
       <div class="nav-wrapper">
@@ -13,38 +17,57 @@
       </div>
     </nav>
 
-    <div class="col rightcol">
+    <div class="qcol rightcol">
       <p>Configurations</p>
       <form >
       	<div class='configs' style="overflow:scroll; height:600px;">
-          <label class='question_title'>Assessment name:</label><br>
-          <input type="text" name=assessment_name size=36><br><br>
-
-          <label class='question_title'>Type:</label>
-          <select>
-            <option>Exam</option>
-            <option>Homework</option>
-          </select>
-          <label class='question_title'>Credit:</label>
-          <input type="text" value="100" name="assessment_credit" size=4><br><br>
-
-          <div class="access_forms">
-            <label class='question_title'>Allow access to:</label><br>
-            <select>
-              <option>Student</option>
-              <option>TA</option>
-              <option>Instructor</option>
-            </select><br>
-            <label class='question_title'>Start date:</label><br>
-            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
-            <input type="time" min="00:00" max="23:59"><br>
-
-            <label class='question_title'>End date:</label><br>
-            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
-            <input type="time" min="00:00" max="23:59"><br><br>
+          <div class="form-group w-75">
+            <label class='question_title'>Assessment name:</label>
+            <input class="form-control" type="text" placeholder="Enter assessment name" size=36>
           </div>
-          <input type="button" id="add_access" value="+">
-          <input type="button" id="delete_access" value="-"><br><br>
+          <div class="form-row">
+            <div class="col-md-5 mb-3">
+              <label class='question_title'>Type:</label>
+              <select class="form-control">
+                <option>Exam</option>
+                <option>Homework</option>
+              </select>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class='question_title'>Credit:</label>
+              <input class="form-control" type="text" placeholder="Enter integer" name="assessment_credit" size=4>
+            </div>
+          </div>
+          <div class="access_forms">
+            <div class="form-group w-50">
+              <label class='question_title'>Allow access to:</label>
+              <select class="form-control">
+                <option>Student</option>
+                <option>TA</option>
+                <option>Instructor</option>
+              </select>
+            </div>
+            <label class='question_title'>Start date:</label>
+            <div class="form-row">
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="date" min="2021-01-01" max="2100-12-31">
+              </div>
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="time" min="00:00" max="23:59">
+              </div>
+            </div>
+            <label class='question_title'>End date:</label>
+            <div class="form-row">
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="date" min="2021-03-02" max="2100-12-31">
+              </div>
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="time" min="00:00" max="23:59">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" type="button" id="add_access">+</button>
+          <button class="btn btn-primary btn-lg" type="button" id="delete_access">-</button>
           <script>
           $(document).ready(function(){
           	// Spawns new access forms
@@ -64,31 +87,36 @@
           </script>
         </div><br>
 
-        <input class='question_title' type="button" value="Save"<br>
-        <input class='question_title' type="button" value="Export"<br><br>
+        <button class="btn btn-primary" type="button">Save</button>
+        <button class="btn btn-primary" type="button">Export</button>
       </form>
     </div>
 
-    <div class="col middlecol">
+    <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
-      <div class="container">
+      <div class="qcontainer">
       </div>
     </div>
 
-    <div class="col leftcol">
+    <div class="qcol leftcol">
       <p>Questions</p>
-      <div class="container">
+      <div class="qcontainer">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
-            <p class="draggable draggable-text" draggable="true"><td><%= question.title %></td><span class="close">&times;</span></p>
+            <p class="list-group-item draggable draggable-text" draggable="true"><td><%= question.title %></td><span class="close">&times;</span></p>
           </tr>
         <% end %></div>
       </div>
     </div>
 
     <script>
+        const dates = document.querySelectorAll('datePicker');
+        for (let i = 0; i < dates.length; i ++) {
+          dates[i].valueAsDate = new Date();
+        }
+
         const draggables = document.querySelectorAll('.draggable')
-        const containers = document.querySelectorAll('.container')
+        const containers = document.querySelectorAll('.qcontainer')
 
         for (let i = 0; i < draggables.length; i ++) {
           const draggable = draggables[i];
