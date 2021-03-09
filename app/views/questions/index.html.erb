@@ -57,7 +57,7 @@
             // Deletes previous access forms
             $('#delete_access').click(function() {
             	var count = $('.access_forms').length;
-              if (count > 1)
+              if (count > 0)  // change this to 1 if you want at least one to show
               	$( ".access_forms:last" ).remove();
             });
           });
@@ -135,6 +135,6 @@
           }
         }
     </script>
-      
+
   </body>
 </html>
