@@ -17,7 +17,7 @@ nav {
   font-family: 'Roboto', sans-serif;
 }
 
-.col {
+.qcol {
   margin-top: 2%;
   float: right;
 }
@@ -65,15 +65,17 @@ input, select {
   margin-left: 5%;
 }
 
-.container {
+.qcontainer {
+  margin: 2%;
+  height: 500px;
+}
+
+.mcontainer {
   margin: 2%;
   height: 500px;
 }
 
 .draggable {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-style: solid;
   margin-left: 3%;
   margin-right: 3%;
 }

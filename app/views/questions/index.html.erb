@@ -5,6 +5,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
     <nav>
@@ -13,38 +18,57 @@
       </div>
     </nav>
 
-    <div class="col rightcol">
+    <div class="qcol rightcol">
       <p>Configurations</p>
       <form >
       	<div class='configs' style="overflow:scroll; height:600px;">
-          <label class='question_title'>Assessment name:</label><br>
-          <input type="text" name=assessment_name size=36><br><br>
-
-          <label class='question_title'>Type:</label>
-          <select>
-            <option>Exam</option>
-            <option>Homework</option>
-          </select>
-          <label class='question_title'>Credit:</label>
-          <input type="text" value="100" name="assessment_credit" size=4><br><br>
-
-          <div class="access_forms">
-            <label class='question_title'>Allow access to:</label><br>
-            <select>
-              <option>Student</option>
-              <option>TA</option>
-              <option>Instructor</option>
-            </select><br>
-            <label class='question_title'>Start date:</label><br>
-            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
-            <input type="time" min="00:00" max="23:59"><br>
-
-            <label class='question_title'>End date:</label><br>
-            <input type="date" value="2021-03-02" min="2021-03-02" max="2021-12-31">
-            <input type="time" min="00:00" max="23:59"><br><br>
+          <div class="form-group w-75">
+            <label class='question_title'>Assessment name:</label>
+            <input class="form-control" type="text" placeholder="Enter assessment name" size=36>
           </div>
-          <input type="button" id="add_access" value="+">
-          <input type="button" id="delete_access" value="-"><br><br>
+          <div class="form-row">
+            <div class="col-md-5 mb-3">
+              <label class='question_title'>Type:</label>
+              <select class="form-control">
+                <option>Exam</option>
+                <option>Homework</option>
+              </select>
+            </div>
+            <div class="col-md-5 mb-3">
+              <label class='question_title'>Credit:</label>
+              <input class="form-control" type="text" placeholder="Enter integer" name="assessment_credit" size=4>
+            </div>
+          </div>
+          <div class="access_forms">
+            <div class="form-group w-50">
+              <label class='question_title'>Allow access to:</label>
+              <select class="form-control">
+                <option>Student</option>
+                <option>TA</option>
+                <option>Instructor</option>
+              </select>
+            </div>
+            <label class='question_title'>Start date:</label>
+            <div class="form-row">
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="date" min="2021-01-01" max="2100-12-31">
+              </div>
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="time" min="00:00" max="23:59">
+              </div>
+            </div>
+            <label class='question_title'>End date:</label>
+            <div class="form-row">
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="date" min="2021-03-02" max="2100-12-31">
+              </div>
+              <div class="col-md-5 mb-3">
+                <input class="form-control" type="time" min="00:00" max="23:59">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" type="button" id="add_access">+</button>
+          <button class="btn btn-primary btn-lg" type="button" id="delete_access">-</button>
           <script>
           $(document).ready(function(){
           	// Spawns new access forms
@@ -57,72 +81,60 @@
             // Deletes previous access forms
             $('#delete_access').click(function() {
             	var count = $('.access_forms').length;
-              if (count > 1)
+              if (count > 0)  // change this to 1 if you want at least one to show
               	$( ".access_forms:last" ).remove();
             });
           });
           </script>
         </div><br>
 
-        <input class='question_title' type="button" value="Save"<br>
-        <input class='question_title' type="button" value="Export"<br><br>
+        <button class="btn btn-primary" type="button">Save</button>
+        <button class="btn btn-primary" type="button">Export</button>
       </form>
     </div>
 
-    <div class="col middlecol">
+    <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
-      <div class="container">
+      <div class="mcontainer">
       </div>
     </div>
 
-    <div class="col leftcol">
+    <div class="qcol leftcol">
       <p>Questions</p>
-      <div class="container">
+      <div class="qcontainer">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
-            <p class="draggable draggable-text" draggable="true"><td><%= question.title %></td></p>
+            <p class="list-group-item draggable-question draggable-text" draggable="true"><td><%= question.title %></td></p>
           </tr>
         <% end %></div>
       </div>
     </div>
 
     <script>
-        const draggables = document.querySelectorAll('.draggable')
-        const containers = document.querySelectorAll('.container')
+    $(".draggable-question").draggable(
+      {helper: "clone"}
+    );
 
-        for (let i = 0; i < draggables.length; i ++) {
-          const draggable = draggables[i];
-
-          draggable.addEventListener('dragstart', function () {
-            draggedItem = draggable;
-            setTimeout(function () {
-              draggable.style.display = 'none';
-            }, 0)
-          });
-
-          draggable.addEventListener('dragend', function () {
-            draggedItem = draggable;
-            setTimeout(function () {
-              draggable.style.display = 'block';
-              draggedItem = null;
-            }, 0)
-          });
-
-          for (let j = 0; j < containers.length; j ++) {
-            const container = containers[j];
-
-            container.addEventListener('dragover', function (e) {
-              e.preventDefault();
-            });
-            container.addEventListener('dragenter', function (e) {
-              e.preventDefault();
-            });
-            container.addEventListener('drop', function (e) {
-              this.append(draggedItem);
-            });
-          }
-        }
-    </script>
-      
+    $(".mcontainer").droppable({
+      accept: ".draggable-question",
+      drop: function(event,ui){
+        var tag = document.createElement("p");
+        tag.append($(ui.helper).html());
+        tag.classList.add("list-group-item");
+        tag.classList.add("draggable-question");
+        tag.classList.add("draggable-text");
+        var closetag = document.createElement("button");
+        var spantag = document.createElement("span");
+        spantag.innerHTML = "&times;";
+        spantag.setAttribute('aria-hidden', 'true');
+        closetag.setAttribute('aria-label', 'Close');
+        closetag.classList.add("close");
+        closetag.type = "button";
+        closetag.appendChild(spantag);
+        tag.append(closetag);
+        $(this).append(tag);    
+      }
+    });
+    </script>    
   </body>
 </html>
