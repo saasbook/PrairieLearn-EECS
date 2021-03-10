@@ -70,6 +70,11 @@ input, select {
   height: 500px;
 }
 
+.mcontainer {
+  margin: 2%;
+  height: 500px;
+}
+
 .draggable {
   margin-left: 3%;
   margin-right: 3%;

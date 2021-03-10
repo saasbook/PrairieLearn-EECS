@@ -5,11 +5,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-  
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
   <body>
     <nav>
       <div class="nav-wrapper">
@@ -94,7 +95,7 @@
 
     <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
-      <div class="qcontainer">
+      <div class="mcontainer">
       </div>
     </div>
 
@@ -103,66 +104,37 @@
       <div class="qcontainer">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
-            <p class="list-group-item draggable draggable-text" draggable="true"><td><%= question.title %></td><span class="close">&times;</span></p>
+            <p class="list-group-item draggable-question draggable-text" draggable="true"><td><%= question.title %></td></p>
           </tr>
         <% end %></div>
       </div>
     </div>
 
     <script>
-        const dates = document.querySelectorAll('datePicker');
-        for (let i = 0; i < dates.length; i ++) {
-          dates[i].valueAsDate = new Date();
-        }
+    $(".draggable-question").draggable(
+      {helper: "clone"}
+    );
 
-        const draggables = document.querySelectorAll('.draggable')
-        const containers = document.querySelectorAll('.qcontainer')
-
-        for (let i = 0; i < draggables.length; i ++) {
-          const draggable = draggables[i];
-
-          draggable.addEventListener('dragstart', function () {
-            draggedItem = draggable;
-            setTimeout(function () {
-              draggable.style.display = 'none';
-            }, 0)
-          });
-
-          draggable.addEventListener('dragend', function () {
-            draggedItem = draggable;
-            setTimeout(function () {
-              draggable.style.display = 'block';
-              draggedItem = null;
-            }, 0)
-          });
-
-          const close = draggable.getElementsByClassName("close")
-          close[0].style.display = "none";
-          close[0].onclick = function() {
-            containers[0].removeChild(draggable);
-          }
-
-          for (let j = 0; j < containers.length; j ++) {
-            const container = containers[j];
-
-            container.addEventListener('dragover', function (e) {
-              e.preventDefault();
-            });
-            container.addEventListener('dragenter', function (e) {
-              e.preventDefault();
-            });
-            container.addEventListener('drop', function (e) {
-              const temp = draggedItem.getElementsByClassName("close");
-              if (temp[0].style.display == "block") {
-                temp[0].style.display = "none";
-              } else {
-                temp[0].style.display = "block";
-              }
-              this.append(draggedItem);
-            });
-          }
-        }
-    </script>
-
+    $(".mcontainer").droppable({
+      accept: ".draggable-question",
+      drop: function(event,ui){
+        var tag = document.createElement("p");
+        tag.append($(ui.helper).html());
+        tag.classList.add("list-group-item");
+        tag.classList.add("draggable-question");
+        tag.classList.add("draggable-text");
+        var closetag = document.createElement("button");
+        var spantag = document.createElement("span");
+        spantag.innerHTML = "&times;";
+        spantag.setAttribute('aria-hidden', 'true');
+        closetag.setAttribute('aria-label', 'Close');
+        closetag.classList.add("close");
+        closetag.type = "button";
+        closetag.appendChild(spantag);
+        tag.append(closetag);
+        $(this).append(tag);    
+      }
+    });
+    </script>    
   </body>
 </html>
