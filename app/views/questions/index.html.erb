@@ -104,7 +104,7 @@
       <div class="qcontainer">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
-            <p class="list-group-item draggable-question draggable-text" draggable="true"><td><%= question.title %></td></p>
+            <p class="list-group-item draggable-question draggable-text" draggable="true"><td><%= question.title %></td><span class="close">&times;</span></p>
           </tr>
         <% end %></div>
       </div>
@@ -119,22 +119,27 @@
       accept: ".draggable-question",
       drop: function(event,ui){
         var tag = document.createElement("p");
-        tag.append($(ui.helper).html());
+        tag.innerHTML = $(ui.helper).html();
         tag.classList.add("list-group-item");
         tag.classList.add("draggable-question");
         tag.classList.add("draggable-text");
-        var closetag = document.createElement("button");
-        var spantag = document.createElement("span");
-        spantag.innerHTML = "&times;";
-        spantag.setAttribute('aria-hidden', 'true');
-        closetag.setAttribute('aria-label', 'Close');
-        closetag.classList.add("close");
-        closetag.type = "button";
-        closetag.appendChild(spantag);
-        tag.append(closetag);
+        
+        var closetag = tag.getElementsByClassName("close");
+        closetag[0].style.display = "block";
+        var containers = document.querySelectorAll('.mcontainer');
+        closetag[0].onclick = function() {
+          containers[0].removeChild(tag);
+        }
         $(this).append(tag);    
       }
     });
+
+    const draggables = document.querySelectorAll('.draggable-question')
+    for (let i = 0; i < draggables.length; i ++) {
+      const draggable = draggables[i];
+      const close = draggable.getElementsByClassName("close");
+      close[0].style.display = "none";
+    }
     </script>    
   </body>
 </html>
