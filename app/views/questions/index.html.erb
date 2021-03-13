@@ -39,6 +39,7 @@
               <input class="form-control" type="text" placeholder="Enter integer" name="assessment_credit" size=4>
             </div>
           </div>
+          <hr>
           <div class="access_forms">
             <div class="form-group w-50">
               <label class='question_title'>Allow access to:</label>
@@ -66,6 +67,7 @@
                 <input class="form-control" type="time" min="00:00" max="23:59">
               </div>
             </div>
+            <hr>
           </div>
           <button class="btn btn-primary btn-lg" type="button" id="add_access">+</button>
           <button class="btn btn-primary btn-lg" type="button" id="delete_access">-</button>
@@ -81,7 +83,7 @@
             // Deletes previous access forms
             $('#delete_access').click(function() {
             	var count = $('.access_forms').length;
-              if (count > 0)  // change this to 1 if you want at least one to show
+              if (count > 1)  // change this to 1 if you want at least one to show
               	$( ".access_forms:last" ).remove();
             });
           });
@@ -132,9 +134,9 @@
         closetag.type = "button";
         closetag.appendChild(spantag);
         tag.append(closetag);
-        $(this).append(tag);    
+        $(this).append(tag);
       }
     });
-    </script>    
+    </script>
   </body>
 </html>
