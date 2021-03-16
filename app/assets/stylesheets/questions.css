@@ -28,7 +28,7 @@ nav {
   position: absolute;
 }
 
-.leftcol p,.middlecol p, .rightcol p {
+.leftcol p, .middlecol p, .rightcol p {
   text-align: center;
 }
 
