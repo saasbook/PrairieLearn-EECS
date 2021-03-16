@@ -39,6 +39,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_type (1.3.2)
+      activerecord (>= 3.2)
     activejob (6.1.3)
       activesupport (= 6.1.3)
       globalid (>= 0.3.6)
@@ -126,6 +128,11 @@ GEM
     diff-lcs (1.4.4)
     docile (1.3.5)
     erubi (1.10.0)
+    faraday (1.3.0)
+      faraday-net_http (~> 1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords
+    faraday-net_http (1.0.1)
     ffi (1.14.2)
     formatador (0.2.5)
     globalid (0.4.2)
@@ -144,10 +151,12 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashie (4.1.0)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    jwt (2.2.2)
     listen (3.4.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -168,7 +177,10 @@ GEM
     mini_mime (1.0.2)
     minitest (5.14.3)
     msgpack (1.4.2)
+    multi_json (1.15.0)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
+    multipart-post (2.1.1)
     nenv (0.3.0)
     nio4r (2.5.5)
     nokogiri (1.11.1-x86_64-darwin)
@@ -178,6 +190,21 @@ GEM
     notiffany (0.1.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth2 (1.4.4)
+      faraday (>= 0.8, < 2.0)
+      jwt (>= 1.0, < 3.0)
+      multi_json (~> 1.3)
+      multi_xml (~> 0.5)
+      rack (>= 1.2, < 3)
+    omniauth (1.9.1)
+      hashie (>= 3.4.6)
+      rack (>= 1.6.2, < 3)
+    omniauth-github (1.4.0)
+      omniauth (~> 1.5)
+      omniauth-oauth2 (>= 1.4.0, < 2.0)
+    omniauth-oauth2 (1.7.1)
+      oauth2 (~> 1.4)
+      omniauth (>= 1.9, < 3)
     pg (1.2.3)
     protobuf-cucumber (3.10.8)
       activesupport (>= 3.2)
@@ -253,6 +280,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
+    ruby2_keywords (0.0.4)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -303,6 +331,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_type (= 1.3.2)
   bootsnap (>= 1.4.4)
   byebug
   cucumber-rails
@@ -311,6 +340,8 @@ DEPENDENCIES
   guard-rspec
   jbuilder (~> 2.7)
   listen (~> 3.3)
+  omniauth
+  omniauth-github
   pg
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)

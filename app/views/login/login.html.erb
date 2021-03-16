@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+<html>
+  <body>
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <span class="d-block display-4 card-title text-center">Sign In</span>
+            <div class="alert alert-primary text-center" role="<%= :alert %>">
+              Select an authentication provider below to login.
+            </div>
+            <%= link_to "Log In", :github_login%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
