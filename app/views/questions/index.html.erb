@@ -127,14 +127,33 @@
           // trigger export
           $('#export').click(function(){
             jsonData = {}
+            dateData = {} // store the date information for jsonDate
             var formData = $("#config").serializeArray();
             $.each(formData, function() {
               if (this.name == 'credit'){
                 jsonData[this.name] = new Number(this.value)
               } else {
-                jsonData[this.name] = this.value
+                switch (this.name) {
+                  case 'startDate':
+                    dateData[this.name] = this.value
+                    break;
+                  case 'endDate':
+                    dateData[this.name] = this.value
+                    break;
+                  case 'startTime':
+                    dateData[this.name] = this.value
+                    break;
+                  case 'endTime':
+                    dateData[this.name] = this.value
+                    break;
+                  default:
+                    jsonData[this.name] = this.value
+                }
               }
             });
+            jsonData['startDate'] = dateData.startDate + 'T' + dateData.startTime
+            jsonData['endDate'] = dateData.endDate + 'T' + dateData.endTime
+
             const midQuestions = document.getElementsByClassName("mcontainer")[0].querySelectorAll('.draggable-question')
             for (let i = 0; i < midQuestions.length; i ++) {
               if ('zones' in jsonData){
