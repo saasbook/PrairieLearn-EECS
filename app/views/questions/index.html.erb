@@ -129,7 +129,6 @@
             jsonData = {}
             dateData = {} // store the date information for jsonDate
             var formData = $("#config").serializeArray();
-            console.log(formData)
             $.each(formData, function() {
               if (this.name == 'credit'){
                 jsonData[this.name] = new Number(this.value)
