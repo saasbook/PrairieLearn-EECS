@@ -21,7 +21,7 @@
     <div class="qcol rightcol">
       <p>Configurations</p>
       <form id="config">
-      	<div class='configs' style="overflow:scroll; height:600px;">
+        <div class='configs' style="overflow:scroll; height:600px;">
           <div class="form-group w-75">
             <label class='question_title'>Assessment name:</label>
             <input class="form-control" type="text" placeholder="Enter assessment name" name="title" size=36>
@@ -83,7 +83,7 @@
           <button class="btn btn-primary btn-lg" type="button" id="delete_access">-</button>
           <script>
           $(document).ready(function(){
-          	// Spawns new access forms
+            // Spawns new access forms
             $('#add_access').click(function(){
               // Create clone of <div class='input-form'>
               var newel = $('.access_forms:last').clone(true);
@@ -92,9 +92,9 @@
             });
             // Deletes previous access forms
             $('#delete_access').click(function() {
-            	var count = $('.access_forms').length;
+              var count = $('.access_forms').length;
               if (count > 1)  // change this to 1 if you want at least one to show
-              	$( ".access_forms:last" ).remove();
+                $( ".access_forms:last" ).remove();
             });
           });
           </script>
@@ -132,31 +132,38 @@
           $('#export').click(function(){
             jsonData = {}
             dateData = {} // store the date information for jsonDate
+            allowAccessData = {}
             var formData = $("#config").serializeArray();
             $.each(formData, function() {
-              if (this.name == 'credit'){
-                jsonData[this.name] = new Number(this.value)
-              } else {
-                switch (this.name) {
-                  case 'startDate':
-                    dateData[this.name] = this.value
-                    break;
-                  case 'endDate':
-                    dateData[this.name] = this.value
-                    break;
-                  case 'startTime':
-                    dateData[this.name] = this.value
-                    break;
-                  case 'endTime':
-                    dateData[this.name] = this.value
-                    break;
-                  default:
-                    jsonData[this.name] = this.value
-                }
+              switch (this.name) {
+                case 'role':
+                case 'mode':
+                  allowAccessData[this.name] = this.value
+                  break;
+                case 'credit':
+                  allowAccessData[this.name] = new Number(this.value)
+                  break;
+                case 'startDate':
+                case 'endDate':
+                case 'startTime':
+                case 'endTime':
+                  dateData[this.name] = this.value
+                  break;
+                default:
+                  jsonData[this.name] = this.value
               }
             });
-            jsonData['startDate'] = dateData.startDate + 'T' + dateData.startTime
-            jsonData['endDate'] = dateData.endDate + 'T' + dateData.endTime
+            allowAccessData['startDate'] = dateData.startDate + 'T' + dateData.startTime
+            allowAccessData['endDate'] = dateData.endDate + 'T' + dateData.endTime
+
+            if (Object.keys(allowAccessData).length > 0){
+              allowAccessData['mode'] = 'Public'
+              if ('allowAccess' in jsonData){
+                jsonData.allowAccess.push(allowAccessData)
+              } else {
+                jsonData.allowAccess = [allowAccessData]
+              }
+            }
 
             const midQuestions = document.getElementsByClassName("mcontainer")[0].querySelectorAll('.draggable-question')
             for (let i = 0; i < midQuestions.length; i ++) {
