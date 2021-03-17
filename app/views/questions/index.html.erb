@@ -151,8 +151,8 @@
                 }
               }
             });
-            jsonData['startDate'] = dateData.startDate + dateData.startTime
-            jsonData['endDate'] = dateData.endDate + dateData.endTime
+            jsonData['startDate'] = dateData.startDate + 'T' + dateData.startTime
+            jsonData['endDate'] = dateData.endDate + 'T' + dateData.endTime
 
             const midQuestions = document.getElementsByClassName("mcontainer")[0].querySelectorAll('.draggable-question')
             for (let i = 0; i < midQuestions.length; i ++) {
