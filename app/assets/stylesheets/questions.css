@@ -28,7 +28,7 @@ nav {
   position: absolute;
 }
 
-.leftcol p,.middlecol p, .rightcol p {
+.leftcol p, .middlecol p, .rightcol p {
   text-align: center;
 }
 
@@ -82,4 +82,15 @@ input, select {
 
 .draggable-text {
   font-size: medium;
+}
+
+.footer {
+  position: fixed;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #62BFED;
+  color: white;
+  text-align: right;
 }

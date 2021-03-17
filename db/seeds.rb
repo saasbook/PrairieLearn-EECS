@@ -7,11 +7,16 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 questions = [
-	[ "Q5_HARD_ENV_DIAGRAM", 10 ],
-	[ "Q6_REALLY_HARD_DECISON", 5 ],
-	[ "Q7_DOGE_TO_THE_MOON", 1 ],
-	[ "Q8_QUEENS_GAMBIT", 8 ],
-	[ "Q9_CAPITAL_RIOTS", 10]
+	[ "ANDS_AND_ORS_GALORE", 7 ],
+	[ "LISZTOMANIA", 8 ],
+	[ "The_MAGICAL_MYSTERY_MACHINE", 16 ],
+	[ "AN_EXPANSION_OF_EXPAND", 6 ],
+	[ "PAIR_MUTATIONS", 12],
+	[ "HARD_ENV_DIAGRAM", 10 ],
+	[ "REALLY_HARD_DECISON", 5 ],
+	[ "DOGE_TO_THE_MOON", 1 ],
+	[ "QUEENS_GAMBIT", 8 ],
+	[ "CAPITAL_RIOTS", 10]
 ]
 
 questions.each do |title, points|
