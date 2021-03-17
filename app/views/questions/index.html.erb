@@ -143,7 +143,7 @@
                 jsonData.zones = [{questions:[{id:midQuestions[i].innerText.slice(0, -2), points:new Number(midQuestions[i].getElementsByClassName("form-control")[0].value)}]}]
               }
             }
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData));
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, '\t'));
             var dlAnchorElem = document.getElementById('downloadAnchorElem');
             dlAnchorElem.setAttribute("href",     dataStr     );
             dlAnchorElem.setAttribute("download", "infoAssessment.json");
