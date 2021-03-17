@@ -8,9 +8,20 @@ class LoginController < ApplicationController
     create_session(:create_github_user)
   end
 
+  def home
+    if session[:current_user_id].present?
+      redirect_to user_profile_path
+    end
+  end
+
   def logout
     session[:current_user_id] = nil
-    redirect_to root_path, notice: 'You have successfully logged out.'
+    redirect_to home_path, notice: 'You have successfully logged out.'
+  end
+
+  def dummylogin
+    session[:current_user_id] = 123
+    redirect_to home_path
   end
 
   private
