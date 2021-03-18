@@ -24,7 +24,7 @@ nav {
 
 .leftcol {
   width: 30%;
-  height: 100%;
+  height: auto;
   position: absolute;
 }
 
@@ -33,7 +33,7 @@ nav {
 }
 
 .middlecol {
-  height: 100%;
+  height: 700px;
   width: 40%;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
@@ -43,7 +43,7 @@ nav {
 
 .rightcol {
   width: 30%;
-  height: 100%;
+  height: 700px;
 }
 
 p {
@@ -66,12 +66,12 @@ input, select {
 
 .qcontainer {
   margin: 2%;
-  height: 100%;
+  height: 700px;
 }
 
 .mcontainer {
   margin: 2%;
-  height: 100%;
+  height: 700px;
 }
 
 .draggable {
