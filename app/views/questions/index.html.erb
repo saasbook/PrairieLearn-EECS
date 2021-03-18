@@ -220,7 +220,7 @@
         item.find("span").css('display','block');
         var points = item[0].getElementsByClassName("form-control")[0];
         item[0].style.height = "auto";
-        item[0].style.width = "100%";
+        item[0].style.width = document.body.querySelectorAll(".mcontainer")[0].offsetWidth;
         points.style.display = "inline";
         points.style.float = "right";
         points.style.marginTop = "-1.5%";
