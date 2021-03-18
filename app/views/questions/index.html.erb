@@ -21,7 +21,7 @@
     <div class="qcol rightcol">
       <p>Configurations</p>
       <form id="config">
-        <div class='configs' style="overflow:scroll; height:600px;">
+        <div class='configs' style="overflow:scroll">
           <div class="form-group w-75">
             <label class='question_title'>Assessment name:</label>
             <input class="form-control" type="text" placeholder="Enter assessment name" name="title" size=36>
@@ -218,6 +218,13 @@
         var item = $(ui.draggable);
         item.width($(this).width()-40);
         item.find("span").css('display','block');
+        var points = item[0].getElementsByClassName("form-control")[0];
+        item[0].style.height = "auto";
+        item[0].style.width = "100%";
+        points.style.display = "inline";
+        points.style.float = "right";
+        points.style.marginTop = "-1.5%";
+        points.style.marginRight = "2.5%";
         var close = item.find("span");
         close.click(function() {
           item.remove();
