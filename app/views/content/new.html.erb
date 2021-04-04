@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <div>
+      <%= 'All repos' %>
+      <br>
+      <% @repos.each do |repo| %>
+        <%= repo.full_name %>
+        <br>
+      <% end %>
+    </div>
+  </body>
+</html>
