@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   match '/auth/github/callback', to: 'login#github', as: :github_callback, via: [:get, :post]
   get '/logout' => 'login#logout', :as => :logout
   get '/user/profile', to: 'questions#index', as: :user_profile
-  get '/content', to: 'content#new'
+  get '/repo', to: 'repo#new'
 
   #post '/auth/github/callback', to: 'login#github'
 end

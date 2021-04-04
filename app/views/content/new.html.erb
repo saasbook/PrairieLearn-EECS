@@ -3,10 +3,13 @@
     <div>
       <%= 'All repos' %>
       <br>
-      <% @repos.each do |repo| %>
-        <%= repo.full_name %>
-        <br>
-      <% end %>
+      <p> Choose a repository to synchronize: </p>
+      <form>
+        <select name = 'repository'>
+          <%= select_tag 'repo_id', options_for_select(repos.map {|repo| [repo.full_name, repo.full_name]}) %>
+          
+        </select>
+      </form>
     </div>
   </body>
 </html>

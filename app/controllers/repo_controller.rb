@@ -1,6 +1,6 @@
 require 'octokit'
 
-class ContentController < ApplicationController
+class RepoController < ApplicationController
   before_action :require_login!
 
   def require_login!
