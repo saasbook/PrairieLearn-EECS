@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>
+    <div id="questions page">
     <nav>
       <div class="nav-wrapper">
         <div id="name" style="font-size:23px">Create New Assessment</div>
@@ -21,7 +22,7 @@
     <div class="qcol rightcol">
       <p>Configurations</p>
       <form id="config">
-        <div class='configs' style="overflow:scroll; height:600px">
+        <div class='configs'>
           <div class="form-group w-75">
             <label class='question_title'>Assessment name:</label>
             <input class="form-control" type="text" placeholder="Enter assessment name" name="title" size=36>
@@ -116,12 +117,19 @@
             <p class="list-group-item draggable-question draggable-text" draggable="true">
               <td><%= question.title %></td>
               <span class="close" style="display:none">&times;</span>
-              <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" size=4>
+              
+              <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" placeholder="0" size=4>
+              <label for="form-control" class="pts-txt">Pts</label>
+              
             </p>
           </tr>
         <% end %></div>
       </div>
     </div>
+
+
+
+  </div>
     <div class="footer">
       <button class="btn btn-primary" type="button" id="save">Save</button>
       <button class="btn btn-primary" type="button" id="export">Export</button>

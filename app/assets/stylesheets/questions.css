@@ -33,7 +33,7 @@ nav {
 }
 
 .middlecol {
-  height: 700px;
+  height: auto;
   width: 40%;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
@@ -43,7 +43,12 @@ nav {
 
 .rightcol {
   width: 30%;
-  height: 700px;
+  height: auto;
+}
+
+.configs {
+  overflow: scroll;
+  height: 630px;
 }
 
 p {
@@ -86,10 +91,20 @@ input, select {
 .footer {
   position: fixed;
   padding: 20px;
+  height: 5rem;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: #62BFED;
   color: white;
   text-align: right;
+}
+
+#questions-page {
+  padding-bottom: 5rem;
+}
+
+.pts-txt {
+  float: right;
+  margin-right: 1rem;
 }
