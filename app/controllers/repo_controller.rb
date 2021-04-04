@@ -17,4 +17,29 @@ class RepoController < ApplicationController
     @user.login
     @repos = @client.repos({}, query: {type: 'all', sort: 'full_name'})
   end
+
+  def sync
+    # get @repo from dropdown in views
+    # @repo = FILL HERE
+    # temporary repo
+    @repo = 'ace-lab/pl-ucb-cs10'
+    @client = Octokit::Client.new(:access_token => User.find(session[:current_user_id]).token)
+    @user = @client.user
+    @user.login
+    path = 'questions'
+    @content = traverseHelper(@client, @repo, path)
+  end
+
+  def traverseHelper(client, repo, path)
+    contents = client.contents(repo, path: path)
+    name = []
+    contents.each do |file|
+      name.append(file.name)
+      if file.type == 'dir'
+        new_path = path + '/' + file.name
+        name.append(traverseHelper(client, repo, new_path))
+      end
+    end
+    return name
+  end
 end

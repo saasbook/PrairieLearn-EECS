@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/logout' => 'login#logout', :as => :logout
   get '/user/profile', to: 'questions#index', as: :user_profile
   get '/repo', to: 'repo#new'
+  get '/sync', to: 'repo#sync', as: 'sync'
 
   #post '/auth/github/callback', to: 'login#github'
 end
