@@ -19,10 +19,7 @@ class RepoController < ApplicationController
   end
 
   def sync
-    # get @repo from dropdown in views
-    # @repo = FILL HERE
-    # temporary repo
-    @repo = 'ace-lab/pl-ucb-cs10'
+    @repo = params[:repo_id]
     @client = Octokit::Client.new(:access_token => User.find(session[:current_user_id]).token)
     @user = @client.user
     @user.login

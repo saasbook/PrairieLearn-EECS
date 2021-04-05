@@ -1,23 +1,13 @@
 <html>
 <head>
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
   <body>
     <div>
       <p> Choose a repository to synchronize: </p>
-      <%= select_tag 'repo_id', options_for_select(@repos.map {|repo|
-        [repo.full_name, repo.full_name]}), class: 'form-control', id: 'repo' %>
-      <br>
-      <%= button_to 'Synchronize', sync_path, method: :get %>
-
+      <%= form_with url: "/sync", method: :get do |form| %>
+        <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] } %>
+        <%= form.submit "Synchronize" %>
+      <% end %>
     </div>
   </body>
 </html>
