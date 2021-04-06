@@ -31,6 +31,12 @@ class RepoController < ApplicationController
     contents = client.contents(repo, path: path)
     name = []
     contents.each do |file|
+      if file.name == "info.json"
+        question_name = file.path.partition('/')[2].rpartition('/')[0]
+        if !Question.exists?(title: question_name)
+          Question.create( title: question_name, points: 1 )
+        end
+      end
       name.append(file.name)
       if file.type == 'dir'
         new_path = path + '/' + file.name
