@@ -1,0 +1,13 @@
+<html>
+<head>
+</head>
+  <body>
+    <div>
+      <p> Choose a repository to synchronize: </p>
+      <%= form_with url: "/sync", method: :get do |form| %>
+        <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] } %>
+        <%= form.submit "Synchronize" %>
+      <% end %>
+    </div>
+  </body>
+</html>

@@ -38,7 +38,7 @@ module PrairieLearn
     config.generators.system_tests = nil
 
     config.middleware.use OmniAuth::Builder do
-        provider :github, Rails.application.credentials.github[:github_client_id], Rails.application.credentials.github[:github_client_secret]
+        provider :github, Rails.application.credentials.github[:github_client_id], Rails.application.credentials.github[:github_client_secret], scope: "read:org,read:repo_hook,repo,user"
     end
   end
 end

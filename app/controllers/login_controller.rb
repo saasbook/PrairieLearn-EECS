@@ -40,7 +40,8 @@ class LoginController < ApplicationController
     User.create(
       uid: user_info['uid'],
       provider: User.providers[:github],
-      email: user_info['info']['email']
+      email: user_info['info']['email'],
+      token: user_info['credentials']['token']
     )
   end
 
