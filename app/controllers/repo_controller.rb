@@ -34,7 +34,7 @@ class RepoController < ApplicationController
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
         if !Question.exists?(title: question_name)
-          Question.create( title: question_name, points: 1 )
+          Question.create(title: question_name)
         end
       end
       if file.type == 'dir'

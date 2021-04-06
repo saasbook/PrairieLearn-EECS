@@ -14,7 +14,6 @@ ActiveRecord::Schema.define(version: 2021_03_03_060013) do
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
-    t.integer "points"
   end
 
   create_table "users", force: :cascade do |t|
