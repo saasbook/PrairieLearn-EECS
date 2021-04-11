@@ -17,9 +17,6 @@
       <div class="nav-wrapper">
         <div id="name" style="font-size:23px">Create New Assessment</div>
       </div>
-      <div class="nav-wrapper">
-        <%= link_to 'Home', home_path(), :class => 'btn btn-primary' %>
-      </div>
     </nav>
 
     <div class="qcol rightcol">
@@ -134,8 +131,9 @@
 
   </div>
     <div class="footer">
+      <%= link_to 'Logout', logout_path(), :class => 'btn btn-primary' %>
       <button class="btn btn-primary" type="button" id="save">Save</button>
-      <button class="btn btn-primary" type="button" id="export">Export</button>
+      <button class="btn btn-primary" type="button" id="export">Export</button>      
       <a id="downloadAnchorElem" style="display:none"></a>
       <script>
 

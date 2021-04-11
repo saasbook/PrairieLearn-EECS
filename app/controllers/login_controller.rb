@@ -10,7 +10,7 @@ class LoginController < ApplicationController
 
   def home
     if session[:current_user_id].present?
-      redirect_to user_profile_path
+      redirect_to root
     end
   end
 
