@@ -30,11 +30,12 @@ class RepoController < ApplicationController
 
   def addQuestions(client, repo, path)
     contents = client.contents(repo, path: path)
+    session[:selected_repo] = repo
     contents.each do |file|
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-        if !Question.exists?(title: question_name)
-          Question.create(title: question_name)
+        if !Question.exists?(title: question_name, user_id: session[:current_user_id], repo: repo)
+          Question.create(title: question_name, user_id: session[:current_user_id], repo: repo)
         end
       end
       if file.type == 'dir'
