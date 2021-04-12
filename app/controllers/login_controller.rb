@@ -10,7 +10,7 @@ class LoginController < ApplicationController
 
   def home
     if session[:current_user_id].present?
-      redirect_to root
+      redirect_to user_profile_path
     end
   end
 
@@ -19,18 +19,13 @@ class LoginController < ApplicationController
     redirect_to home_path, notice: 'You have successfully logged out.'
   end
 
-  def dummylogin
-    session[:current_user_id] = 123
-    redirect_to home_path
-  end
-
   private
 
   def create_session(create_if_not_exists)
     user_info = request.env['omniauth.auth']
     user = find_or_create_user(user_info, create_if_not_exists)
     session[:current_user_id] = user.id
-    destination_url = session[:destination_after_login] || root_url
+    destination_url = session[:destination_after_login] || repo_path
     session[:destination_after_login] = nil
     redirect_to destination_url
   end
