@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <div id="name">PrairieLearn Assessment Configuration File Generator</div>
+      </div>
+    </nav>
+    <div>
+      <div class="container h-100">
+        <div class="row align-items-center h-100">
+          <div class="col-6 mx-auto">
+              <div class="jumbotron">
+                <blockquote class="blockquote text-center align-middle">
+                  <h4>Welcome!</h4>
+                  <h5>To start creating a new assessment, please login.</h5><br>
+                  <%= link_to 'Login to Github', :github_login, :class => 'btn btn-primary' %>
+                </blockquote>
+              </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="footer"></div>
+  </body>
+</html>
