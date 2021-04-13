@@ -25,7 +25,7 @@ class LoginController < ApplicationController
     user_info = request.env['omniauth.auth']
     user = find_or_create_user(user_info, create_if_not_exists)
     session[:current_user_id] = user.id
-    destination_url = session[:destination_after_login] || repo_path
+    destination_url = session[:destination_after_login] || user_profile_path
     session[:destination_after_login] = nil
     redirect_to destination_url
   end
