@@ -7,18 +7,18 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 questions = [
-	[ "ANDS_AND_ORS_GALORE" ],
-	[ "LISZTOMANIA" ],
-	[ "The_MAGICAL_MYSTERY_MACHINE" ],
-	[ "AN_EXPANSION_OF_EXPAND" ],
-	[ "PAIR_MUTATIONS" ],
-	[ "HARD_ENV_DIAGRAM" ],
-	[ "REALLY_HARD_DECISON" ],
-	[ "DOGE_TO_THE_MOON" ],
-	[ "QUEENS_GAMBIT" ],
-	[ "CAPITAL_RIOTS" ]
+	[ "ANDS_AND_ORS_GALORE", "0", "0" ],
+	[ "LISZTOMANIA", "0", "0" ],
+	[ "The_MAGICAL_MYSTERY_MACHINE", "0", "0" ],
+	[ "AN_EXPANSION_OF_EXPAND", "0", "0" ],
+	[ "PAIR_MUTATIONS", "0", "0" ],
+	[ "HARD_ENV_DIAGRAM", "0", "0" ],
+	[ "REALLY_HARD_DECISON", "0", "0" ],
+	[ "DOGE_TO_THE_MOON", "0", "0" ],
+	[ "QUEENS_GAMBIT", "0", "0" ],
+	[ "CAPITAL_RIOTS", "0", "0" ]
 ]
 
-questions.each do |title, points|
-	Question.create( title: title )
+questions.each do |title, user_id, repo|
+	Question.create( title: title, user_id: user_id, repo: repo )
 end
