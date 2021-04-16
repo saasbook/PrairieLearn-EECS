@@ -30,10 +30,10 @@ nav {
 
 .leftcol p, .middlecol p, .rightcol p {
   text-align: center;
+
 }
 
 .middlecol {
-  height: auto;
   width: 40%;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
@@ -44,11 +44,13 @@ nav {
 .rightcol {
   width: 30%;
   height: auto;
+
 }
 
 .configs {
-  overflow: scroll;
-  height: 630px;
+  height: calc(100vh - 15rem);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 p {
@@ -71,12 +73,14 @@ input, select {
 
 .qcontainer {
   margin: 2%;
-  height: 700px;
+  height: calc(100vh - 15rem);
+  overflow: auto;
 }
 
 .mcontainer {
   margin: 2%;
-  height: 700px;
+  height: calc(100vh - 15rem);
+  overflow: auto;
 }
 
 .draggable {
