@@ -14,6 +14,8 @@ ActiveRecord::Schema.define(version: 2021_03_03_060013) do
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
+    t.string "user_id"
+    t.string "repo"
   end
 
   create_table "users", force: :cascade do |t|

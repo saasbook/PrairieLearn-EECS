@@ -117,10 +117,10 @@
             <p class="list-group-item draggable-question draggable-text" draggable="true">
               <td><%= question.title %></td>
               <span class="close" style="display:none">&times;</span>
-              
+
               <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" placeholder="0" size=4>
               <label for="form-control" class="pts-txt">Pts</label>
-              
+
             </p>
           </tr>
         <% end %></div>
@@ -133,7 +133,7 @@
     <div class="footer">
       <%= link_to 'Repo', repo_path(), :class => 'btn btn-primary' %>
       <%= link_to 'Logout', logout_path(), :class => 'btn btn-primary' %>
-      <button class="btn btn-primary" type="button" id="export">Export</button>      
+      <button class="btn btn-primary" type="button" id="export">Export</button>
       <a id="downloadAnchorElem" style="display:none"></a>
       <script>
 

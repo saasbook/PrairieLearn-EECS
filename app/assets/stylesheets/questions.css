@@ -44,11 +44,13 @@ nav {
 .rightcol {
   width: 30%;
   height: auto;
-  overflow: scroll;
+
 }
 
 .configs {
-  height: 630px;
+  height: calc(100vh - 15rem);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 p {
@@ -71,12 +73,14 @@ input, select {
 
 .qcontainer {
   margin: 2%;
-  height: 700px;
+  height: calc(100vh - 15rem);
+  overflow: auto;
 }
 
 .mcontainer {
   margin: 2%;
-  height: 700px;
+  height: calc(100vh - 15rem);
+  overflow: auto;
 }
 
 .draggable {
