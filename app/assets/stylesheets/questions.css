@@ -30,10 +30,10 @@ nav {
 
 .leftcol p, .middlecol p, .rightcol p {
   text-align: center;
+
 }
 
 .middlecol {
-  height: auto;
   width: 40%;
   border-left: 1px solid gray;
   border-right: 1px solid gray;
@@ -44,10 +44,10 @@ nav {
 .rightcol {
   width: 30%;
   height: auto;
+  overflow: scroll;
 }
 
 .configs {
-  overflow: scroll;
   height: 630px;
 }
 
