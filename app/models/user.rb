@@ -6,11 +6,13 @@ class User < ApplicationRecord
   # Each (uid, provider) pair should be unique.
   validates :uid, uniqueness: { scope: :provider }
 
+  """
   def auth_provider
     {
       'github' => 'Github'
     }[provider]
   end
+  """
 
   def self.find_github_user(uid)
     User.find_by(
