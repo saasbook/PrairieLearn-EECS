@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_060013) do
+ActiveRecord::Schema.define(version: 2021_04_16_112258) do
+
+  create_table "commits", force: :cascade do |t|
+    t.string "sha"
+    t.string "repo"
+  end
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
+    t.string "user_id"
+    t.string "repo"
   end
 
   create_table "users", force: :cascade do |t|

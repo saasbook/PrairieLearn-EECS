@@ -24,19 +24,37 @@ class RepoController < ApplicationController
     @user = @client.user
     @user.login
     path = 'questions'
-    addQuestions(@client, @repo, path)
+    checkCommit(@client, @repo, path)
+    session[:selected_repo] = @repo
     redirect_to root_path
+  end
+
+  def checkCommit(client, repo, path)
+    root = client.contents(repo, path: "/")
+    root.each do |dir|
+      if dir.name == path
+        repo_commit = Commit.find_by repo: repo
+        if repo_commit != nil
+          if repo_commit.sha == dir.sha
+            return
+          else
+            Question.destroy_by(repo: repo)
+            repo_commit.sha = dir.sha
+          end
+        else
+          Commit.create(sha: dir.sha, repo: repo)
+        end
+      end
+    end
+    addQuestions(client, repo, path)
   end
 
   def addQuestions(client, repo, path)
     contents = client.contents(repo, path: path)
-    session[:selected_repo] = repo
     contents.each do |file|
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-        if !Question.exists?(title: question_name, user_id: session[:current_user_id], repo: repo)
-          Question.create(title: question_name, user_id: session[:current_user_id], repo: repo)
-        end
+        Question.create(title: question_name, user_id: session[:current_user_id], repo: repo)
       end
       if file.type == 'dir'
         new_path = path + '/' + file.name
