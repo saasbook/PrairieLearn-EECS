@@ -1,13 +1,29 @@
 <html>
 <head>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
   <body>
-    <div>
-      <p> Choose a repository to synchronize: </p>
-      <%= form_with url: "/sync", method: :get do |form| %>
-        <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] } %>
-        <%= form.submit "Synchronize" %>
-      <% end %>
-    </div>
+    <nav>
+      <div class="nav-wrapper">
+        <div id="name">PrairieLearn Assessment Configuration File Generator</div>
+      </div>
+    </nav>
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+          <div class="col-6 mx-auto">
+              <div class="jumbotron">
+                <blockquote class="blockquote text-center align-middle">
+                  <h4>Choose a repository to synchronize:</h4><br>
+                  <%= form_with url: "/sync", method: :get do |form| %>
+                    <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] }, {class: "form-control"} %>
+                    <%= form.submit "Synchronize", :class => 'btn btn-primary' %>
+                  <% end %>
+                </blockquote>
+              </div>
+          </div>
+        </div>
+      </div>
+    <div class="footer"></div>
   </body>
 </html>
