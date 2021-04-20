@@ -19,3 +19,6 @@ script:
 - npm test
 - bundle exec rspec
 - bundle exec cucumber
+# Pipe the coverage data to Code Climate
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
