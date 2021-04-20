@@ -14,10 +14,10 @@
           <div class="col-6 mx-auto">
               <div class="jumbotron">
                 <blockquote class="blockquote text-center align-middle">
-                  <h4>Choose a repository to synchronize:</h4>
+                  <h4>Choose a repository to synchronize:</h4><br>
                   <%= form_with url: "/sync", method: :get do |form| %>
-                    <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] } %>
-                    <%= form.submit "Synchronize" %>
+                    <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] }, {class: "form-control"} %>
+                    <%= form.submit "Synchronize", :class => 'btn btn-primary' %>
                   <% end %>
                 </blockquote>
               </div>
