@@ -18,7 +18,7 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 ---
 
-## Table of Contents
+## Directory Structure (with short desc)
 
 ```bash
 .
