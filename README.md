@@ -18,7 +18,7 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 ---
 
-## Directory Structure (with short desc)
+## Directory Structure
 
 ```bash
 .
