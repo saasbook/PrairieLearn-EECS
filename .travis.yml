@@ -14,7 +14,8 @@ before_install:
 - chmod +x ./cc-test-reporter
 
 install:
-- bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle} 
+- bundle config set --local path 'vendor/bundle'
+- bundle install --without production
 - npm install                         # Install npm dependencies
 #- npm install karma-firefox-launcher codeclimate-test-reporter
 - gem install cucumber
