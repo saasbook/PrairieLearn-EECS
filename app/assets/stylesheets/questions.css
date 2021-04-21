@@ -48,7 +48,7 @@ nav {
 }
 
 .configs {
-  height: calc(100vh - 15rem);
+  height: calc(100vh - 18rem);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -73,13 +73,13 @@ input, select {
 
 .qcontainer {
   margin: 2%;
-  height: calc(100vh - 15rem);
+  height: calc(100vh - 18rem);
   overflow: auto;
 }
 
 .mcontainer {
   margin: 2%;
-  height: calc(100vh - 15rem);
+  height: calc(100vh - 18rem);
   overflow: auto;
 }
 
