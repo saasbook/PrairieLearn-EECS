@@ -20,39 +20,41 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 ## Table of Contents
 
+```bash
 .
 +-- app
-|	+-- models
+|	+-- models <Container for ActiveRecord Table>
 	|	+-- commit.rb
 	|	+-- question.rb
 	|	+-- user.rb
-|	+-- controllers
+|	+-- controllers <Actions and Functionality>
 	|	+-- login_controller.rb
 	|	+-- questions_controller.rb
 	|	+-- repo_controller.rb
 	|	+-- session_controller.rb
 	|	+-- user_controller.rb
-|	+-- views
+|	+-- views <Front-End HTML>
 	|	+-- content 
 		|	+-- new.html.erb
-	|	+-- login
+	|	+-- login <Login and Home/Root Page>
 		|	+-- home.html.erb
 		|	+-- login.html.erb
-	|	+-- questions
+	|	+-- questions <Create Assessment Page>
 		|	+-- index.html.erb
-	|	+-- repo
+	|	+-- repo <Choosing Repo Page>
 		|	+-- new.html.erb
 +-- config
-	|	+-- credentials.yml.enc
-	|	+-- routes.rb
+	|	+-- credentials.yml.enc <Encrypted GitHub OAuth Secret>
+	|	+-- routes.rb <Ruby Routes for Controllers and Views>
 +-- db
-	|	+-- migrate
-+-- features
-+-- spec
+	|	+-- migrate <Migration for Database>
++-- features <Cucumber Tests>
++-- spec <RSpec Tests>
 	|	+-- controllers
 	|	+-- models
-+-- Gemfile
++-- Gemfile <List of Required Gem Versions>
 +-- README.md
+```
 
 ---
 
