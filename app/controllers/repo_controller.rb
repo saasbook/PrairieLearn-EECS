@@ -20,7 +20,6 @@ class RepoController < ApplicationController
     @client = Octokit::Client.new(:access_token => User.find(session[:current_user_id]).token)
     @user = @client.user
     @user.login
-
     # Get the list of private repos
     @repos = @client.repos({}, query: {type: 'private', sort: 'full_name', per_page: 100})
   end
