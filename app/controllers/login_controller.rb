@@ -2,7 +2,8 @@
 class LoginController < ApplicationController
   before_action :already_logged_in, except: [:logout]
 
-  def login; end
+  # Commenting this out since it is not used. Delete later.
+  # def login; end
 
   def github
     create_session(:create_github_user)
@@ -20,6 +21,8 @@ class LoginController < ApplicationController
   end
 
   private
+
+  # All methods below could be simplified if no other provider will be added
 
   def create_session(create_if_not_exists)
     user_info = request.env['omniauth.auth']
@@ -42,7 +45,6 @@ class LoginController < ApplicationController
   end
 
   def create_github_user(user_info)
-    # Unfortunately, Github doesn't provide first_name, last_name as separate entries.
     User.create(
       uid: user_info['uid'],
       provider: User.providers[:github],

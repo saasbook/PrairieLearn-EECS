@@ -1,3 +1,4 @@
+# This file could be deleted
 # user controller
 class UserController < SessionController
   def profile
