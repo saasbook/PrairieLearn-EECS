@@ -40,6 +40,7 @@ class RepoController < ApplicationController
     # Check cache
     checkCommit(@client, @repo, path)
     session[:selected_repo] = @repo
+    User.find(session[:current_user_id]).update(repo: @repo)
     redirect_to root_path
   end
 
@@ -77,7 +78,7 @@ class RepoController < ApplicationController
       # If .JSON file is found, keep the path
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-        Question.create(title: question_name, user_id: session[:current_user_id], repo: repo)
+        Question.create(title: question_name, repo: repo)
       end
       # Recursively call the helper method if current file is a folder
       if file.type == 'dir'
