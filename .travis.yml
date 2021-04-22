@@ -8,14 +8,12 @@ env:
     CC_TEST_REPORTER_ID=b2c51ead32a5ba146275df79c6929633c193991d3e902ef1ecde39c80e3fd5a6
     
 before_install:
-- gem install bundler:2.1.4
 - nvm install
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
 
 install:
-- bundle config set --local path 'vendor/bundle'
-- bundle install --without production
+- bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}
 - npm install                         # Install npm dependencies
 #- npm install karma-firefox-launcher codeclimate-test-reporter
 - gem install cucumber
