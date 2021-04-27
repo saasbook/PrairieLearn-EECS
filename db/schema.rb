@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_112258) do
 
   create_table "questions", force: :cascade do |t|
     t.string "title"
-    t.string "user_id"
     t.string "repo"
   end
 
@@ -29,6 +28,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_112258) do
     t.string "username"
     t.string "provider"
     t.string "token"
+    t.string "repo"
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
 
