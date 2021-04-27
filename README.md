@@ -90,7 +90,7 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 - GitHub API calls are still not optimized (synchronizing repository could take a few minutes)
 - Repository caching is not optimized (when a new commit id is found, we drop all entries of questions from that selected repository and pull the new ones)
-- Add testing for current features 
+- Move JavaScript out of .erb files
 - Consider using AWS and modify API calls to use 'git pull' to create a traversable file directory instead of making API calls per folder
 
 ---
