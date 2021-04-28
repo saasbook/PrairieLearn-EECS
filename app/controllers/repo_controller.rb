@@ -60,7 +60,7 @@ class RepoController < ApplicationController
           else
             # If the commit is different, destroy record
             Question.destroy_by(repo: repo)
-            repo_commit.sha = dir.sha
+            repo_commit.update(sha: dir.sha)
           end
         else
           Commit.create(sha: dir.sha, repo: repo)
