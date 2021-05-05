@@ -14,6 +14,7 @@
 PrairieLearn is an online problem driven learning system for creating homeworks and tests capable of adding variations and randomness to questions. We created the assessment configuration interface where instructors could easily synchronize their questions repositories in github and drag-and-drop the selected questions to a new assessment. This application is still a work in progress but we have a working version available through the link below. PrairieLearn Assessment Configuration is a new project started in Spring 2021 by a group of 5 developers in UC Berkeley's CS 169L.
 
 For assessment configuration interface, go to https://prairielearn-eecs.herokuapp.com
+
 For more information regarding PrairieLearn, go to https://prairielearn.readthedocs.io/en/latest
 
 ---
@@ -89,7 +90,8 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 - GitHub API calls are still not optimized (synchronizing repository could take a few minutes)
 - Repository caching is not optimized (when a new commit id is found, we drop all entries of questions from that selected repository and pull the new ones)
-- Add testing for current features 
+- Move JavaScript out of .erb files
+- Consider using AWS and modify API calls to use 'git pull' to create a traversable file directory instead of making API calls per folder
 
 ---
 
@@ -106,5 +108,21 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 - Click 'Heroku Postgres' and go to settings
 - Click 'Reset Database...'
 - Then run `heroku run rake db:migrate`
+
+---
+
+## Design decision on synchronizing questions
+
+The application is making a single API calls for every directory in a repository. The initial path of the API call is to a 'questions' directory of a repository as defined by PrairieLearn documentations. For every file or folder inside 'questions', if the entry is a folder/ directory, the application will make an API call to traverse down that directory until it reaches the end, marked by a .JSON file and the file path is stored in our database. This is inefficient since it is doing a Depth First Search but we are traversing all of the branches; concurrency is difficult to implement. For the future, this could be improved by making concurrent API calls or by using 'git  pull' to build a file directory within the database. After some research, PostgreSQL does not allow this, so try looking into AWS. For more information, email the contributors.
+
+---
+
+## Contributors
+
+- David Oh (klutzx92@berkeley.edu)
+- Faiz Shamji (fshamji@berkeley.edu)
+- Haolin Zhu (haolinz@berkeley.edu)
+- Sanwu Luo (sanwuluo35@berkeley.edu)
+- Timotius Vincent (timotiusvincent@berkeley.edu)
 
 ---
