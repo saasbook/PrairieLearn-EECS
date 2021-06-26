@@ -10,12 +10,12 @@ cache:
 env:
   global:
     CC_TEST_REPORTER_ID=b2c51ead32a5ba146275df79c6929633c193991d3e902ef1ecde39c80e3fd5a6
-  secure: "P4hrjc/4ieNkFk7kMztClFN37uCtF0Ywyk4iHvh3alXlQunDcMSLi/ZhfwiWKOyWPSYp3oG2yi9vltkLaFKTizJM6j2eIe4GLEt03H5zXKqeXmd/Rype1VPExTTA6waBRB+ccmqgUkOM6Y6sD1yTr4wQFs+hPOTZRzoZGUHyGGS4jnaAdixs9GWuQ4wNT9PPDucGWeOL5fN95z5uu3I0kgexFm73lM6R+R1JnGPuUXXy3XhxeuViiz89Wpgr9PSJM3EDPC/pbQe4Wg3v9b2A+cmKjl5P49Y65loTeGCIJC8xw9eo2mfbJirZO9Wf4c64Io4w3OvNirMdn2io8MT5wXxa8+Lwt0GdzToVWpWUbjMGbhXz/od4yW4saDdcR9QBp2sRrNXGXQsc461+oGhyFs4aS5ulUfTNIE8sy43tUkakGJcSc+xNecgaMImXBWShhIG54OZORYff01SP1JNVWEGADLJqF2mvdStOwycxjrHKu0Ra3oVFsR1h9fZt/kzD5RZyfVbUx9pS8sdpl/B6cXxqeG+GuUebvYUt/8r8pNukI8HEmEbtXP8qWQ2UZOyE9SdwUBPfOXWP6h3jrvtTmZgtUSocp8BlyolfgbNwPSdA/DPRQKDBzOF4hUJfBnEJE8Vx1I/noQ8IyVzYfiFMvPKH/T1aOrXmlP4ELFykNq8="
-
+  secure: "VEIhxOM8tdz/xtKH0mqUY5JroABa6KSYg5HT19KPoT+MROqeaCXIctnlIKQEd76GucKceAn6KG2KCAm43PtDkOLzlqinsx6HTGWdpjqBVQo1xELW9267lMwxU6iz7P6a3gDaLb6R3ZcuLbx5iE0Yjq/6NipVGTaeYrQ5v3viMSIjF6LxoU8Emg/ougAy3J0Wzdnmx+JXoYnatpdatTYEqMbXenwf4qAkvUDpQvDGOB0nAVFpZhqtCnadmaHz+KFLIyjhDwwMYvSVgwRq5PYVSUbxCtgUXfINIqh+nILtn649jaAjsaAlB5zQJWG0103Zp0FF3GFr2MyNCgKykJxQE46F70W5n+Tjj678LJQ0Qaob0UTX7qwz8DqpIi519/2Yz+P1IFBr5cffho6K5fITGDih4RoD4qYDqVl8M0wxPU0F01HLmGtL07y/XSJ7lTNJVCYDA8u/7VZVAxwHLrK546/uHF8fNMu8SKL3Rt/SwhRRvclsPhzdGC/5Xw+r/LTYWTtObxh9sVTYKEoezJTZliLFHblA6Iejs0u9yiSemlpdY3vKY2/k24ybir1i3sS42TKykGP75rk/0txH2sEgEL9No53eKlRQ3WqqyOgMQsKM3R9aTM6011dWt4OvqeXPSho8d1BylfZIlu5ulF0HaVP3Eq/ZBl6MhPNhbKVIMFM="
     
 before_install:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+  - echo "$RAILS_MASTER_KEY" > config/master.key
 
 install:
   - bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}  # Install ruby gems, excluding production only gems such as unicorn (already present by default in Travis)
