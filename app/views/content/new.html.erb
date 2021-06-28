@@ -1,0 +1,15 @@
+<html>
+  <body>
+    <div>
+      <%= 'All repos' %>
+      <br>
+      <p> Choose a repository to synchronize: </p>
+      <form>
+        <select name = 'repository'>
+          <%= select_tag 'repo_id', options_for_select(repos.map {|repo| [repo.full_name, repo.full_name]}) %>
+          
+        </select>
+      </form>
+    </div>
+  </body>
+</html>

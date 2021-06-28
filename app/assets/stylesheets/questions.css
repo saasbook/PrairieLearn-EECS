@@ -1,0 +1,114 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  width: 100%;
+  background: #62BFED;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+#name {
+  margin-left: 2%;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+}
+
+.qcol {
+  margin-top: 2%;
+  float: right;
+}
+
+.leftcol {
+  width: 30%;
+  height: auto;
+  position: absolute;
+}
+
+.leftcol p, .middlecol p, .rightcol p {
+  text-align: center;
+
+}
+
+.middlecol {
+  width: 40%;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.rightcol {
+  width: 30%;
+  height: auto;
+
+}
+
+.configs {
+  height: calc(100vh - 17rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 160%;
+}
+
+.question_title {
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select {
+  padding: 8px 25px;
+  margin: 8px 0;
+}
+
+.leftcoltxt {
+  margin-left: 5%;
+}
+
+.qcontainer {
+  margin: 2%;
+  height: calc(100vh - 17rem);
+  overflow: auto;
+}
+
+.mcontainer {
+  margin: 2%;
+  height: calc(100vh - 17rem);
+  overflow: auto;
+}
+
+.draggable {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.draggable-text {
+  font-size: medium;
+}
+
+.footer {
+  position: fixed;
+  padding: 20px;
+  height: 5rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #62BFED;
+  color: white;
+  text-align: right;
+}
+
+#questions-page {
+  padding-bottom: 5rem;
+}
+
+.pts-txt {
+  float: right;
+  margin-right: 1rem;
+}

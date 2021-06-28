@@ -1,0 +1,12 @@
+.container {
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translateY(-50%);
+    transform: translateX(-50%);
+}
+
+.nav-wrapper {
+    padding: 5px;
+    font-size: 25px;
+}
