@@ -49,7 +49,6 @@ group :test do
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels' # basic imperative step defs like "Then I should see..."
   gem 'database_cleaner' # required by Cucumber
-  gem 'simplecov', require: false
 end
 
 # make sure the following gems are in your production group:
@@ -64,3 +63,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "omniauth-github"
 
 gem "active_type", "= 1.3.2"
+
+gem 'faraday-retry'
