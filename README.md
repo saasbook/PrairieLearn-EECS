@@ -12,6 +12,7 @@
 <a href="https://app.travis-ci.com/github/cs169/PrairieLearn-EECS"><img src= "https://api.travis-ci.com/cs169/PrairieLearn-EECS.svg?branch=credential"/></a>
 <a href="https://codeclimate.com/github/cs169/PrairieLearn-EECS/maintainability"><img src="https://api.codeclimate.com/v1/badges/6a868e48c3002435fe99/maintainability" /></a>
 <a href="https://codeclimate.com/github/cs169/PrairieLearn-EECS/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6a868e48c3002435fe99/test_coverage" /></a>
+![build](https://github.com/cs169/PrairieLearn-EECS/actions/workflows/main.yml/badge.svg)
 ---
 
 ## Description
