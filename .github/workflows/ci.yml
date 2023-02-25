@@ -6,13 +6,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      CCTR: ./cc-test-reporter
+      CCTR_ID: "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
+      BUNDLE_WITHOUT: production
+      #KEY: "c056e90b8efa7536c11ed963bfcfec12"
+
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install Ruby 3.0.0
+    - name: Install Ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: 3.0.0
+        bundler-cache: true
 
     - name: Set up Code Climate test-reporter
       run: |
@@ -39,5 +46,5 @@ jobs:
       run: |
         export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
         ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
-        ./cc-test-reporter upload-coverage --id ${{ secrets.CODE_CLIMATE_ID }}
-        ./cc-test-reporter after-build --id ${{ secrets.CODE_CLIMATE_ID }}
+        ./cc-test-reporter upload-coverage --id "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
+        ./cc-test-reporter after-build --id "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
