@@ -26,9 +26,7 @@ jobs:
     - name: Install Dependencies
       run: bundle install
     - name: Set up test database
-      run: |
-        bundle exec rake db:setup
-        bundle exec rake db:migrate  
+      run: bundle exec rake db:setup 
     - name: run Cucumber tests and capture coverage
       run: |
         bundle exec cucumber
