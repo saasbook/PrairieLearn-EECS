@@ -28,7 +28,7 @@ jobs:
     - name: Set up test database
       run: |
         bundle exec rake db:setup
-        bundle exec rake db:create db:migrate     
+        bundle exec rake db:migrate  
     - name: run Cucumber tests and capture coverage
       run: |
         bundle exec cucumber
