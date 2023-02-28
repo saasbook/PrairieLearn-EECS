@@ -20,6 +20,8 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'omniauth'
+gem "omniauth-github"
+gem "omniauth-rails_csrf_protection"
 gem 'octokit', '~> 4.0' 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -62,7 +64,6 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "omniauth-github"
 
 gem "active_type", "= 1.3.2"
 

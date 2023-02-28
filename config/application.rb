@@ -15,7 +15,6 @@ require "action_cable/engine"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
-require "omniauth"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -37,8 +36,5 @@ module PrairieLearn
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.middleware.use OmniAuth::Builder do
-      provider :github, Rails.application.credentials.github[:github_client_id], Rails.application.credentials.github[:github_client_secret], scope: "read:org,read:repo_hook,repo,user", :provider_ignores_state => true
-    end
   end
 end
