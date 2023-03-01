@@ -25,6 +25,7 @@ class LoginController < ApplicationController
   # All methods below could be simplified if no other provider will be added
 
   def create_session(create_if_not_exists)
+    debugger
     user_info = request.env['omniauth.auth']
     user = find_or_create_user(user_info, create_if_not_exists)
     session[:current_user_id] = user.id
