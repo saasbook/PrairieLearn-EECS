@@ -6,13 +6,31 @@ project:
     pivotal:
       url: 'https://www.pivotaltracker.com/n/projects/2487654'
     heroku:
-      url: 'https://prairielearn-eecs.herokuapp.com/'
+      url: 'https://sp23-01-pl-assessments.herokuapp.com/'
     travis:
       url: 'https://travis-ci.com/github/fshamji/PrairieLearn-EECS/builds'
   members:
     member1:
-      name: 'Faiz'
-      surname: 'Shamji' 
-      githubUsername: 'fshamji'
-      pivotalUsername: 'fshamji'
-      herokuEmail: 'fshamji@berkeley.edu'
+      name: 'Chithra'
+      surname: 'Anand' 
+      githubUsername: 'chithrarajan'
+      pivotalUsername: 'Chithrarajan'
+      herokuEmail: 'chithra.rajan@berkeley.edu'
+    member2:
+      name: 'Yuhan'
+      surname: 'Dong' 
+      githubUsername: 'KCsama'
+      pivotalUsername: 'amydong'
+      herokuEmail: 'ydong19@berkeley.edu'    
+    member3:
+      name: 'Fernanda'
+      surname: 'Pisconte' 
+      githubUsername: 'fp456'
+      pivotalUsername: 'fernandapisconte'
+      herokuEmail: 'fpisconte@berkeley.edu'    
+    member4:
+      name: 'Guobin'
+      surname: 'a544266477' 
+      githubUsername: 'KCsama'
+      pivotalUsername: 'a544266477'
+      herokuEmail: 'a544266477@berkeley.edu'
