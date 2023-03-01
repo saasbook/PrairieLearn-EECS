@@ -68,7 +68,7 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 
 - Go to https://prairielearn-eecs.herokuapp.com
 - Login to GitHub via 3rd party authentication
-- Select a repository you would like to synchronize from the list and click 'Synchronize'; This might take a couple minutes so sit back and relax
+- Select a repository you would like to synchronize from the list (only private repositories will show up). Also, make sure there is a directory called 'questions' in your repo that contains all of the questions subdirectories. Then click 'Synchronize'; This might take a couple minutes so sit back and relax
 - Configure your assessment via the column on the right with all its metadata
 - Drag-and-drop questions from the left column to the middle column and set the points for each questions.
 - Click 'Export' to download your JSON file
