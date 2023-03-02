@@ -20,6 +20,8 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'omniauth'
+gem "omniauth-github"
+gem "omniauth-rails_csrf_protection"
 gem 'octokit', '~> 4.0' 
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -50,7 +52,6 @@ group :test do
   gem 'cucumber-rails-training-wheels' # basic imperative step defs like "Then I should see..."
   gem 'database_cleaner' # required by Cucumber
   gem 'codeclimate-test-reporter', require: false
-
 end
 
 # make sure the following gems are in your production group:
@@ -62,7 +63,6 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "omniauth-github"
 
 gem "active_type", "= 1.3.2"
 
