@@ -25,13 +25,17 @@
                 <blockquote class="blockquote text-center align-middle">
                   <h4>Welcome!</h4>
                   <h5>To start creating a new assessment, please login.</h5><br>
-                  <%= link_to 'Login to Github', :github_login, :class => 'btn btn-primary' %>
+                  <%= form_tag('/auth/developer', method: 'post', data: {turbo: false}) do %>
+                    <button type='submit'>Login with Developer</button>
+                  <% end %>
+                  <%= form_tag('/auth/github', method: 'post', data: {turbo: false}) do %>
+                    <button type='submit'>Login with Github</button>
+                  <% end %>
                 </blockquote>
               </div>
           </div>
         </div>
       </div>
-
     <div class="footer"></div>
   </body>
 </html>
