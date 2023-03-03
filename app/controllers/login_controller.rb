@@ -2,9 +2,6 @@
 class LoginController < ApplicationController
   before_action :already_logged_in, except: [:logout]
 
-  # Commenting this out since it is not used. Delete later.
-  # def login; end
-
   def github
     create_session(:create_github_user)
   end
