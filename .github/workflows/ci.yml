@@ -40,6 +40,7 @@ jobs:
     - name: Publish code coverage
       run: |
         export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+        export CC_TEST_REPORTER_ID="${{ secrets.CODE_CLIMATE_ID }}"
         ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
-        ./cc-test-reporter upload-coverage --id "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
-        ./cc-test-reporter after-build --id "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
+        ./cc-test-reporter upload-coverage --id "${CC_TEST_REPORTER_ID}"
+        ./cc-test-reporter after-build --id "${CC_TEST_REPORTER_ID}"
