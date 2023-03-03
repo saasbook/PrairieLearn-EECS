@@ -1,8 +1,9 @@
 ENV['CC_TEST_REPORTER_ID'] = "b27ddaa3e2284dc734d6b075bbf977e87c08861108dc5434a64c992c514bd43b"
-require "simplecov_json_formatter"
-SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
 require 'simplecov'
+require 'simplecov_json_formatter'
+SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
 SimpleCov.start
+
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
