@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get '/user/profile', to: 'questions#index', as: :user_profile
   get '/repo', to: 'repo#new', as: 'repo'
   get '/sync', to: 'repo#sync', as: 'sync'
+  get 'products/search', to: 'questions#search'
 end
