@@ -37,7 +37,7 @@ class LoginController < ApplicationController
       uid: user_info['uid']
     )
     if user_info['credentials']['token'] != user.token
-      user.token = user_info['credentials']['token']
+      user.update(token: user_info['credentials']['token'])
     end
     return user unless user.nil?
 
