@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :questions
+  #resources :questions
   root to: 'login#home', as: 'root'
 
   get '/home' => 'login#home', :as => :home
@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   get '/user/profile', to: 'questions#index', as: :user_profile
   get '/repo', to: 'repo#new', as: 'repo'
   get '/sync', to: 'repo#sync', as: 'sync'
+  get 'questions/search', to: 'questions#search', as: 'search_questions'
 end
