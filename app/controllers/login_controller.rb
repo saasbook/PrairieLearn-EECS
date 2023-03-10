@@ -36,9 +36,6 @@ class LoginController < ApplicationController
       provider: User.providers[provider_sym],
       uid: user_info['uid']
     )
-    if user_info['credentials']['token'] != user.token
-      user.update(token: user_info['credentials']['token'])
-    end
     return user unless user.nil?
 
     send(create_if_not_exists, user_info)
