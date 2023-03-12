@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   get '/repo', to: 'repo#new', as: 'repo'
   get '/sync', to: 'repo#sync', as: 'sync'
   get 'questions/search', to: 'questions#search', as: 'search_questions'
+  post '/questions/choose', to: 'questions#choose'
 end
