@@ -106,17 +106,33 @@
     <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
       <div class="mcontainer">
+      <div class='question_title'><% @selected_questions.each do |question| %>
+        <tr>
+          <p class="list-group-item draggable-question draggable-text" draggable="true">
+            <td><%= question.title %></td>
+            <span class="close" onclick="hideQuestion('<%= question.title %>');">&times;</span>
+            <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" placeholder="0" size=4>
+            <label for="form-control" class="pts-txt">Pts</label>
+
+          </p>
+        </tr>
+      <% end %></div>
       </div>
     </div>
 
     <div class="qcol leftcol">
       <p>Questions</p>
       <div class="qcontainer">
+
    
       <%= form_tag search_questions_path, method: :get do %>
         <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
         <%= submit_tag "Search" %>
       <% end %>
+
+      <% if @empty_search == true %>
+                <h6 class="question_title"> No results found. </h6>
+             <% end %>
 
         <div class='question_title'><% @questions.each do |question| %>
           <tr>
@@ -124,8 +140,8 @@
               <td><%= question.title %></td>
               <span class="close" style="display:none">&times;</span>
 
-              <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" placeholder="0" size=4>
-              <label for="form-control" class="pts-txt">Pts</label>
+              <input style="display:none" class="form-control col-md-2 mb-1" type="text" name="assessment_credit" placeholder="0" size=4>
+              <label style="display:none" class="pts-txt">Pts</label>
 
             </p>
           </tr>
@@ -221,6 +237,26 @@
     </div>
 
     <script>
+
+    function hideQuestion(title_text) {
+      $.ajax({
+          url: '/questions/choose',
+          type: 'POST',
+          data: {
+            selected: false,
+            title: title_text
+          },
+          success: function(response) {
+            console.log('Element removed from list successfully!');
+          },
+          error: function() {
+            console.log('Error removed from element.');
+          }
+        });
+    }
+
+    //just CSS to STYLE
+
     $(".draggable-question").css('text-align','left').draggable({
       helper: "clone",
       connectToSortable: ".mcontainer",
@@ -240,14 +276,47 @@
         points.style.float = "right";
         points.style.marginTop = "-1.5%";
         points.style.marginRight = "2.5%";
+        var title_text = ui.draggable[0].innerText.split('\n')[0];
+
         var close = item.find("span");
         close.click(function() {
-          item.remove();
+          $.ajax({
+          url: '/questions/choose',
+          type: 'POST',
+          data: {
+            selected: false,
+            title: title_text
+          },
+          success: function(response) {
+            console.log('Element removed from list successfully!');
+          },
+          error: function() {
+            console.log('Error removing element.');
+          }
+        });
+          //item.remove();
+        });
+
+        $.ajax({
+          url: '/questions/choose',
+          type: 'POST',
+          data: {
+            selected: true,
+            title: title_text
+          },
+          success: function(response) {
+            console.log('Element added to list successfully!');
+          },
+          error: function() {
+            console.log('Error adding element.');
+          }
         });
       }
     }).sortable({
       revert: false
     });
+
+    //just CSS
 
     const draggables = document.querySelectorAll('.draggable-question')
     for (let i = 0; i < draggables.length; i ++) {
