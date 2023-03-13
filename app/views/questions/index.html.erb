@@ -111,6 +111,12 @@
 
     <div class="qcol leftcol">
       <p>Questions</p>
+      
+      <%= form_tag search_questions_path, method: :post do %>
+        <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
+        <%= submit_tag "Search" %>
+      <% end %>
+
       <div class="qcontainer">
         <div class='question_title'><% @questions.each do |question| %>
           <tr>

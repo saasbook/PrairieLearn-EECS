@@ -10,4 +10,10 @@ class QuestionsController < ApplicationController
 			@questions = Question.where(repo: "0")
 		end
 	end
+
+	def search
+		@search_terms = params[:search]
+		@questions = Question.where("title LIKE ?", "%#{@search_terms}%")
+		render "/questions/index"
+	end
 end
