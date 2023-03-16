@@ -329,6 +329,13 @@
         points.style.marginRight = "2.5%";
         var title_text = ui.draggable[0].innerText.split('\n')[0];
 
+        // show the hidden input field
+        var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
+        inputField.removeAttribute("hidden");
+        // Show hidden pts elements
+        $(points).next().show();
+
+
         var close = item.find("span");
         close.click(function() {
           $.ajax({
@@ -345,7 +352,7 @@
             console.log('Error removing element.');
           }
         });
-          //item.remove();
+          item.remove();
         });
 
         $.ajax({
