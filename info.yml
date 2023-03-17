@@ -1,10 +1,10 @@
 project:
   name: 'prairielearn-eecs'
   owner: 'CS169L-23'
-  teamId: '02'
+  teamId: '01'
   identities:
     pivotal: 'https://www.pivotaltracker.com/n/projects/2487654'
-    heroku: 'https://sp23-01-pl-assessments.herokuapp.com/'
+    heroku: 'https://sp23-01-pl-assessments.herokuapp.com'
   members:
     member1:
       name: 'Chithra'
