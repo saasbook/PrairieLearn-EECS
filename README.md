@@ -13,6 +13,7 @@
 <a href="https://codeclimate.com/github/cs169/PrairieLearn-EECS/test_coverage"><img src="https://api.codeclimate.com/v1/badges/6a868e48c3002435fe99/test_coverage" /></a>
 ![build](https://github.com/cs169/PrairieLearn-EECS/actions/workflows/ci.yml/badge.svg)
 <a href="https://www.pivotaltracker.com/n/projects/2487654"><img src="https://github.com/fshamji/PrairieLearn-EECS/blob/main/pivotal_tracker_logo.png" /></a>
+[![Bluejay Dashboard](https://img.shields.io/badge/Bluejay-Dashboard_01-blue.svg)](http://dashboard.bluejay.governify.io/dashboard/script/dashboardLoader.js?dashboardURL=https://reporter.bluejay.governify.io/api/v4/dashboards/tpa-CS169L-23-GH-cs169_PrairieLearn-EECS/main)
 ---
 
 ## Description
