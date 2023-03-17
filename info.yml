@@ -3,8 +3,10 @@ project:
   owner: 'CS169L-23'
   teamId: '01'
   identities:
-    pivotal: 'https://www.pivotaltracker.com/n/projects/2487654'
-    heroku: 'https://sp23-01-pl-assessments.herokuapp.com/home'
+    pivotal: 
+      url: 'https://www.pivotaltracker.com/n/projects/2487654'
+    heroku: 
+      url: 'https://sp23-01-pl-assessments.herokuapp.com/home'
   members:
     member1:
       name: 'Chithra'
