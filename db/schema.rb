@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2023_03_12_010406) do
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.string "repo"
-    t.boolean "selected"
+    t.integer "selected"
   end
 
   create_table "users", force: :cascade do |t|
