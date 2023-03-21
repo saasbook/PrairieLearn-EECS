@@ -140,7 +140,7 @@
               <td><%= question.title %></td>
               <span class="close" style="display:none">&times;</span>
 
-              <input style="display:none" class="form-control col-md-2 mb-1" type="text" name="assessment_credit" placeholder="0" size=4>
+              <input hidden class="form-control col-md-2 mb-1" type="text" name="assessment_credit" placeholder="0" size=4>
               <label style="display:none" class="pts-txt">Pts</label>
 
             </p>
@@ -278,6 +278,13 @@
         points.style.marginRight = "2.5%";
         var title_text = ui.draggable[0].innerText.split('\n')[0];
 
+
+        // show the hidden input field
+        var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
+        inputField.removeAttribute("hidden");
+        // Show hidden form elements
+        $(points).next().show();
+        
         var close = item.find("span");
         close.click(function() {
           $.ajax({
@@ -296,7 +303,7 @@
         });
           //item.remove();
         });
-
+        
         $.ajax({
           url: '/questions/choose',
           type: 'POST',
