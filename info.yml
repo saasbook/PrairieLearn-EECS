@@ -1,14 +1,10 @@
 project:
-  name: 'prairielearn-eecs'
-  owner: 'cs169'
-  teamId: '9'
+  name: 'PrairieLearn-EECS'
+  owner: 'CS169L-23'
+  teamId: '01'
   identities:
-    pivotal:
-      url: 'https://www.pivotaltracker.com/n/projects/2487654'
-    heroku:
-      url: 'https://sp23-01-pl-assessments.herokuapp.com/'
-    travis:
-      url: 'https://travis-ci.com/github/fshamji/PrairieLearn-EECS/builds'
+    pivotal: 'https://www.pivotaltracker.com/n/projects/2487654'
+    heroku: 'https://sp23-01-pl-assessments.herokuapp.com/home'
   members:
     member1:
       name: 'Chithra'

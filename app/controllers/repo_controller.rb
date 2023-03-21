@@ -78,7 +78,7 @@ class RepoController < ApplicationController
       # If .JSON file is found, keep the path
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-        Question.create(title: question_name, repo: repo, selected: 0)
+        Question.create(title: question_name, repo: repo, selected: false)
       end
       # Recursively call the helper method if current file is a folder
       if file.type == 'dir'
