@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
 
 	def search
 		@search_terms = params[:search]
-		@questions = Question.where("title LIKE ?", "%#{@search_terms}%").where("selected LIKE ?",false)
+		@questions = Question.where("title LIKE ?", "%#{@search_terms}%").where(selected: 0)
 		@selected_questions = Question.where(repo: session[:selected_repo], selected: 1)
 
 		if @questions.empty?
