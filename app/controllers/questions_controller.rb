@@ -4,8 +4,8 @@ class QuestionsController < ApplicationController
 		if session[:current_user_id].present? and session[:selected_repo].present?
 			current_user = User.find(session[:current_user_id])
 			if current_user != nil and current_user.repo == session[:selected_repo]
-				@questions = Question.where(repo: session[:selected_repo], selected: false)
-				@selected_questions = Question.where(repo: session[:selected_repo], selected: true)
+				@questions = Question.where(repo: session[:selected_repo], selected: 0)
+				@selected_questions = Question.where(repo: session[:selected_repo], selected: 1)
 			end
 		else
 			@questions = Question.where(repo: "0")
@@ -15,11 +15,11 @@ class QuestionsController < ApplicationController
 	def search
 		@search_terms = params[:search]
 		@questions = Question.where("title LIKE ?", "%#{@search_terms}%").where("selected LIKE ?",false)
-		@selected_questions = Question.where(repo: session[:selected_repo], selected: true)
+		@selected_questions = Question.where(repo: session[:selected_repo], selected: 1)
 
 		if @questions.empty?
 			@empty_search = true
-			@questions = Question.where(repo: session[:selected_repo], selected: false)
+			@questions = Question.where(repo: session[:selected_repo], selected: 0)
 		else
 			@empty_search = false
 		end
