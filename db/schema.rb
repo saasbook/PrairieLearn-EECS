@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_112258) do
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.string "repo"
+    t.integer "selected"
   end
 
   create_table "users", force: :cascade do |t|
