@@ -78,7 +78,17 @@ class RepoController < ApplicationController
       # If .JSON file is found, keep the path
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-        Question.create(title: question_name, repo: repo)
+
+        require 'json'
+        path_str = path+"/info.json"
+        path_str = 
+        contentsJsonInfobase64 = client.contents(repo, path: path_str)
+        require "base64"
+        decode_base64_content = Base64.decode64(contentsJsonInfobase64) 
+        json_info = JSON.parse(decode_base64_content)
+        descriptive_title = json_info["title"]
+
+        Question.create(title: question_name, descriptive_title: descriptive_title, repo: repo, selected: 0)
       end
       # Recursively call the helper method if current file is a folder
       if file.type == 'dir'
