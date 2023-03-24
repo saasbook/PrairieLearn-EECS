@@ -213,14 +213,23 @@
                 }
               }
 
-              const midQuestions = document.getElementsByClassName("mcontainer")[0].querySelectorAll('.draggable-question')
-              for (let i = 0; i < midQuestions.length; i ++) {
-                if ('zones' in jsonData){
-                  jsonData.zones.push({questions:[{id:midQuestions[i].innerText.slice(0, -2), points:new Number(midQuestions[i].getElementsByClassName("form-control")[0].value)}]})
-                } else {
-                  jsonData.zones = [{questions:[{id:midQuestions[i].innerText.slice(0, -2), points:new Number(midQuestions[i].getElementsByClassName("form-control")[0].value)}]}]
+              jsonData.zones = []
+              const midZones = document.getElementsByClassName("zone")
+              for (let i = 0; i < midZones.length; i++) {
+                jsonData.zones.push({
+                  title: midZones[i].querySelector("#zone_title").value,
+                  comment: midZones[i].querySelector("#zone_comment").value,
+                  questions: []
+                });
+                const midQuestions = midZones[i].querySelectorAll('.draggable-question')
+                for (let j = 0; j < midQuestions.length; j++) {
+                  jsonData.zones[i].questions.push({
+                    id: midQuestions[j].innerText.slice(0, -2),
+                    points: new Number(midQuestions[j].querySelector(".form-control").value)
+                  })
                 }
               }
+
               var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, '\t'));
               var dlAnchorElem = document.getElementById('downloadAnchorElem');
               dlAnchorElem.setAttribute("href",     dataStr     );
