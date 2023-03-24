@@ -1,0 +1,110 @@
+<div class="text-right">
+  <button class="btn" type="button" id="add_zones">+ Zone</button>
+</div>
+
+<div class="sqcontainer">
+    <hr>
+    <div class="zone">
+        <div class="form-row">
+            <div class="col-md-auto mb-3">
+                <label class='question_title'>Title:</label>
+            </div>
+            <div class="col-md-3 mb-3">
+                <input class="form-control" type="text" id="zone_title" size=1>
+            </div>
+            <div class="col-md-auto mb-3">
+                <label class='question_title'>Comment:</label>
+            </div>
+            <div class="col-md-5 mb-3">
+                <input class="form-control" type="text" id="zone_comment" size=1>
+            </div>
+            <div class="col-md-1 mb-3">
+                <span class="close" id="delete_zone">&times;</span>
+            </div>
+        </div>
+        <div class="mcontainer"></div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<script>
+function makeDroppableAndSortable(container) {
+    $(container).droppable({
+        accept: ".draggable-question",
+        drop: function(event, ui) {
+            var item = $(ui.draggable);
+            item.width($(this).width()-40);
+            item.find("span").css('display','block');
+            var points = item[0].getElementsByClassName("form-control")[0];
+            item[0].style.height = "auto";
+            item[0].style.width = document.body.querySelectorAll(".mcontainer")[0].offsetWidth;
+            points.style.display = "inline";
+            points.style.float = "right";
+            points.style.marginTop = "-1.5%";
+            points.style.marginRight = "2.5%";
+            var close = item.find("span");
+            close.click(function() {
+                item.remove();
+            });
+            
+            // show the hidden input field
+            var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
+            inputField.removeAttribute("hidden");
+            // Show hidden form elements
+            $(points).next().show();
+        }
+    }).sortable({
+        revert: false
+    });
+}
+
+$(document).ready(function() {
+    // Make all existing containers droppable and sortable
+    $('.mcontainer').each(function() {
+        makeDroppableAndSortable(this);
+    });
+
+    // Add a new zone on click of + Zone button
+    $('#add_zones').click(function() {
+        // Get the last .zone element
+        var lastZone = document.querySelector('.zone:last-of-type');
+
+        // Clone the last .zone element
+        var newZone = lastZone.cloneNode(true);
+
+        // Clear mcontainer in new zone
+        newZone.querySelector('.mcontainer').innerHTML = '';
+
+        // Clear input fields in new zone
+        newZone.querySelectorAll('input').forEach(function(input) {
+            input.value = '';
+        });
+
+        // Add after last <div class='zone'>
+        lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+
+        // Make the new zone droppable and sortable
+        makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+    });
+
+    // Remove zone on close button click
+    $(document).on('click', '.zone .close', function() {
+        var count = $('.zone').length;
+        if (count > 1)
+            $(this).closest(".zone").remove();
+        else {
+            // Get the last .zone element
+            var lastZone = document.querySelector('.zone:last-of-type');
+    
+            // Clear mcontainer in lastzone
+            lastZone.querySelector('.mcontainer').innerHTML = '';
+    
+            // Clear input fields in lastzone
+            lastZone.querySelectorAll('input').forEach(function(input) {
+                input.value = '';
+            });
+        }
+    });
+});
+</script>

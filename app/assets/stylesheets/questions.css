@@ -112,3 +112,19 @@ input, select {
   float: right;
   margin-right: 1rem;
 }
+
+.zone {
+  display: flex;
+  height: 200px; 
+  flex-direction: column;
+  margin: 2%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sqcontainer {
+  margin: 2%;
+  height: calc(100vh - 17rem);
+  overflow: auto;
+}
+
