@@ -105,8 +105,7 @@
 
     <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
-      <div class="mcontainer">
-      </div>
+      <%= render 'selected_questions' %>
     </div>
 
     <div class="qcol leftcol">
@@ -116,9 +115,8 @@
         <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
         <%= submit_tag "Search" %>
       <% end %>
-      <div class="qcontainer">
-        <%= render 'search_questions' %>  
-      </div>
+      
+      <%= render 'search_questions' %>  
 
       <script>
         $(document).on('submit', 'form', function(event) {
@@ -130,40 +128,11 @@
             data: { search: searchValue },
             success: function(response) {
               $('.qcontainer').html(response);
-              $(".draggable-question").css('text-align','left').draggable({
-                  helper: "clone",
-                  connectToSortable: ".mcontainer",
-                  revert: "invalid"
+              $('.qcontainer .draggable-question').css('text-align','left').draggable({
+                helper: "clone",
+                connectToSortable: ".mcontainer",
+                revert: "invalid"
               });
-
-              $(".mcontainer").droppable({
-                  accept: ".draggable-question",
-                  drop: function(event,ui){
-                  var item = $(ui.draggable);
-                  item.width($(this).width()-40);
-                  item.find("span").css('display','block');
-                  var points = item[0].getElementsByClassName("form-control")[0];
-                  item[0].style.height = "auto";
-                  item[0].style.width = document.body.querySelectorAll(".mcontainer")[0].offsetWidth;
-                  points.style.display = "inline";
-                  points.style.float = "right";
-                  points.style.marginTop = "-1.5%";
-                  points.style.marginRight = "2.5%";
-                  var close = item.find("span");
-                  close.click(function() {
-                      item.remove();
-                  });
-
-                  // show the hidden input field
-                  var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
-                  inputField.removeAttribute("hidden");
-                  // Show hidden form elements
-                  $(points).next().show();
-                  }
-              }).sortable({
-                  revert: false
-              });
-
               const draggables = document.querySelectorAll('.draggable-question')
               for (let i = 0; i < draggables.length; i ++) {
                   const draggable = draggables[i];

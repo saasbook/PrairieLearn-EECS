@@ -18,6 +18,5 @@ class QuestionsController < ApplicationController
 		respond_to do |format|
 			format.html { render partial: 'search_questions' }
 		end
-		#render 'questions/index'
 	end
 end
