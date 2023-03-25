@@ -105,26 +105,46 @@
 
     <div class="qcol middlecol">
       <p class="test">Selected Questions</p>
-      <div class="mcontainer">
-      </div>
+      <%= render 'selected_questions' %>
     </div>
 
     <div class="qcol leftcol">
       <p>Questions</p>
-      <div class="qcontainer">
-        <div class='question_title'><% @questions.each do |question| %>
-          <tr>
-            <p class="list-group-item draggable-question draggable-text" draggable="true">
-              <td><%= question.title %></td>
-              <span class="close" style="display:none">&times;</span>
+      
+      <%= form_tag search_questions_path, method: :post do %>
+        <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
+        <%= submit_tag "Search" %>
+      <% end %>
+      
+      <%= render 'search_questions' %>  
 
-              <input class="form-control col-md-2 mb-1" display="inline" type="text" name="assessment_credit" placeholder="0" size=4>
-              <label for="form-control" class="pts-txt">Pts</label>
-
-            </p>
-          </tr>
-        <% end %></div>
-      </div>
+      <script>
+        $(document).on('submit', 'form', function(event) {
+          event.preventDefault();
+          var searchValue = $('input[name="search"]').val();
+          $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            data: { search: searchValue },
+            success: function(response) {
+              $('.qcontainer').html(response);
+              $('.qcontainer .draggable-question').css('text-align','left').draggable({
+                helper: "clone",
+                connectToSortable: ".mcontainer",
+                revert: "invalid"
+              });
+              const draggables = document.querySelectorAll('.draggable-question')
+              for (let i = 0; i < draggables.length; i ++) {
+                  const draggable = draggables[i];
+                  const pointbox = draggable.getElementsByClassName("form-control");
+                  pointbox[0].style.display = "inline";
+                  pointbox[0].style.float = "right";
+                  pointbox[0].style.marginTop = "-2%";
+              }
+            }
+          });
+        });
+      </script>
     </div>
 
 
@@ -193,14 +213,23 @@
                 }
               }
 
-              const midQuestions = document.getElementsByClassName("mcontainer")[0].querySelectorAll('.draggable-question')
-              for (let i = 0; i < midQuestions.length; i ++) {
-                if ('zones' in jsonData){
-                  jsonData.zones.push({questions:[{id:midQuestions[i].innerText.slice(0, -2), points:new Number(midQuestions[i].getElementsByClassName("form-control")[0].value)}]})
-                } else {
-                  jsonData.zones = [{questions:[{id:midQuestions[i].innerText.slice(0, -2), points:new Number(midQuestions[i].getElementsByClassName("form-control")[0].value)}]}]
+              jsonData.zones = []
+              const midZones = document.getElementsByClassName("zone")
+              for (let i = 0; i < midZones.length; i++) {
+                jsonData.zones.push({
+                  title: midZones[i].querySelector("#zone_title").value,
+                  comment: midZones[i].querySelector("#zone_comment").value,
+                  questions: []
+                });
+                const midQuestions = midZones[i].querySelectorAll('.draggable-question')
+                for (let j = 0; j < midQuestions.length; j++) {
+                  jsonData.zones[i].questions.push({
+                    id: midQuestions[j].innerText.slice(0, -2),
+                    points: new Number(midQuestions[j].querySelector(".form-control").value)
+                  })
                 }
               }
+
               var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, '\t'));
               var dlAnchorElem = document.getElementById('downloadAnchorElem');
               dlAnchorElem.setAttribute("href",     dataStr     );
@@ -214,43 +243,5 @@
         </script>
     </div>
 
-    <script>
-    $(".draggable-question").css('text-align','left').draggable({
-      helper: "clone",
-      connectToSortable: ".mcontainer",
-      revert: "invalid"
-    });
-
-    $(".mcontainer").droppable({
-      accept: ".draggable-question",
-      drop: function(event,ui){
-        var item = $(ui.draggable);
-        item.width($(this).width()-40);
-        item.find("span").css('display','block');
-        var points = item[0].getElementsByClassName("form-control")[0];
-        item[0].style.height = "auto";
-        item[0].style.width = document.body.querySelectorAll(".mcontainer")[0].offsetWidth;
-        points.style.display = "inline";
-        points.style.float = "right";
-        points.style.marginTop = "-1.5%";
-        points.style.marginRight = "2.5%";
-        var close = item.find("span");
-        close.click(function() {
-          item.remove();
-        });
-      }
-    }).sortable({
-      revert: false
-    });
-
-    const draggables = document.querySelectorAll('.draggable-question')
-    for (let i = 0; i < draggables.length; i ++) {
-      const draggable = draggables[i];
-      const pointbox = draggable.getElementsByClassName("form-control");
-      pointbox[0].style.display = "inline";
-      pointbox[0].style.float = "right";
-      pointbox[0].style.marginTop = "-2%";
-    }
-    </script>
   </body>
 </html>
