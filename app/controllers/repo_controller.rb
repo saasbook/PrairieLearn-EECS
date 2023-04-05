@@ -81,14 +81,13 @@ class RepoController < ApplicationController
 
         require 'json'
         path_str = path+"/info.json"
-        path_str = 
-        contentsJsonInfobase64 = client.contents(repo, path: path_str)
-        require "base64"
-        decode_base64_content = Base64.decode64(contentsJsonInfobase64) 
-        json_info = JSON.parse(decode_base64_content)
-        descriptive_title = json_info["title"]
 
-        Question.create(title: question_name, descriptive_title: descriptive_title, repo: repo, selected: 0)
+        contentsJsonInfobase64 = client.contents(repo, path: path_str)
+
+        require "base64"
+        descriptive_title = JSON.parse(Base64.decode64(contentsJsonInfobase64[:content]))["title"]
+
+        Question.create(title: question_name, descriptiveTitle: descriptive_title, repo: repo)
       end
       # Recursively call the helper method if current file is a folder
       if file.type == 'dir'
