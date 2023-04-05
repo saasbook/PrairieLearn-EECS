@@ -2,7 +2,7 @@
 <div class='question_title'><% @questions.each do |question| %>
     <tr>
     <p class="list-group-item draggable-question draggable-text" draggable="true">
-        <td><%= question.title %></td>
+        <td><%= question.descriptiveTitle %></td>
         <span class="close" style="display:none">&times;</span>
 
         <input class="form-control col-md-1 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=1>
