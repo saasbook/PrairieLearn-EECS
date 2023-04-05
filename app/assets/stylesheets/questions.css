@@ -115,7 +115,7 @@ input, select {
 
 .zone {
   display: flex;
-  height: 200px; 
+  height: auto; 
   flex-direction: column;
   margin: 2%;
   overflow-y: auto;

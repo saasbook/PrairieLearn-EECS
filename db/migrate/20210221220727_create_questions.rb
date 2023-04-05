@@ -3,7 +3,6 @@ class CreateQuestions < ActiveRecord::Migration[6.1]
     create_table :questions do |t|
    	  t.string :title
    	  t.string :repo
-      t.boolean :selected
     end
   end
 end
