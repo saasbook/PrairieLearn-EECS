@@ -139,14 +139,6 @@
                 connectToSortable: ".mcontainer",
                 revert: "invalid"
               });
-              const draggables = document.querySelectorAll('.draggable-question')
-              for (let i = 0; i < draggables.length; i ++) {
-                  const draggable = draggables[i];
-                  const pointbox = draggable.getElementsByClassName("form-control");
-                  pointbox[0].style.display = "inline";
-                  pointbox[0].style.float = "right";
-                  pointbox[0].style.marginTop = "-2%";
-              }
             }
           });
         });
