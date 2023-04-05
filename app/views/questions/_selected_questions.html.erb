@@ -26,6 +26,7 @@ function makeDroppableForInner(container) {
         accept: ".draggable-question",
         drop: function(event, ui) {
             var item = $(ui.draggable);
+            item.attr("type", "inner"); 
             item.width($(this).width()-40);
             item.find("span").css('display','block');
             var points = item[0].getElementsByClassName("form-control")[0];
@@ -64,6 +65,7 @@ function makeDroppableForOutter(container) {
     accept: ".draggable-question",
     drop: function(event, ui) {
       var item = $(ui.draggable);
+      item.attr("type", "outter"); 
       item.width($(this).width()-40);
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];

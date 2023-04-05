@@ -219,22 +219,47 @@
                 }
               }
 
-              jsonData.zones = []
-              const midZones = document.getElementsByClassName("zone")
-              for (let i = 0; i < midZones.length; i++) {
-                jsonData.zones.push({
-                  title: midZones[i].querySelector("#zone_title").value,
-                  comment: midZones[i].querySelector("#zone_comment").value,
-                  questions: []
-                });
-                const midQuestions = midZones[i].querySelectorAll('.draggable-question')
-                for (let j = 0; j < midQuestions.length; j++) {
-                  jsonData.zones[i].questions.push({
-                    id: midQuestions[j].innerText.slice(0, -2),
-                    points: new Number(midQuestions[j].querySelector(".form-control").value)
-                  })
+              const midZones = document.getElementsByClassName("zone");
+              if (!(midZones.length == 1 && 
+                  midZones[0].querySelector("#zone_title").value == "" &&
+                  midZones[0].querySelector("#zone_comment").value == "" &&
+                  midZones[0].querySelectorAll('.draggable-question[type="outter"]').length == 0)) {
+                jsonData.zones = [];
+                for (let i = 0; i < midZones.length; i++) {
+                  jsonData.zones.push({
+                    title: midZones[i].querySelector("#zone_title").value,
+                    comment: midZones[i].querySelector("#zone_comment").value,
+                    questions: []
+                  });
+                  const midQuestions = midZones[i].querySelectorAll('.draggable-question[type="outter"]');
+                  for (let j = 0; j < midQuestions.length; j++) {
+                    const alternatives = midQuestions[j].querySelectorAll('.draggable-question[type="inner"]');
+                    if (alternatives.length > 0) {
+                      const pt = new Number(midQuestions[j].querySelector(".form-control").value);
+                      jsonData.zones[i].questions.push({
+                        numberChoose: new Number(midQuestions[j].querySelector("#numchoose").value),
+                        points: pt,
+                        alternatives: []
+                      });
+                      jsonData.zones[i].questions[j].alternatives.push({
+                        id: midQuestions[j].getAttribute('name'),
+                        points: pt
+                      });
+                      for (let k = 0; k < alternatives.length; k++) {
+                        jsonData.zones[i].questions[j].alternatives.push({
+                          id: alternatives[k].getAttribute('name'),
+                          points: pt
+                        });
+                      }
+                    } else {
+                      jsonData.zones[i].questions.push({
+                        id: midQuestions[j].getAttribute('name'),
+                        points: new Number(midQuestions[j].querySelector(".form-control").value)
+                      });
+                    }
+                  }
                 }
-              }
+              }              
 
               var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsonData, null, '\t'));
               var dlAnchorElem = document.getElementById('downloadAnchorElem');
