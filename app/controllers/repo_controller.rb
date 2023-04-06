@@ -87,7 +87,7 @@ class RepoController < ApplicationController
         require "base64"
         descriptive_title = JSON.parse(Base64.decode64(contentsJsonInfobase64[:content]))["title"]
 
-        Question.create(title: question_name, descriptiveTitle: descriptive_title, repo: repo)
+        Question.create(title: question_name, descriptivetitle: descriptive_title, repo: repo)
       end
       # Recursively call the helper method if current file is a folder
       if file.type == 'dir'

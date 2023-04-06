@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2023_03_25_001538) do
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.string "repo"
-    t.string "descriptiveTitle"
+    t.string "descriptivetitle"
   end
 
   create_table "users", force: :cascade do |t|
