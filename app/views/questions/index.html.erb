@@ -117,12 +117,16 @@
     <div class="qcol leftcol">
       <p>Questions</p>
       
-      <%= form_tag search_questions_path, method: :post do %>
-        <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
-        <%= submit_tag "Search" %>
-      <% end %>
-      
-      <%= render 'search_questions' %>  
+      <div class="row justify-content-center col-auto">
+        <%= form_tag search_questions_path, method: :post do %>
+          <%= text_field_tag :search, nil, placeholder: "Search for a question..." %>
+          <%= submit_tag "Search" %>
+        <% end %>
+      </div>
+
+      <div class="qcontainer">
+        <%= render 'search_questions' %>
+      </div>
 
       <script>
         $(document).on('submit', 'form', function(event) {

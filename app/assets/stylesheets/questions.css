@@ -115,7 +115,7 @@ input, select {
 
 .zone {
   display: flex;
-  height: auto; 
+  height: auto;
   flex-direction: column;
   margin: 2%;
   overflow-y: auto;
@@ -124,7 +124,9 @@ input, select {
 
 .sqcontainer {
   margin: 2%;
+  height: auto;
   height: calc(100vh - 17rem);
   overflow: auto;
 }
+
 

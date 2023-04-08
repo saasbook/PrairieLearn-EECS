@@ -1,24 +1,24 @@
-<div class="text-right" style="height: 6px;">
+<div class="row justify-content-end col-auto">
   <button class="btn btn-sm" type="button" id="add_zones">+ Zone</button>
 </div>
 
 <div class="sqcontainer">
-    <hr>
     <div class="zone">
-        <div class="form-row">
+        <div class="form-row justify-content-center">
             <div class="col-md-auto mb-1">
-                <input class="form-control" type="text" id="zone_title" size=1 style="min-width: 255px;" placeholder="Title" aria-label="Title">
+                <input class="form-control" type="text" id="zone_title" size=1 style="min-width: 200px;" placeholder="Title" aria-label="Title">
             </div>
             <div class="col-md-auto mb-1">
-                <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 270px;"  placeholder="Comment" aria-label="Comment">
+                <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 200px;"  placeholder="Comment" aria-label="Comment">
             </div>
-            <span class="close" id="delete_zone" style="color: red;">&times;</span>
+            <span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>
         </div>
         <div class="mcontainer">
         </div>
-        <hr>
     </div>
+    <hr>
 </div>
+
 
 <script>
 function makeDroppableForInner(container) {
@@ -143,8 +143,12 @@ $(document).ready(function() {
             input.value = '';
         });
 
-        // Add after last <div class='zone'>
-        lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+        // Create a new <hr> element
+        var hr = document.createElement('hr');
+
+        // Add the <hr> after the last <div class='zone'>
+        lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
+        lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
 
         // Make the new zone droppable
         makeDroppableForOutter(newZone.querySelector('.mcontainer'));
@@ -162,12 +166,18 @@ $(document).ready(function() {
         // Check the user's response
         if (confirmed) {
             var count = $('.zone').length;
-            if (count > 1)
-                $(this).closest(".zone").remove();
-            else {
+            if (count > 1) {
+                // Get the current zone and the <hr> element
+                var currentZone = $(this).closest('.zone');
+                var hr = currentZone.prev();
+
+                // Remove both the current zone and the <hr> element
+                currentZone.remove();
+                hr.remove();
+            } else {
                 // Get the last .zone element
                 var lastZone = document.querySelector('.zone:last-of-type');
-        
+
                 // Clear mcontainer in lastzone
                 lastZone.querySelector('.mcontainer').innerHTML = '';
         
@@ -175,6 +185,14 @@ $(document).ready(function() {
                 lastZone.querySelectorAll('input').forEach(function(input) {
                     input.value = '';
                 });
+            }
+
+            var firstZone = document.querySelector('.zone:first-of-type');
+
+            // Check if the first zone has an hr element
+            if (firstZone.previousElementSibling && firstZone.previousElementSibling.tagName.toLowerCase() == 'hr') {
+                // Remove the hr element
+                firstZone.previousElementSibling.remove();
             }
         }
     });
