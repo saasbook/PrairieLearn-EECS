@@ -130,7 +130,6 @@
               $('.qcontainer').html(response);
               $('.qcontainer .draggable-question').css('text-align','left').draggable({
                 helper: "clone",
-                connectToSortable: ".mcontainer",
                 revert: "invalid"
               });
               const draggables = document.querySelectorAll('.draggable-question')
@@ -242,6 +241,6 @@
         });
         </script>
     </div>
-
+    
   </body>
 </html>

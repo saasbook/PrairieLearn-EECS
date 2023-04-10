@@ -1,31 +1,163 @@
-<div class="qcontainer">
+<div class="qcontainer box unselected">
 <div class='question_title'><% @questions.each do |question| %>
     <tr>
-    <p class="list-group-item draggable-question draggable-text" draggable="true">
-        <td><%= question.title %></td>
-        <span class="close" style="display:none">&times;</span>
-
-        <input class="form-control col-md-2 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=4>
-        <label for="form-control" class="pts-txt" style="display: none">Pts</label>
-
-    </p>
+    <div class="list-group-item draggable-question draggable-text" draggable="true">
+        <td class="title"><%= question.title %> </td>
+        <div class= "elements">
+            <label for="form-control" class="pts-txt" style="display: none">Pts</label>
+            <input class="points form-control col-md-5 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=2>
+            <span class="close deleteq" style="display:none">&times;</span>
+        </div>
+    </div>
     </tr>
 <% end %></div>
 </div>
 
+
 <script>
+
+
+//styling
 $(".draggable-question").css('text-align','left').draggable({
     helper: "clone",
-    connectToSortable: ".mcontainer",
     revert: "invalid"
 });
 
-const draggables = document.querySelectorAll('.draggable-question')
-for (let i = 0; i < draggables.length; i ++) {
-    const draggable = draggables[i];
-    const pointbox = draggable.getElementsByClassName("form-control");
-    pointbox[0].style.display = "inline";
-    pointbox[0].style.float = "right";
-    pointbox[0].style.marginTop = "-2%";
+
+
+function makeDroppableAndSortable(container) {
+
+    let selected_questions = JSON.parse(window.localStorage.getItem("questions"));
+
+    if (selected_questions == null) {
+      selected_questions = new Array();
+    } else {
+      selected_questions.forEach((question) => {
+        // Create the div element
+        var newDiv = $("<div>").addClass("list-group-item draggable-question draggable-text").attr("draggable", "true").css("display", "flex").css("justify-content", "space-between");
+
+        // Create the title cell and add it to the div
+        var titleCell = $("<td>").addClass("title").text(question);
+        newDiv.append(titleCell);
+
+        // Create the elements div and add it to the div
+        var elementsDiv = $("<div>").addClass("elements").css("display","flex");
+        
+        newDiv.append(elementsDiv);
+
+        // Create the label and add it to the elements div
+        var label = $("<label>").addClass("pts-txt").attr("for", "form-control").text("Pts").css("display", "inline");
+        elementsDiv.append(label);
+
+        // Create the points input and add it to the elements div
+        var pointsInput = $("<input>").addClass("points form-control col-md-5 mb-1").attr("type", "text").attr("name", "assessment_credit").attr("placeholder", "0").attr("size", 2);
+        $(elementsDiv).append(pointsInput);
+
+        // Create the close button and add it to the elements div
+        var closeButton = $("<span>").addClass("close deleteq").html("&times;");
+        elementsDiv.append(closeButton);
+
+        $(container).append(newDiv);
+      });
+
+    }
+
+    $(container).droppable({
+        accept: $(".draggable-question"),
+        drop: function(event, ui) {
+            var item = ui.draggable.clone();
+            item.css("display", "flex").css("justify-content", "space-between");
+            ui.draggable.draggable("disable");
+            item.appendTo(this); 
+            
+            var elements = item.find(".elements");
+            elements.css("display","flex");
+            
+            var close = item.find(".deleteq");
+            close.css('display', 'inline');
+
+            var inputField = item.find('.points');
+            inputField.removeAttr("hidden");
+
+            var points_txt = item.find('.pts-txt');
+            points_txt.css('display', '');
+
+            var question_title = item.text(); 
+            question_title = question_title.slice(0, question_title.length - 67);
+            question_title = question_title.slice(9,);
+            console.log(question_title);
+
+            selected_questions.push(question_title);
+
+            localStorage.setItem("questions", JSON.stringify(selected_questions));
+
+        }
+    }).sortable({
+        revert: false
+    });
+
+    // delete functionality
+
+    $('.deleteq').click(function(){
+        $(this).parent().parent().remove();
+        question_title = $(this).parent().parent().find(".title").text();
+        const index = selected_questions.indexOf(question_title);
+        console.log(index);
+        selected_questions.splice(index, 1);
+        localStorage.removeItem("questions");
+        localStorage.setItem("questions", JSON.stringify(selected_questions));
+    })
 }
+
+$(document).ready(function() {
+
+     // Make all existing containers droppable and sortable
+
+     $('.mcontainer').each(function() {
+         makeDroppableAndSortable(this);
+     });
+
+    // Add a new zone on click of + Zone button
+    $('#add_zones').click(function() {
+        // Get the last .zone element
+        var lastZone = document.querySelector('.zone:last-of-type');
+
+        // Clone the last .zone element
+        var newZone = lastZone.cloneNode(true);
+
+        // Clear mcontainer in new zone
+        newZone.querySelector('.mcontainer').innerHTML = '';
+
+        // Clear input fields in new zone
+        newZone.querySelectorAll('input').forEach(function(input) {
+            input.value = '';
+        });
+
+        // Add after last <div class='zone'>
+        lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+
+        // Make the new zone droppable and sortable
+        makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+    });
+
+    // Remove zone on close button click
+    $(document).on('click', '.zone .close', function() {
+        var count = $('.zone').length;
+        if (count > 1)
+            $(this).closest(".zone").remove();
+        else {
+            // Get the last .zone element
+            var lastZone = document.querySelector('.zone:last-of-type');
+    
+            // Clear mcontainer in lastzone
+            lastZone.querySelector('.mcontainer').innerHTML = '';
+    
+            // Clear input fields in lastzone
+            lastZone.querySelectorAll('input').forEach(function(input) {
+                input.value = '';
+            });
+        }
+    });
+});
+
 </script>
