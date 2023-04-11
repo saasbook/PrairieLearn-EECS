@@ -15,17 +15,71 @@
 
 
 <script>
-
-
 //styling
 $(".draggable-question").css('text-align','left').draggable({
     helper: "clone",
     revert: "invalid"
 });
 
-
-
 function makeDroppableAndSortable(container) {
+    
+    let file = JSON.parse(window.localStorage.getItem("file"));
+
+    $(container).droppable({
+        
+        accept: $(".draggable-question"),
+        drop: function(event, ui) {
+            container_id = $(container).parent().attr('id');
+            var item = ui.draggable.clone();
+            
+            item.css("display", "flex").css("justify-content", "space-between");
+           
+            item.appendTo(this); 
+            
+            var elements = item.find(".elements");
+            elements.css("display","flex");
+            
+            var close = item.find(".deleteq");
+            close.css('display', 'inline');
+
+            var inputField = item.find('.points');
+            inputField.removeAttr("hidden");
+
+            var points_txt = item.find('.pts-txt');
+            points_txt.css('display', '');
+
+            var question_title = item.text(); 
+            question_title = question_title.slice(0, question_title.length - 67);
+            question_title = question_title.slice(9,);
+            console.log(container_id);
+
+            let file = JSON.parse(window.localStorage.getItem("file"));
+            file[container_id]["questions"].push(question_title);
+            localStorage.removeItem("file");
+            localStorage.setItem("file", JSON.stringify(file));
+
+        }
+    }).sortable({
+        revert: false
+    });
+
+    $('.deleteq').click(function(){
+        container_id = $(container).parent().attr('id');
+        $(this).parent().parent().remove();
+        question_title = $(this).parent().parent().find(".title").text();
+        const index = file[container_id]["questions"].indexOf(question_title);
+        console.log(index);
+        file[container_id]["questions"].splice(index, 1);        
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+    })
+}
+
+
+// delete functionality
+
+$(document).ready(function() {
+
     let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
     let file = JSON.parse(window.localStorage.getItem("file"));
 
@@ -33,22 +87,16 @@ function makeDroppableAndSortable(container) {
         localStorage.setItem("num_zones",  JSON.stringify(0));
     }
 
-    if (file == null) {
+    if (file == null || Object.keys(file).length === 0) {
         content = {"title": "", 
         "comment": "", 
         "questions": []};
-
         file = {"zone0": content};
-
         localStorage.setItem("file", JSON.stringify(file));
-
         var lastZone = document.querySelector('.zone');
-        $(lastZone).attr('id', id);
+        $(lastZone).attr('id', "zone0");
 
     } else {
-
-
-
         file = JSON.parse(window.localStorage.getItem("file"));
         var hidden = false;
         Object.keys(file).forEach((id) => {
@@ -76,6 +124,7 @@ function makeDroppableAndSortable(container) {
 
             // Add questions 
             
+
             var questions_zone = file[id]["questions"];
             console.log(questions_zone);
 
@@ -120,83 +169,23 @@ function makeDroppableAndSortable(container) {
               $(newZone).find('.mcontainer').append(newDiv);  
             });
 
-            
-            
             // Add after last <div class='zone'>
             lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
 
             // Make the new zone droppable and sortable
-           // makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+            makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
 
-        
             //Assign unique ID
             $(newZone).attr('id', id);
         })
     }
 
-    $(container).droppable({
-        accept: $(".draggable-question"),
-        drop: function(event, ui) {
-            var item = ui.draggable.clone();
-            item.css("display", "flex").css("justify-content", "space-between");
-            ui.draggable.draggable("disable");
-            item.appendTo(this); 
-            
-            var elements = item.find(".elements");
-            elements.css("display","flex");
-            
-            var close = item.find(".deleteq");
-            close.css('display', 'inline');
-
-            var inputField = item.find('.points');
-            inputField.removeAttr("hidden");
-
-            var points_txt = item.find('.pts-txt');
-            points_txt.css('display', '');
-
-            var question_title = item.text(); 
-            question_title = question_title.slice(0, question_title.length - 67);
-            question_title = question_title.slice(9,);
-            console.log(question_title);
-
-            container_id = $(container).parent().attr('id');
-            console.log(container_id);
-
-            let file = JSON.parse(window.localStorage.getItem("file"));
-
-            file[container_id]["questions"].push(question_title);
-
-            localStorage.removeItem("file");
-            localStorage.setItem("file", JSON.stringify(file));
-
-        }
-    }).sortable({
-        revert: false
-    });
-
-    // delete functionality
-
-    $('.deleteq').click(function(){
-        $(this).parent().parent().remove();
-        question_title = $(this).parent().parent().find(".title").text();
-        const index = selected_questions.indexOf(question_title);
-        console.log(index);
-        selected_questions.splice(index, 1);        
-        localStorage.removeItem("questions");
-        localStorage.setItem("questions", JSON.stringify(selected_questions));
-    })
-}
-
-$(document).ready(function() {
 
      // Make all existing containers droppable and sortable
 
      $('.mcontainer').each(function() {
          makeDroppableAndSortable(this);
      });
-
-     let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
-     let file = JSON.parse(window.localStorage.getItem("file"));
 
     // Add a new zone on click of + Zone button
     $('#add_zones').click(function() {
@@ -218,7 +207,7 @@ $(document).ready(function() {
         lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
 
         // Make the new zone droppable and sortable
-        //makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+        makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
 
        
         //Assign unique ID
@@ -226,7 +215,6 @@ $(document).ready(function() {
 
         num_zones = Number(num_zones) +  1;
         new_id = 'zone' + num_zones.toString();
-        console.log(new_id);
         $(newZone).attr('id', new_id)
 
         //Update local storage with new zone
@@ -247,9 +235,19 @@ $(document).ready(function() {
 
     // Remove zone on close button click
     $(document).on('click', '.zone .close', function() {
+        let file = JSON.parse(window.localStorage.getItem("file"));
+
+        var zone_id = $(this).parent().parent().parent().attr('id');
+        console.log(zone_id);
+        delete file[zone_id];
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+
         var count = $('.zone').length;
-        if (count > 1)
+        if (count > 1) {
             $(this).closest(".zone").remove();
+            $(this).parent().parent().parent().$(".zone").show();
+        }
         else {
             // Get the last .zone element
             var lastZone = document.querySelector('.zone:last-of-type');
@@ -262,6 +260,8 @@ $(document).ready(function() {
                 input.value = '';
             });
         }
+        
+        
     });
 });
 
