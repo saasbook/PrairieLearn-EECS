@@ -120,3 +120,46 @@ close_btns.forEach((btn) => {
     console.log("dragEnd");
   });
 });
+
+var questions_zone = file[id]["questions"];
+console.log(questions_zone);
+questions_zone.forEach((question) => {
+  // Create the div element
+  var newDiv = $("<div>")
+    .addClass("list-group-item draggable-question draggable-text")
+    .attr("draggable", "true")
+    .css("display", "flex")
+    .css("justify-content", "space-between");
+
+  // Create the title cell and add it to the div
+  var titleCell = $("<td>").addClass("title").text(question);
+  newDiv.append(titleCell);
+
+  // Create the elements div and add it to the div
+  var elementsDiv = $("<div>").addClass("elements").css("display", "flex");
+
+  newDiv.append(elementsDiv);
+
+  // Create the label and add it to the elements div
+  var label = $("<label>")
+    .addClass("pts-txt")
+    .attr("for", "form-control")
+    .text("Pts")
+    .css("display", "inline");
+  elementsDiv.append(label);
+
+  // Create the points input and add it to the elements div
+  var pointsInput = $("<input>")
+    .addClass("points form-control col-md-5 mb-1")
+    .attr("type", "text")
+    .attr("name", "assessment_credit")
+    .attr("placeholder", "0")
+    .attr("size", 2);
+  $(elementsDiv).append(pointsInput);
+
+  // Create the close button and add it to the elements div
+  var closeButton = $("<span>").addClass("close deleteq").html("&times;");
+  elementsDiv.append(closeButton);
+
+  $(newZone).append(newDiv);
+});
