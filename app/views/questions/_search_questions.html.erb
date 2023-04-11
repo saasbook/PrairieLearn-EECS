@@ -6,7 +6,7 @@
         <div class= "elements">
             <label for="form-control" class="pts-txt" style="display: none">Pts</label>
             <input class="points form-control col-md-5 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=2>
-            <span class="close deleteq" style="display:none">&times;</span>
+            <span class="deleteq" style="display:none">&times;</span>
         </div>
     </div>
     </tr>
@@ -51,27 +51,22 @@ function makeDroppableAndSortable(container) {
             var question_title = item.text(); 
             question_title = question_title.slice(0, question_title.length - 67);
             question_title = question_title.slice(9,);
-            console.log(container_id);
 
             let file = JSON.parse(window.localStorage.getItem("file"));
             file[container_id]["questions"].push(question_title);
             localStorage.removeItem("file");
             localStorage.setItem("file", JSON.stringify(file));
-
         }
+
+        
     }).sortable({
         revert: false
     });
 
-    $('.deleteq').click(function(){
+    $('.deleteq').click(function() {
         container_id = $(container).parent().attr('id');
         $(this).parent().parent().remove();
-        question_title = $(this).parent().parent().find(".title").text();
-        const index = file[container_id]["questions"].indexOf(question_title);
-        console.log(index);
-        file[container_id]["questions"].splice(index, 1);        
-        localStorage.removeItem("file");
-        localStorage.setItem("file", JSON.stringify(file));
+        
     })
 }
 
@@ -163,7 +158,7 @@ $(document).ready(function() {
               $(elementsDiv).append(pointsInput);
             
               // Create the close button and add it to the elements div
-              var closeButton = $("<span>").addClass("close deleteq").html("&times;");
+              var closeButton = $("<span>").addClass("deleteq").html("&times;");
               elementsDiv.append(closeButton);
             
               $(newZone).find('.mcontainer').append(newDiv);  
@@ -237,7 +232,7 @@ $(document).ready(function() {
     $(document).on('click', '.zone .close', function() {
         let file = JSON.parse(window.localStorage.getItem("file"));
 
-        var zone_id = $(this).parent().parent().parent().attr('id');
+        //var zone_id = $(this).parent().parent().parent().attr('id');
         console.log(zone_id);
         delete file[zone_id];
         localStorage.removeItem("file");
