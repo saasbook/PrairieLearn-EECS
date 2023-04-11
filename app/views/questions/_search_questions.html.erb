@@ -6,7 +6,7 @@
         <div class= "elements">
             <label for="form-control" class="pts-txt" style="display: none">Pts</label>
             <input class="points form-control col-md-5 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=2>
-            <span class="close deleteq" style="display:none">&times;</span>
+            <span class="deleteq" style="display:none">&times;</span>
         </div>
     </div>
     </tr>
@@ -21,6 +21,7 @@ $(".draggable-question").css('text-align','left').draggable({
     revert: "invalid"
 });
 
+
 function makeDroppableAndSortable(container) {
     
     let file = JSON.parse(window.localStorage.getItem("file"));
@@ -31,6 +32,7 @@ function makeDroppableAndSortable(container) {
         drop: function(event, ui) {
             container_id = $(container).parent().attr('id');
             var item = ui.draggable.clone();
+            ui.draggable.draggable("disable");
             
             item.css("display", "flex").css("justify-content", "space-between");
            
@@ -42,6 +44,21 @@ function makeDroppableAndSortable(container) {
             var close = item.find(".deleteq");
             close.css('display', 'inline');
 
+            $(close).click(function() {
+                $(close).parent().parent().remove();
+                question_title = $(item).text();
+                question_title = question_title.slice(0, question_title.length - 67);
+                question_title = question_title.slice(9,);
+                console.log(question_title);
+                const index = file[container_id]["questions"].indexOf(question_title);
+                console.log(index);
+                console.log(container_id);
+                file[container_id]["questions"].splice(index);        
+                localStorage.removeItem("file");
+                localStorage.setItem("file", JSON.stringify(file));
+            })
+        
+
             var inputField = item.find('.points');
             inputField.removeAttr("hidden");
 
@@ -51,35 +68,22 @@ function makeDroppableAndSortable(container) {
             var question_title = item.text(); 
             question_title = question_title.slice(0, question_title.length - 67);
             question_title = question_title.slice(9,);
-            console.log(container_id);
 
             let file = JSON.parse(window.localStorage.getItem("file"));
             file[container_id]["questions"].push(question_title);
             localStorage.removeItem("file");
             localStorage.setItem("file", JSON.stringify(file));
-
         }
+
+        
     }).sortable({
         revert: false
     });
 
-    $('.deleteq').click(function(){
-        container_id = $(container).parent().attr('id');
-        $(this).parent().parent().remove();
-        question_title = $(this).parent().parent().find(".title").text();
-        const index = file[container_id]["questions"].indexOf(question_title);
-        console.log(index);
-        file[container_id]["questions"].splice(index, 1);        
-        localStorage.removeItem("file");
-        localStorage.setItem("file", JSON.stringify(file));
-    })
+
 }
 
-
-// delete functionality
-
 $(document).ready(function() {
-
     let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
     let file = JSON.parse(window.localStorage.getItem("file"));
 
@@ -163,7 +167,7 @@ $(document).ready(function() {
               $(elementsDiv).append(pointsInput);
             
               // Create the close button and add it to the elements div
-              var closeButton = $("<span>").addClass("close deleteq").html("&times;");
+              var closeButton = $("<span>").addClass("deleteq").html("&times;");
               elementsDiv.append(closeButton);
             
               $(newZone).find('.mcontainer').append(newDiv);  
@@ -186,6 +190,20 @@ $(document).ready(function() {
      $('.mcontainer').each(function() {
          makeDroppableAndSortable(this);
      });
+
+     $(".deleteq").click(function() {
+
+        container_id = $(this).parent().parent().parent().parent().attr('id');
+        $(this).parent().parent().remove();
+        question_title = $(this).parent().parent().find(".title").text();
+        console.log(question_title);
+        const index = file[container_id]["questions"].indexOf(question_title);
+        console.log(index);
+        file[container_id]["questions"].splice(index, 1);        
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+       
+    })
 
     // Add a new zone on click of + Zone button
     $('#add_zones').click(function() {
@@ -237,7 +255,7 @@ $(document).ready(function() {
     $(document).on('click', '.zone .close', function() {
         let file = JSON.parse(window.localStorage.getItem("file"));
 
-        var zone_id = $(this).parent().parent().parent().attr('id');
+        //var zone_id = $(this).parent().parent().parent().attr('id');
         console.log(zone_id);
         delete file[zone_id];
         localStorage.removeItem("file");
