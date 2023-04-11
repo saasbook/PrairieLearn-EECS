@@ -26,40 +26,112 @@ $(".draggable-question").css('text-align','left').draggable({
 
 
 function makeDroppableAndSortable(container) {
+    let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+    let file = JSON.parse(window.localStorage.getItem("file"));
 
-    let selected_questions = JSON.parse(window.localStorage.getItem("questions"));
+    if (num_zones == null ){
+        localStorage.setItem("num_zones",  JSON.stringify(0));
+    }
 
-    if (selected_questions == null) {
-      selected_questions = new Array();
+    if (file == null) {
+        content = {"title": "", 
+        "comment": "", 
+        "questions": []};
+
+        file = {"zone0": content};
+
+        localStorage.setItem("file", JSON.stringify(file));
+
+        var lastZone = document.querySelector('.zone');
+        $(lastZone).attr('id', id);
+
     } else {
-      selected_questions.forEach((question) => {
-        // Create the div element
-        var newDiv = $("<div>").addClass("list-group-item draggable-question draggable-text").attr("draggable", "true").css("display", "flex").css("justify-content", "space-between");
 
-        // Create the title cell and add it to the div
-        var titleCell = $("<td>").addClass("title").text(question);
-        newDiv.append(titleCell);
 
-        // Create the elements div and add it to the div
-        var elementsDiv = $("<div>").addClass("elements").css("display","flex");
+
+        file = JSON.parse(window.localStorage.getItem("file"));
+        var hidden = false;
+        Object.keys(file).forEach((id) => {
+            
+            //Make zone with given ID
+            // Get the last .zone element
+            var lastZone = document.querySelector('.zone:last-of-type');
+
+            // Clone the last .zone element
+            var newZone = lastZone.cloneNode(true);
+
+            // Clear mcontainer in new zone
+            newZone.querySelector('.mcontainer').innerHTML = '';
+
+            //Hide last zone
+
+            if(hidden === false) {
+                $(lastZone).hide();
+                hidden = true;
+            }
+
+            // Retrieve comment and title attributes
+            //newZone.querySelector('zone_title').value = file[id]["title"];
+            //newZone.querySelector('zone_comment').value = file[id]["comment"];
+
+            // Add questions 
+            
+            var questions_zone = file[id]["questions"];
+            console.log(questions_zone);
+
+            questions_zone.forEach((question) => {
+              // Create the div element
+              var newDiv = $("<div>")
+                .addClass("list-group-item draggable-question draggable-text")
+                .attr("draggable", "true")
+                .css("display", "flex")
+                .css("justify-content", "space-between");
+            
+              // Create the title cell and add it to the div
+              var titleCell = $("<td>").addClass("title").text(question);
+              newDiv.append(titleCell);
+            
+              // Create the elements div and add it to the div
+              var elementsDiv = $("<div>").addClass("elements").css("display", "flex");
+            
+              newDiv.append(elementsDiv);
+            
+              // Create the label and add it to the elements div
+              var label = $("<label>")
+                .addClass("pts-txt")
+                .attr("for", "form-control")
+                .text("Pts")
+                .css("display", "inline");
+              elementsDiv.append(label);
+            
+              // Create the points input and add it to the elements div
+              var pointsInput = $("<input>")
+                .addClass("points form-control col-md-5 mb-1")
+                .attr("type", "text")
+                .attr("name", "assessment_credit")
+                .attr("placeholder", "0")
+                .attr("size", 2);
+              $(elementsDiv).append(pointsInput);
+            
+              // Create the close button and add it to the elements div
+              var closeButton = $("<span>").addClass("close deleteq").html("&times;");
+              elementsDiv.append(closeButton);
+            
+              $(newZone).find('.mcontainer').append(newDiv);  
+            });
+
+            
+            
+            // Add after last <div class='zone'>
+            lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+
+            // Make the new zone droppable and sortable
+           // makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+
         
-        newDiv.append(elementsDiv);
-
-        // Create the label and add it to the elements div
-        var label = $("<label>").addClass("pts-txt").attr("for", "form-control").text("Pts").css("display", "inline");
-        elementsDiv.append(label);
-
-        // Create the points input and add it to the elements div
-        var pointsInput = $("<input>").addClass("points form-control col-md-5 mb-1").attr("type", "text").attr("name", "assessment_credit").attr("placeholder", "0").attr("size", 2);
-        $(elementsDiv).append(pointsInput);
-
-        // Create the close button and add it to the elements div
-        var closeButton = $("<span>").addClass("close deleteq").html("&times;");
-        elementsDiv.append(closeButton);
-
-        $(container).append(newDiv);
-      });
-
+            //Assign unique ID
+            $(newZone).attr('id', id);
+        })
     }
 
     $(container).droppable({
@@ -87,9 +159,15 @@ function makeDroppableAndSortable(container) {
             question_title = question_title.slice(9,);
             console.log(question_title);
 
-            selected_questions.push(question_title);
+            container_id = $(container).parent().attr('id');
+            console.log(container_id);
 
-            localStorage.setItem("questions", JSON.stringify(selected_questions));
+            let file = JSON.parse(window.localStorage.getItem("file"));
+
+            file[container_id]["questions"].push(question_title);
+
+            localStorage.removeItem("file");
+            localStorage.setItem("file", JSON.stringify(file));
 
         }
     }).sortable({
@@ -103,7 +181,7 @@ function makeDroppableAndSortable(container) {
         question_title = $(this).parent().parent().find(".title").text();
         const index = selected_questions.indexOf(question_title);
         console.log(index);
-        selected_questions.splice(index, 1);
+        selected_questions.splice(index, 1);        
         localStorage.removeItem("questions");
         localStorage.setItem("questions", JSON.stringify(selected_questions));
     })
@@ -116,6 +194,9 @@ $(document).ready(function() {
      $('.mcontainer').each(function() {
          makeDroppableAndSortable(this);
      });
+
+     let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+     let file = JSON.parse(window.localStorage.getItem("file"));
 
     // Add a new zone on click of + Zone button
     $('#add_zones').click(function() {
@@ -137,7 +218,31 @@ $(document).ready(function() {
         lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
 
         // Make the new zone droppable and sortable
-        makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+        //makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+
+       
+        //Assign unique ID
+        let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+
+        num_zones = Number(num_zones) +  1;
+        new_id = 'zone' + num_zones.toString();
+        console.log(new_id);
+        $(newZone).attr('id', new_id)
+
+        //Update local storage with new zone
+        let file = JSON.parse(window.localStorage.getItem("file"));
+
+        content = {"title": "", 
+        "comment": "", 
+        "questions": []};
+
+        file[new_id] = content;
+
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+
+        localStorage.removeItem("num_zones");
+        localStorage.setItem("num_zones", JSON.stringify(num_zones));
     });
 
     // Remove zone on close button click
