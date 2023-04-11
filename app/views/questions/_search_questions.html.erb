@@ -65,7 +65,6 @@ function makeDroppableAndSortable(container) {
 
     $('.deleteq').click(function(){
         container_id = $(container).parent().attr('id');
-        console.log(container_id);
         $(this).parent().parent().remove();
         question_title = $(this).parent().parent().find(".title").text();
         const index = file[container_id]["questions"].indexOf(question_title);
