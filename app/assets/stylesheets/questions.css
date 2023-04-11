@@ -115,11 +115,7 @@ select {
 
 .zone {
   display: flex;
-<<<<<<< HEAD
-  height: auto; 
-=======
   height: auto;
->>>>>>> persistance
   flex-direction: column;
   margin: 2%;
   overflow-y: auto;
