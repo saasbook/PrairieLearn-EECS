@@ -129,4 +129,12 @@ input, select {
   overflow: auto;
 }
 
+.gutter-2.row {
+  margin-right: -1px;
+  margin-left: -1px;
+}
+.gutter-2 > [class^="col-"], .gutter-2 > [class^=" col-"] {
+  padding-right: 2px;
+  padding-left: 2px;
+}
 

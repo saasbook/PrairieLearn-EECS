@@ -1,15 +1,32 @@
-<div class="row justify-content-end col-auto">
-  <button class="btn btn-sm" type="button" id="add_zones">+ Zone</button>
+<div class="gutter-2 row justify-content-end px-1">
+  <div class="col-md-auto">
+    <button class="btn btn-default" type="button" id="add_zones">+ Zone</button>
+  </div>
+  <div class="col-md-auto">
+    <button type="button" class="btn btn-default" data-toggle="collapse" href="#tutorial" role="button" aria-expanded="false" aria-controls="tutorial">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+      </svg>
+    </button>
+  </div>
 </div>
-
+<div class="collapse" id="tutorial">
+  <div class="card card-body">
+    Click +Zone to create a zone. Drag questions from left to right to include questions in the zone, or click +pool button to create a question pool.
+  </div>
+</div>
 <div class="sqcontainer">
     <div class="zone">
-        <div class="form-row justify-content-center">
+        <div class="form-row">
             <div class="col-md-auto mb-1">
-                <input class="form-control" type="text" id="zone_title" size=1 style="min-width: 200px;" placeholder="Title" aria-label="Title">
+                <input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Title" aria-label="Title">
             </div>
             <div class="col-md-auto mb-1">
-                <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 200px;"  placeholder="Comment" aria-label="Comment">
+                <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-default" type="button" id="add_pool">+Pool</button>
             </div>
             <span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>
         </div>
@@ -158,7 +175,7 @@ $(document).ready(function() {
     $(document).on('click', '.zone .close', function() {
         // Define the confirmation message
         var title =  $(this).closest('.zone').find('#zone_title').val().trim();
-        var message = "Are you sure you want to delete title: \"" + title + "\"?";
+        var message = "Are you sure you want to delete zone " + title + "?";
 
         // Display the confirmation pop-up
         var confirmed = window.confirm(message);
@@ -196,6 +213,12 @@ $(document).ready(function() {
             }
         }
     });
+
+    // Add a new zone on click of + Zone button
+    $('#add_pool').click(function() {
+      
+    });
+
 });
 </script>
 
