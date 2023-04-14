@@ -4,7 +4,7 @@
 
 <div class="sqcontainer">
     <hr>
-    <div class="zone">
+    <div class="zone" style="display: none;">
         <div class="form-row">
             <div class="col-md-auto mb-3">
                 <label class='question_title'>Title:</label>
@@ -72,6 +72,9 @@ $(document).ready(function() {
 
         // Clone the last .zone element
         var newZone = lastZone.cloneNode(true);
+
+        if (newZone.style.display === 'none')
+            newZone.style.display = 'block';
 
         // Clear mcontainer in new zone
         newZone.querySelector('.mcontainer').innerHTML = '';
