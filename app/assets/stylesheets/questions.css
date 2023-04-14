@@ -93,6 +93,10 @@ select {
   font-size: medium;
 }
 
+.title {
+  font-size: medium;
+}
+
 .footer {
   position: fixed;
   padding: 20px;

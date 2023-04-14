@@ -163,3 +163,38 @@ questions_zone.forEach((question) => {
 
   $(newZone).append(newDiv);
 });
+
+//container_id = $(container).parent().attr('id');
+$(this).parent().parent().remove();
+//question_title = $(this).parent().parent().find(".title").text();
+//const index = file[container_id]["questions"].indexOf(question_title);
+//console.log(index);
+//file[container_id]["questions"].splice(index, 1);
+// localStorage.removeItem("file");
+// localStorage.setItem("file", JSON.stringify(file));
+
+$(".deleteq").click(function () {
+  container_id = $(this).parent().parent().parent().parent().attr("id");
+  $(this).parent().parent().remove();
+  question_title = $(this).parent().parent().find(".title").text();
+  console.log(question_title);
+  const index = file[container_id]["questions"].indexOf(question_title);
+  console.log(index);
+  file[container_id]["questions"].splice(index, 1);
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+});
+
+$(close).click(function () {
+  $(close).parent().parent().remove();
+  question_title = $(item).text();
+  question_title = question_title.slice(0, question_title.length - 67);
+  question_title = question_title.slice(9);
+  console.log(question_title);
+  const index = file[container_id]["questions"].indexOf(question_title);
+  console.log(index);
+  console.log(container_id);
+  file[container_id]["questions"].splice(index);
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+});
