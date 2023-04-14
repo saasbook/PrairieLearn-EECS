@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -6,7 +7,7 @@ html, body {
 
 nav {
   width: 100%;
-  background: #62BFED;
+  background: #62bfed;
   padding-top: 1%;
   padding-bottom: 1%;
 }
@@ -14,7 +15,7 @@ nav {
 #name {
   margin-left: 2%;
   color: white;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .qcol {
@@ -28,9 +29,10 @@ nav {
   position: absolute;
 }
 
-.leftcol p, .middlecol p, .rightcol p {
+.leftcol p,
+.middlecol p,
+.rightcol p {
   text-align: center;
-
 }
 
 .middlecol {
@@ -44,7 +46,6 @@ nav {
 .rightcol {
   width: 30%;
   height: auto;
-
 }
 
 .configs {
@@ -54,15 +55,16 @@ nav {
 }
 
 p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 160%;
 }
 
 .question_title {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
-input, select {
+input,
+select {
   padding: 8px 25px;
   margin: 8px 0;
 }
@@ -80,7 +82,6 @@ input, select {
 .mcontainer {
   margin: 2%;
   height: calc(100vh - 17rem);
-  overflow: auto;
 }
 
 .draggable {
@@ -92,6 +93,10 @@ input, select {
   font-size: medium;
 }
 
+.title {
+  font-size: medium;
+}
+
 .footer {
   position: fixed;
   padding: 20px;
@@ -99,7 +104,7 @@ input, select {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #62BFED;
+  background-color: #62bfed;
   color: white;
   text-align: right;
 }
@@ -109,13 +114,12 @@ input, select {
 }
 
 .pts-txt {
-  float: right;
   margin-right: 1rem;
 }
 
 .zone {
   display: flex;
-  height: 200px; 
+  height: auto;
   flex-direction: column;
   margin: 2%;
   overflow-y: auto;
@@ -127,4 +131,3 @@ input, select {
   height: calc(100vh - 17rem);
   overflow: auto;
 }
-

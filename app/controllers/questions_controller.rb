@@ -14,7 +14,7 @@ class QuestionsController < ApplicationController
 
 	def search
 		@search_terms = params[:search]
-		@questions = Question.where("title LIKE ?", "%#{@search_terms}%")
+		@questions = Question.where("title ILIKE :search_terms OR descriptivetitle ILIKE :search_terms", search_terms: "%#{@search_terms}%")
 		respond_to do |format|
 			format.html { render partial: 'search_questions' }
 		end

@@ -1,31 +1,276 @@
-<div class="qcontainer">
+<div class="qcontainer box unselected">
 <div class='question_title'><% @questions.each do |question| %>
-    <tr>
-    <p class="list-group-item draggable-question draggable-text" draggable="true">
-        <td><%= question.title %></td>
-        <span class="close" style="display:none">&times;</span>
-
-        <input class="form-control col-md-2 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=4>
-        <label for="form-control" class="pts-txt" style="display: none">Pts</label>
-
-    </p>
-    </tr>
+    <div class="list-group-item draggable-question draggable-text" draggable="true">
+        <p class="title"> <%=question.title%> </p>
+        <div class= "elements">
+            <label for="form-control" class="pts-txt" style="display: none">Pts</label>
+            <input class="points form-control col-md-5 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=2>
+            <span class="deleteq" style="display:none">&times;</span>
+        </div>
+    </div>
 <% end %></div>
 </div>
 
+
 <script>
+//styling
 $(".draggable-question").css('text-align','left').draggable({
     helper: "clone",
-    connectToSortable: ".mcontainer",
     revert: "invalid"
 });
 
-const draggables = document.querySelectorAll('.draggable-question')
-for (let i = 0; i < draggables.length; i ++) {
-    const draggable = draggables[i];
-    const pointbox = draggable.getElementsByClassName("form-control");
-    pointbox[0].style.display = "inline";
-    pointbox[0].style.float = "right";
-    pointbox[0].style.marginTop = "-2%";
+
+function makeDroppableAndSortable(container) {
+    
+    let file = JSON.parse(window.localStorage.getItem("file"));
+
+    $(container).droppable({
+        
+        accept: $(".draggable-question"),
+        drop: function(event, ui) {
+            container_id = $(container).parent().attr('id');
+            var item = ui.draggable.clone();
+            ui.draggable.draggable("disable");
+            
+            item.css("display", "flex").css("justify-content", "space-between");
+           
+            item.appendTo(this); 
+            
+            var elements = item.find(".elements");
+            elements.css("display","flex");
+            
+            var close = item.find(".deleteq");
+            close.css('display', 'inline');
+        
+            var inputField = item.find('.points');
+            inputField.removeAttr("hidden");
+
+            var points_txt = item.find('.pts-txt');
+            points_txt.css('display', '');
+
+            var question_title = item.text(); 
+            question_title = question_title.slice(0, question_title.length - 67);
+            question_title = question_title.slice(9,);
+            question_title = question_title.trim();
+
+            let file = JSON.parse(window.localStorage.getItem("file"));
+            file[container_id]["questions"].push(question_title);
+            console.log(file[container_id]["questions"]);
+            localStorage.removeItem("file");
+            localStorage.setItem("file", JSON.stringify(file));
+        }
+
+        
+    }).sortable({
+        revert: false
+    });
+
+
 }
+
+$(document).ready(function() {
+    let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+    let file = JSON.parse(window.localStorage.getItem("file"));
+
+    if (num_zones == null ){
+        localStorage.setItem("num_zones",  JSON.stringify(0));
+    }
+
+    if (file == null || Object.keys(file).length === 0) {
+        content = {"title": "", 
+        "comment": "", 
+        "questions": []};
+        file = {"zone0": content};
+        localStorage.setItem("file", JSON.stringify(file));
+        var lastZone = document.querySelector('.zone');
+        $(lastZone).attr('id', "zone0");
+
+    } else {
+        file = JSON.parse(window.localStorage.getItem("file"));
+        var hidden = false;
+        Object.keys(file).forEach((id) => {
+            
+            //Make zone with given ID
+            // Get the last .zone element
+            var lastZone = document.querySelector('.zone:last-of-type');
+
+            // Clone the last .zone element
+            var newZone = lastZone.cloneNode(true);
+
+            // Clear mcontainer in new zone
+            newZone.querySelector('.mcontainer').innerHTML = '';
+
+            //Hide last zone
+
+            if(hidden === false) {
+                $(lastZone).hide();
+                hidden = true;
+            }
+
+            // Retrieve comment and title attributes
+            //newZone.querySelector('zone_title').value = file[id]["title"];
+            //newZone.querySelector('zone_comment').value = file[id]["comment"];
+
+            // Add questions 
+            
+
+            var questions_zone = file[id]["questions"];
+
+            questions_zone.forEach((question) => {
+              // Create the div element
+              var newDiv = $("<div>")
+                .addClass("list-group-item draggable-question draggable-text")
+                .attr("draggable", "true")
+                .css("display", "flex")
+                .css("justify-content", "space-between");
+            
+
+              question = question.trim();
+              // Create the title cell and add it to the div
+              var titleCell = $("<p>").addClass("title").text(question);
+              newDiv.append(titleCell);
+
+              // Create the elements div and add it to the div
+              var elementsDiv = $("<div>").addClass("elements").css("display", "flex");
+            
+              newDiv.append(elementsDiv);
+            
+              // Create the label and add it to the elements div
+              var label = $("<label>")
+                .addClass("pts-txt")
+                .attr("for", "form-control")
+                .text("Pts")
+                .css("display", "inline");
+              elementsDiv.append(label);
+            
+              // Create the points input and add it to the elements div
+              var pointsInput = $("<input>")
+                .addClass("points form-control col-md-5 mb-1")
+                .attr("type", "text")
+                .attr("name", "assessment_credit")
+                .attr("placeholder", "0")
+                .attr("size", 2);
+              $(elementsDiv).append(pointsInput);
+            
+              // Create the close button and add it to the elements div
+              var closeButton = $("<span>").addClass("deleteq").html("&times;");
+              elementsDiv.append(closeButton);
+
+              $(newZone).find('.mcontainer').append(newDiv);  
+            });
+
+            // Add after last <div class='zone'>
+            lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+
+            // Make the new zone droppable and sortable
+            makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+
+            //Assign unique ID
+            $(newZone).attr('id', id);
+        })
+    }
+
+     // Make all existing containers droppable and sortable
+
+     $('.mcontainer').each(function() {
+         makeDroppableAndSortable(this);
+     });
+
+    // Add a new zone on click of + Zone button
+    $('#add_zones').click(function() {
+        // Get the last .zone element
+        var lastZone = document.querySelector('.zone:last-of-type');
+
+        // Clone the last .zone element
+        var newZone = lastZone.cloneNode(true);
+
+        // Clear mcontainer in new zone
+        newZone.querySelector('.mcontainer').innerHTML = '';
+
+        // Clear input fields in new zone
+        newZone.querySelectorAll('input').forEach(function(input) {
+            input.value = '';
+        });
+
+        // Add after last <div class='zone'>
+        lastZone.parentNode.insertBefore(newZone, lastZone.nextSibling);
+
+        // Make the new zone droppable and sortable
+        makeDroppableAndSortable(newZone.querySelector('.mcontainer'));
+
+       
+        //Assign unique ID
+        let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+
+        num_zones = Number(num_zones) +  1;
+        new_id = 'zone' + num_zones.toString();
+        $(newZone).attr('id', new_id)
+
+        //Update local storage with new zone
+        let file = JSON.parse(window.localStorage.getItem("file"));
+
+        content = {"title": "", 
+        "comment": "", 
+        "questions": []};
+
+        file[new_id] = content;
+
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+
+        localStorage.removeItem("num_zones");
+        localStorage.setItem("num_zones", JSON.stringify(num_zones));
+    });
+
+
+    $(document).on('click', '.deleteq', function() {
+        question_title = $(this).parent().parent().find("p").text();
+        question_title = question_title.trim();
+        container_id = $(this).parent().parent().parent().parent().attr("id");
+        console.log(container_id);
+        let file = JSON.parse(window.localStorage.getItem("file"));
+        const index = file[container_id]["questions"].indexOf(question_title);
+        console.log(file[container_id]["questions"]);
+        console.log(question_title);
+        console.log(index);
+        file[container_id]["questions"].splice(index, 1);
+        console.log(file[container_id]["questions"]);
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+
+        $(this).parent().parent().remove();
+    });
+
+    // Remove zone on close button click
+    $(document).on('click', '.zone .close', function() {
+        let file = JSON.parse(window.localStorage.getItem("file"));
+
+        //var zone_id = $(this).parent().parent().parent().attr('id');
+        console.log(zone_id);
+        delete file[zone_id];
+        localStorage.removeItem("file");
+        localStorage.setItem("file", JSON.stringify(file));
+
+        var count = $('.zone').length;
+        if (count > 1) {
+            $(this).closest(".zone").remove();
+            $(this).parent().parent().parent().$(".zone").show();
+        }
+        else {
+            // Get the last .zone element
+            var lastZone = document.querySelector('.zone:last-of-type');
+    
+            // Clear mcontainer in lastzone
+            lastZone.querySelector('.mcontainer').innerHTML = '';
+    
+            // Clear input fields in lastzone
+            lastZone.querySelectorAll('input').forEach(function(input) {
+                input.value = '';
+            });
+        }
+        
+        
+    });
+});
+
 </script>
