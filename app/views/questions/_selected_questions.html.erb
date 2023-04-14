@@ -17,6 +17,7 @@
   </div>
 </div>
 <div class="sqcontainer">
+    <hr>
     <div class="zone">
         <div class="form-row">
             <div class="col-md-auto mb-1">
@@ -92,9 +93,23 @@ function makeDroppableForOutter(container) {
       points.style.float = "right";
       points.style.marginTop = "-1.5%";
       points.style.marginRight = "2.5%";
+
+      // expand the height of zone
+      var parentContainer = container.closest(".zone"); 
+      var extraHeight = 0.5 * item[0].offsetHeight;
+      parentContainer.style.height = (parentContainer.clientHeight + extraHeight) + "px";
+      parentContainer.style.maxHeight = "100vh";
+
       var close = item.find("span");
       close.click(function() {
           item.remove();
+          // shrink the height of zone
+          // Get the number of dropped elements
+          var numDropped = container.children.length;
+          if ((numDropped - 1) * 3 * extraHeight < parentContainer.clientHeight) {
+            parentContainer.style.height = (parentContainer.clientHeight - extraHeight) + "px";
+          }
+          parentContainer.style.minHeight = "25vh";
       });
       
       // show the hidden input field
@@ -149,27 +164,56 @@ $(document).ready(function() {
         // Get the last .zone element
         var lastZone = document.querySelector('.zone:last-of-type');
 
-        // Clone the last .zone element
-        var newZone = lastZone.cloneNode(true);
+        // Create a new .zone element
+        var newZone = document.createElement('div');
+        if (lastZone === null) {
+          newZone.className = 'zone';
 
-        // Clear mcontainer in new zone
-        newZone.querySelector('.mcontainer').innerHTML = '';
+          // Find the first <hr> element in .sqcontainer
+          var hr = document.querySelector('.sqcontainer hr:first-of-type');
 
+          // Insert the new .zone element after the <hr> element
+          hr.parentNode.insertBefore(newZone, hr.nextSibling);
+          //document.querySelector('.sqcontainer').appendChild(newZone);
+        }else {
+          newZone.classList.add('zone');
+
+          // Create a new <hr> element
+          var hr = document.createElement('hr');
+      
+          // Add the <hr> after the last <div class='zone'>
+          lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
+          lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
+        }
+    
+        // Create the inner HTML for the new .zone element
+        var innerHtml = '<div class="form-row">' +
+                            '<div class="col-md-auto mb-1">' +
+                                '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Title" aria-label="Title">' +
+                            '</div>' +
+                            '<div class="col-md-auto mb-1">' +
+                                '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
+                            '</div>' +
+                            '<div class="col-auto">' +
+                              '<button class="btn btn-default" type="button" id="add_pool">+Pool</button>' +
+                            '</div>' +
+                            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
+                        '</div>' +
+                        '<div class="mcontainer">' +
+                        '</div>';
+    
+        // Set the inner HTML of the new .zone element
+        newZone.innerHTML = innerHtml;
+    
         // Clear input fields in new zone
         newZone.querySelectorAll('input').forEach(function(input) {
             input.value = '';
         });
 
-        // Create a new <hr> element
-        var hr = document.createElement('hr');
-
-        // Add the <hr> after the last <div class='zone'>
-        lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
-        lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
-
         // Make the new zone droppable
         makeDroppableForOutter(newZone.querySelector('.mcontainer'));
     });
+    
 
     // Remove zone on close button click
     $(document).on('click', '.zone .close', function() {
@@ -183,34 +227,15 @@ $(document).ready(function() {
         // Check the user's response
         if (confirmed) {
             var count = $('.zone').length;
+            var currentZone = $(this).closest('.zone');
             if (count > 1) {
-                // Get the current zone and the <hr> element
-                var currentZone = $(this).closest('.zone');
-                var hr = currentZone.prev();
+              // Get the <hr> element
+              var hr = currentZone.prev();
 
-                // Remove both the current zone and the <hr> element
-                currentZone.remove();
-                hr.remove();
-            } else {
-                // Get the last .zone element
-                var lastZone = document.querySelector('.zone:last-of-type');
-
-                // Clear mcontainer in lastzone
-                lastZone.querySelector('.mcontainer').innerHTML = '';
-        
-                // Clear input fields in lastzone
-                lastZone.querySelectorAll('input').forEach(function(input) {
-                    input.value = '';
-                });
+              // Remove the <hr> element
+              hr.remove();
             }
-
-            var firstZone = document.querySelector('.zone:first-of-type');
-
-            // Check if the first zone has an hr element
-            if (firstZone.previousElementSibling && firstZone.previousElementSibling.tagName.toLowerCase() == 'hr') {
-                // Remove the hr element
-                firstZone.previousElementSibling.remove();
-            }
+            currentZone.remove();
         }
     });
 
