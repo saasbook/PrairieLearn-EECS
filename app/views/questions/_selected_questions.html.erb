@@ -27,7 +27,7 @@
                 <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">
             </div>
             <div class="col-auto">
-              <button class="btn btn-default" type="button" id="add_pool">+Pool</button>
+                <button class="btn btn-default add-pool-btn" type="button">+Pool</button>
             </div>
             <span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>
         </div>
@@ -106,7 +106,7 @@ function makeDroppableForOutter(container) {
           // shrink the height of zone
           // Get the number of dropped elements
           var numDropped = container.children.length;
-          if ((numDropped - 1) * 3 * extraHeight < parentContainer.clientHeight) {
+          if ((numDropped - 1) * 2 * extraHeight < parentContainer.clientHeight) {
             parentContainer.style.height = (parentContainer.clientHeight - extraHeight) + "px";
           }
           parentContainer.style.minHeight = "25vh";
@@ -117,6 +117,121 @@ function makeDroppableForOutter(container) {
       inputField.removeAttribute("hidden");
       // Show hidden form elements
       $(points).next().show();
+    }
+  }).sortable({
+    revert: false
+  });
+}
+
+$(document).ready(function() {
+    // Make all existing containers droppable
+    $('.mcontainer').each(function() {
+        makeDroppableForOutter(this);
+    });
+
+    // Add a new zone on click of + Zone button
+    $('#add_zones').click(function() {
+        // Get the last .zone element
+        var lastZone = document.querySelector('.zone:last-of-type');
+    
+        // Create a new .zone element
+        var newZone = document.createElement('div');
+        if (lastZone === null) {
+            newZone.className = 'zone';
+    
+            // Find the first <hr> element in .sqcontainer
+            var hr = document.querySelector('.sqcontainer hr:first-of-type');
+    
+            // Insert the new .zone element after the <hr> element
+            hr.parentNode.insertBefore(newZone, hr.nextSibling);
+            //document.querySelector('.sqcontainer').appendChild(newZone);
+        } else {
+            newZone.classList.add('zone');
+    
+            // Create a new <hr> element
+            var hr = document.createElement('hr');
+    
+            // Add the <hr> after the last <div class='zone'>
+            lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
+            lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
+        }
+    
+        // Create the inner HTML for the new .zone element
+        var innerHtml = '<div class="form-row">' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Title" aria-label="Title">' +
+            '</div>' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
+            '</div>' +
+            '<div class="col-auto">' +
+            '<button class="btn btn-default add-pool-btn" type="button">+Pool</button>' +
+            '</div>' +
+            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
+            '</div>' +
+            '<div class="mcontainer">' +
+            '</div>';
+    
+        // Set the inner HTML of the new .zone element
+        newZone.innerHTML = innerHtml;
+    
+        // Clear input fields in new zone
+        newZone.querySelectorAll('input').forEach(function(input) {
+            input.value = '';
+        });
+    
+        // Make the new zone droppable
+        makeDroppableForOutter(newZone.querySelector('.mcontainer'));
+    });
+    
+    // Add a new pool on click of + pool button
+    $('.sqcontainer').on('click', '.add-pool-btn', function() {
+      // Find the .zone element that contains the clicked button
+      var zone = $(this).closest('.zone')[0];
+  
+      // Add a new pool to the .mcontainer element in the zone
+      //var pool = document.createElement('div');
+      //pool.className = 'pool';
+      var container = $(zone.querySelector('.mcontainer'));
+      //zone.querySelector('.mcontainer').appendChild(pool);
+  
+      // Add a new question to the pool
+      var question = document.createElement('p');
+      question.className = 'list-group-item draggable-question draggable-text';
+      question.draggable = true;
+      question.style.textAlign = "left";
+      question.innerHTML = '<td>Pool</td><span class="close">&times;</span><input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size=1><label for="form-control" class="pts-txt">Pts</label>';
+      zone.querySelector('.mcontainer').appendChild(question);
+  
+      var item = $(question);
+      item.attr("type", "outter"); 
+      item.width(container.width()-40);
+      item.find("span").css('display','block');
+      var points = item[0].getElementsByClassName("form-control")[0];
+      item[0].style.height = "auto";
+      item[0].style.width = document.body.querySelectorAll(".mcontainer")[0].offsetWidth;
+      points.style.display = "inline";
+      points.style.float = "right";
+      points.style.marginTop = "-1.5%";
+      points.style.marginRight = "2.5%";
+
+      // expand the height of zone
+      var parentContainer = zone; 
+      var extraHeight = item[0].offsetHeight;
+      parentContainer.style.height = (parentContainer.clientHeight + extraHeight) + "px";
+      parentContainer.style.maxHeight = "100vh";
+
+      var close = item.find("span");
+      close.click(function() {
+          item.remove();
+          // shrink the height of zone
+          // Get the number of dropped elements
+          var numDropped = container.children.length;
+          if ((numDropped - 1) * extraHeight < parentContainer.clientHeight) {
+            parentContainer.style.height = (parentContainer.clientHeight - extraHeight) + "px";
+          }
+          parentContainer.style.minHeight = "25vh";
+      });
 
       // Add collapse container to dropped item if it doesn't exist already
       var collapseContainer = item.find(".collapse");
@@ -147,72 +262,8 @@ function makeDroppableForOutter(container) {
 
         item.prepend(collapseButton);
       }
-    }
-  }).sortable({
-    revert: false
-  });
-}
-
-$(document).ready(function() {
-    // Make all existing containers droppable
-    $('.mcontainer').each(function() {
-        makeDroppableForOutter(this);
     });
-
-    // Add a new zone on click of + Zone button
-    $('#add_zones').click(function() {
-        // Get the last .zone element
-        var lastZone = document.querySelector('.zone:last-of-type');
-
-        // Create a new .zone element
-        var newZone = document.createElement('div');
-        if (lastZone === null) {
-          newZone.className = 'zone';
-
-          // Find the first <hr> element in .sqcontainer
-          var hr = document.querySelector('.sqcontainer hr:first-of-type');
-
-          // Insert the new .zone element after the <hr> element
-          hr.parentNode.insertBefore(newZone, hr.nextSibling);
-          //document.querySelector('.sqcontainer').appendChild(newZone);
-        }else {
-          newZone.classList.add('zone');
-
-          // Create a new <hr> element
-          var hr = document.createElement('hr');
-      
-          // Add the <hr> after the last <div class='zone'>
-          lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
-          lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
-        }
     
-        // Create the inner HTML for the new .zone element
-        var innerHtml = '<div class="form-row">' +
-                            '<div class="col-md-auto mb-1">' +
-                                '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Title" aria-label="Title">' +
-                            '</div>' +
-                            '<div class="col-md-auto mb-1">' +
-                                '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
-                            '</div>' +
-                            '<div class="col-auto">' +
-                              '<button class="btn btn-default" type="button" id="add_pool">+Pool</button>' +
-                            '</div>' +
-                            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
-                        '</div>' +
-                        '<div class="mcontainer">' +
-                        '</div>';
-    
-        // Set the inner HTML of the new .zone element
-        newZone.innerHTML = innerHtml;
-    
-        // Clear input fields in new zone
-        newZone.querySelectorAll('input').forEach(function(input) {
-            input.value = '';
-        });
-
-        // Make the new zone droppable
-        makeDroppableForOutter(newZone.querySelector('.mcontainer'));
-    });
     
 
     // Remove zone on close button click
@@ -238,12 +289,6 @@ $(document).ready(function() {
             currentZone.remove();
         }
     });
-
-    // Add a new zone on click of + Zone button
-    $('#add_pool').click(function() {
-      
-    });
-
 });
 </script>
 

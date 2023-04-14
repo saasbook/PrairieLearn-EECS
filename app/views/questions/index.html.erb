@@ -237,10 +237,6 @@
                         points: pt,
                         alternatives: []
                       });
-                      jsonData.zones[i].questions[j].alternatives.push({
-                        id: midQuestions[j].getAttribute('name'),
-                        points: pt
-                      });
                       for (let k = 0; k < alternatives.length; k++) {
                         jsonData.zones[i].questions[j].alternatives.push({
                           id: alternatives[k].getAttribute('name'),
