@@ -141,5 +141,8 @@ The application is making a single API calls for every directory in a repository
 - Haolin Zhu (haolinz@berkeley.edu)
 - Sanwu Luo (sanwuluo35@berkeley.edu)
 - Timotius Vincent (timotiusvincent@berkeley.edu)
-
+- Yuhan Dong (ydong19@berkeley.edu)
+- Guobin Liang (a544266477@berkeley.edu)
+- Fernanda Pisconte (fpisconte@berkeley.edu)
+- Chithra Anand (chithra.rajan@berkeley.edu)
 ---
