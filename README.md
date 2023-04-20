@@ -96,7 +96,7 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 ### Spring 2023:
 
 - Zones and pools are available for users to use.
-- Can search for questinos using the search bar on the top left.
+- Can search for questions using the search bar on the top left.
 - The questions shown now are shown using descriptive titles instead of IDs (which are just file names).
 
 ---
