@@ -221,7 +221,7 @@
           if (!(midZones.length == 1 && 
               midZones[0].querySelector("#zone_title").value == "" &&
               midZones[0].querySelector("#zone_comment").value == "" &&
-              midZones[0].querySelectorAll('.draggable-question[type="outter"]').length == 0)) {
+              midZones[0].querySelectorAll('.draggable-question[type="outer"]').length == 0)) {
             jsonData.zones = [];
             for (let i = 0; i < midZones.length; i++) {
               jsonData.zones.push({
@@ -229,7 +229,7 @@
                 comment: midZones[i].querySelector("#zone_comment").value,
                 questions: []
               });
-              const midQuestions = midZones[i].querySelectorAll('.draggable-question[type="outter"]');
+              const midQuestions = midZones[i].querySelectorAll('.draggable-question[type="outer"]');
               for (let j = 0; j < midQuestions.length; j++) {
                 const alternatives = midQuestions[j].querySelectorAll('.draggable-question[type="inner"]');
                 if (alternatives.length > 0) {

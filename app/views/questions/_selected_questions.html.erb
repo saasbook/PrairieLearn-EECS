@@ -81,14 +81,14 @@ function makeDroppableForInner(container) {
   makeDroppable(container, "inner");
 }
 
-function makeDroppableForOutter(container) {
+function makeDroppableForOuter(container) {
   makeDroppable(container, "outer");
 }
 
 $(document).ready(function() {
     // Make all existing containers droppable
     $('.mcontainer').each(function() {
-        makeDroppableForOutter(this);
+        makeDroppableForOuter(this);
     });
 
     // Add a new zone on click of + Zone button
@@ -138,7 +138,7 @@ $(document).ready(function() {
         newZone.innerHTML = innerHtml;
     
         // Make the new zone droppable
-        makeDroppableForOutter(newZone.querySelector('.mcontainer'));
+        makeDroppableForOuter(newZone.querySelector('.mcontainer'));
     });
     
     // Add a new pool on click of + pool button
@@ -162,7 +162,7 @@ $(document).ready(function() {
       zone.querySelector('.mcontainer').appendChild(pool);
   
       var item = $(pool);
-      item.attr("type", "outter"); 
+      item.attr("type", "outer"); 
       item.width($(container).width()-40);
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];
