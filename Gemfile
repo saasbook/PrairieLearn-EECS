@@ -68,3 +68,10 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "active_type", "= 1.3.2"
 
 gem 'faraday-retry'
+
+gem "font-awesome-sass", "~> 6.4.0"
+
+# gem 'jquery-rails'
+
+gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
+gem 'rails-ujs', '~> 0.1.0'
