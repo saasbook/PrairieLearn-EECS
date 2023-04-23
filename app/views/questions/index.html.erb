@@ -33,10 +33,6 @@
             <%= link_to 'Logout', logout_path(), :class => 'btn btn-primary' %>
           </li>
           <li class="nav-item mx-1">
-            <button class="btn btn-primary" type="button" id="import">Import</button>
-            <a id="downloadAnchorElem" style="display:none"></a>
-          </li>
-          <li class="nav-item mx-1">
             <button class="btn btn-primary" type="button" id="export">Export</button>
             <a id="downloadAnchorElem" style="display:none"></a>
           </li>
@@ -267,11 +263,6 @@
         }).catch(function(err){
           console.log(err)
         })
-      });
-
-      // trigger import
-      $('#import').click(function(){
-        
       });
     });
 
