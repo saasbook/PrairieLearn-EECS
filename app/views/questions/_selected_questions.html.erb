@@ -39,11 +39,84 @@
 
 
 <script>
+
+function makeNewZone() {
+  // Get the last .zone element
+  var lastZone = document.querySelector('.zone:last-of-type');
+    
+  // Create a new .zone element
+  var newZone = document.createElement('div');
+  if (lastZone === null) {
+    newZone.className = 'zone';
+
+    // Find the first <hr> element in .sqcontainer
+    var hr = document.querySelector('.sqcontainer hr:first-of-type');
+    
+    // Insert the new .zone element after the <hr> element
+    hr.parentNode.insertBefore(newZone, hr.nextSibling);
+    //document.querySelector('.sqcontainer').appendChild(newZone);
+    
+  } else {
+    newZone.classList.add('zone');
+    
+    // Create a new <hr> element
+    var hr = document.createElement('hr');
+    
+    // Add the <hr> after the last <div class='zone'>
+    lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
+    lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
+    }
+    
+    // Create the inner HTML for the new .zone element
+    var innerHtml = '<div class="form-row">' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">' +
+            '</div>' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
+            '</div>' +
+            '<div class="col-auto">' +
+            '<button class="btn btn-default add-pool-btn" type="button">+Pool</button>' +
+            '</div>' +
+            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
+            '</div>' +
+            '<div class="mcontainer">' +
+            '</div>';
+    
+    // Set the inner HTML of the new .zone element
+    newZone.innerHTML = innerHtml;
+    
+    // Make the new zone droppable
+    makeDroppableForOutter(newZone.querySelector('.mcontainer'));
+
+    //Assign unique ID
+    let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+    num_zones = Number(num_zones) + 1;
+    new_id = 'zone' + num_zones.toString();
+    $(newZone).attr('id', new_id);
+
+    //Update and save num zones
+    localStorage.removeItem("num_zones");
+    localStorage.setItem("num_zones", JSON.stringify(num_zones));
+
+    //Update file with new zone
+    let file = JSON.parse(window.localStorage.getItem("file"));
+    content = {"title": "",
+    "comment": "",
+    "questions": []};
+ 
+    file[new_id] = content;
+    localStorage.removeItem("file");
+    localStorage.setItem("file", JSON.stringify(file));
+};
+
 function makeDroppable(container, type) {
   $(container).droppable({
     accept: ".draggable-question",
     drop: function(event, ui) {
+
       var item = $(ui.draggable);
+
       item.attr("type", type); 
       item.width($(this).width()-40);
       item.find("span").css('display','block');
@@ -69,6 +142,45 @@ function makeDroppable(container, type) {
         inputField.removeAttribute("hidden");
         $(points).next().show();
       }
+
+
+      //Retrieve JSON file     
+    
+      let file = JSON.parse(window.localStorage.getItem("file"));
+
+      var question_title = item.text();
+      question_title = question_title.slice(0, question_title.length - 36);
+      question_title = question_title.slice(9,);
+      
+      //ID of the zone
+      container_id = $(container).parent().attr('id');
+
+
+      is_pool = $(container).attr("class").includes("pool");
+      console.log(is_pool);
+
+      
+
+      //Checking for repeated questions only for zones not pools rn
+
+      if ((is_pool === false) && file[container_id]["questions"].includes(question_title)) {
+        return;
+      }
+
+      if((is_pool) == false) {
+
+
+      //Adding questions to the file 
+      file[container_id]["questions"].push(question_title);
+      localStorage.removeItem("file");
+      localStorage.setItem("file", JSON.stringify(file)); 
+      
+      
+//      console.log(container_id);
+
+    }
+
+      
     }
   }).sortable({
     revert: false
@@ -86,59 +198,34 @@ function makeDroppableForOutter(container) {
 }
 
 $(document).ready(function() {
+
+  let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+  let file = JSON.parse(window.localStorage.getItem("file"));
+
+
+  if (num_zones == null ){
+      localStorage.setItem("num_zones",  JSON.stringify(0));
+  }
+
+  if (file == null || Object.keys(file).length === 0) {
+       content = {"title": "",
+       "comment": "",
+       "questions": []};
+       file = {"zone0": content};
+       localStorage.setItem("file", JSON.stringify(file));
+       $('.zone').attr('id', "zone0");
+   }
+
+
     // Make all existing containers droppable
     $('.mcontainer').each(function() {
         makeDroppableForOutter(this);
     });
 
     // Add a new zone on click of + Zone button
+    
     $('#add_zones').click(function() {
-        // Get the last .zone element
-        var lastZone = document.querySelector('.zone:last-of-type');
-    
-        // Create a new .zone element
-        var newZone = document.createElement('div');
-        if (lastZone === null) {
-            newZone.className = 'zone';
-    
-            // Find the first <hr> element in .sqcontainer
-            var hr = document.querySelector('.sqcontainer hr:first-of-type');
-    
-            // Insert the new .zone element after the <hr> element
-            hr.parentNode.insertBefore(newZone, hr.nextSibling);
-            //document.querySelector('.sqcontainer').appendChild(newZone);
-        } else {
-            newZone.classList.add('zone');
-    
-            // Create a new <hr> element
-            var hr = document.createElement('hr');
-    
-            // Add the <hr> after the last <div class='zone'>
-            lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
-            lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
-        }
-    
-        // Create the inner HTML for the new .zone element
-        var innerHtml = '<div class="form-row">' +
-            '<div class="col-md-auto mb-1">' +
-            '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">' +
-            '</div>' +
-            '<div class="col-md-auto mb-1">' +
-            '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
-            '</div>' +
-            '<div class="col-auto">' +
-            '<button class="btn btn-default add-pool-btn" type="button">+Pool</button>' +
-            '</div>' +
-            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
-            '</div>' +
-            '<div class="mcontainer">' +
-            '</div>';
-    
-        // Set the inner HTML of the new .zone element
-        newZone.innerHTML = innerHtml;
-    
-        // Make the new zone droppable
-        makeDroppableForOutter(newZone.querySelector('.mcontainer'));
+      makeNewZone();
     });
     
     // Add a new pool on click of + pool button
@@ -196,7 +283,7 @@ $(document).ready(function() {
         collapseContainer = $("<div/>", {
           class: "collapse",
           id: collapseId,
-          html: "<div class='mcontainer'></div>"
+          html: "<div class='pool mcontainer'></div>"
         });
         item.append(collapseContainer);
         makeDroppableForInner(collapseContainer.find(".mcontainer"));
