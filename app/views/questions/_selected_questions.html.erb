@@ -40,7 +40,65 @@
 
 <script>
 
-function makeNewZone() {
+function retrieve_data(file) {
+
+  var lastZone = document.querySelector('.zone:last-of-type');
+  $(lastZone).remove();
+
+ Object.keys(file).forEach((id) => {
+
+  questions = file[id]["questions"];
+  comment = file[id]["comment"];
+  title = file[id]["title"];
+
+  console.log(questions);
+
+  //Make the zone element
+
+  makeNewZone(id);
+
+  //Get the zone
+  container = $("#" + id).find('.mcontainer')[0];
+  innerhtml = '';
+  questions.forEach((question) => {  
+    innerhtml +=    '<tr>' + 
+                    '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
+                    '<td>' + question + '</td>'+ 
+                    '<span class="close deleteq" style="display:block">&times;</span>' + 
+                    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
+                    '<label for="form-control" class="pts-txt"> Pt </label>' + 
+                    '</p>'
+                    + '</tr>';                   
+                  })
+  container.innerHTML = innerhtml;
+  $('#' + id).append(container);
+
+  //Functionality for delete buttons
+  $(".deleteq").click(function() {
+      $(this).parent().remove();
+      question_title = $(this).parent().text();
+      question_title = question_title.slice(0, question_title.length - 5);
+      deleteQuestion(id, question_title);
+  });
+})
+};
+
+function deleteZone(id) {
+  let file = JSON.parse(window.localStorage.getItem("file"));
+  delete file[id];
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+}
+
+function deleteQuestion(id, title) {
+  let file = JSON.parse(window.localStorage.getItem("file"));
+  const index = file[id]["questions"].indexOf(title);
+  file[id]["questions"].splice(index, 1);
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+}
+
+function makeNewZone(new_id) {
   // Get the last .zone element
   var lastZone = document.querySelector('.zone:last-of-type');
     
@@ -90,24 +148,7 @@ function makeNewZone() {
     makeDroppableForOutter(newZone.querySelector('.mcontainer'));
 
     //Assign unique ID
-    let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
-    num_zones = Number(num_zones) + 1;
-    new_id = 'zone' + num_zones.toString();
     $(newZone).attr('id', new_id);
-
-    //Update and save num zones
-    localStorage.removeItem("num_zones");
-    localStorage.setItem("num_zones", JSON.stringify(num_zones));
-
-    //Update file with new zone
-    let file = JSON.parse(window.localStorage.getItem("file"));
-    content = {"title": "",
-    "comment": "",
-    "questions": []};
- 
-    file[new_id] = content;
-    localStorage.removeItem("file");
-    localStorage.setItem("file", JSON.stringify(file));
 };
 
 function makeDroppable(container, type) {
@@ -119,6 +160,7 @@ function makeDroppable(container, type) {
 
       item.attr("type", type); 
       item.width($(this).width()-40);
+
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];
       item[0].style.height = "auto";
@@ -163,21 +205,16 @@ function makeDroppable(container, type) {
 
       //Checking for repeated questions only for zones not pools rn
 
+      console.log(container_id);
       if ((is_pool === false) && file[container_id]["questions"].includes(question_title)) {
         return;
       }
 
-      if((is_pool) == false) {
-
-
+      if((is_pool) === false) {
       //Adding questions to the file 
       file[container_id]["questions"].push(question_title);
       localStorage.removeItem("file");
-      localStorage.setItem("file", JSON.stringify(file)); 
-      
-      
-//      console.log(container_id);
-
+      localStorage.setItem("file", JSON.stringify(file));
     }
 
       
@@ -214,6 +251,8 @@ $(document).ready(function() {
        file = {"zone0": content};
        localStorage.setItem("file", JSON.stringify(file));
        $('.zone').attr('id', "zone0");
+   } else {
+    retrieve_data(file);
    }
 
 
@@ -225,7 +264,25 @@ $(document).ready(function() {
     // Add a new zone on click of + Zone button
     
     $('#add_zones').click(function() {
-      makeNewZone();
+      let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+      let file = JSON.parse(window.localStorage.getItem("file"));
+
+      num_zones = Number(num_zones) + 1;
+      new_id = 'zone' + num_zones.toString();
+      makeNewZone(new_id);
+
+      //Update file with new zone
+      content = {"title": "",
+      "comment": "",
+      "questions": []};
+ 
+      file[new_id] = content;
+      localStorage.removeItem("file");
+      localStorage.setItem("file", JSON.stringify(file));
+
+      //Update and save num zones
+      localStorage.removeItem("num_zones");
+      localStorage.setItem("num_zones", JSON.stringify(num_zones));
     });
     
     // Add a new pool on click of + pool button
@@ -316,6 +373,10 @@ $(document).ready(function() {
 
         // Display the confirmation pop-up
         var confirmed = window.confirm(message);
+
+        //Remove from file
+        id = $(this).closest('.zone').attr('id');
+        deleteZone(id);
 
         // Check the user's response
         if (confirmed) {
