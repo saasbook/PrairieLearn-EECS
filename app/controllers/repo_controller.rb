@@ -1,5 +1,7 @@
 # controller to get a list of repos and questions from repo
 require 'octokit'
+require 'json'
+require "base64"
 
 class RepoController < ApplicationController
   # All method require authenticated user
@@ -78,13 +80,11 @@ class RepoController < ApplicationController
       # If .JSON file is found, keep the path
       if file.name == "info.json"
         question_name = file.path.partition('/')[2].rpartition('/')[0]
-
-        require 'json'
+        
         path_str = path+"/info.json"
 
         contentsJsonInfobase64 = client.contents(repo, path: path_str)
-
-        require "base64"
+        
         descriptive_title = JSON.parse(Base64.decode64(contentsJsonInfobase64[:content]))["title"]
 
         Question.create(title: question_name, descriptiveTitle: descriptive_title, repo: repo)
