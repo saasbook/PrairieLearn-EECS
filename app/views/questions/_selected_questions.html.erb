@@ -40,15 +40,38 @@
 
 <script>
 
-function retrieveZones(question, container) {
-  //Make Zone element
+function checkFields(fields) {
+  const availableFields = ["uuid", "title", "type", "number", "set", "allowAccess", "zones"];
+  unsupportedFields = "";
 
-  //Add data
-  //Append to container
+  fields.forEach((field) => {
+    console.log(field);
+    if ((availableFields.includes(field)) === false ) {
+      unsupportedFields += field + " ";
+    } 
+  });
+
+  if (unsupportedFields !== ""){
+  let message = "The following fields aren't currently supported, they will be deleted in this editor. We encourage you to add them back later" + "\n" + unsupportedFields;
+  alert(message);
+  }
+  
 }
 
-function retrieve_data(file) {
+function populate_configuration(file) {
+  title = file["title"];
+  type = file["type"];
+  number = file["number"];
+  set = file["set"];
+  allowAccess = file["allowAccess"];
 
+  $("[name='title']").val(title);
+  $("[name='type']").val(type);
+  $("[name='number']").val(number);
+  $("[name='set']").val(set);
+}
+
+function populate_questions(file) {
   var lastZone = document.querySelector('.zone:last-of-type');
   $(lastZone).remove();
 
@@ -99,6 +122,35 @@ function retrieve_data(file) {
       deleteQuestion(id, question_title);
   });
 })
+}
+
+function retrieve_data(file, imported) {
+
+  if (imported === true) {
+    console.log(file);
+    fields = Object.keys(file);
+    console.log(fields);
+    //Checking for unsupported fields
+    checkFields(fields);
+
+    //Retrieve data of the configuration column
+    populate_configuration(file);
+    
+    //Retrieve zones,pools, and questions
+    //Prepare file
+
+    new_file = {};
+    counter = 0
+    file["zones"].forEach((zone) => {
+      id = "zone" + counter.toString();
+      new_file[id] = zone;
+      counter += 1;
+    })
+
+    console.log(new_file);
+    populate_questions(new_file);
+  }
+
 };
 
 function deleteZone(id) {
@@ -200,8 +252,7 @@ function makeDroppable(container, type) {
     greedy: true,
     drop: function(event, ui) {
 
-
-      var item = $(ui.draggable);
+      var item = $(ui.draggable).clone();
       item.appendTo(this);
       
       item.attr("type", type); 

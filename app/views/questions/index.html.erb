@@ -61,7 +61,7 @@
             </div>
             <div class="col-md-5 mb-3">
               <label class='question_title'>Credit:</label>
-              <input class="form-control" type="text" placeholder="Enter integer" name="credit" size=4>
+              <input class="form-control" type="text" placeholder="Enter integer" name="credit" id="credit" size=4>
             </div>
           </div>
           <div class="form-row">
@@ -188,27 +188,26 @@
 
     const handleSubmit = event => {
       url = "https://httpbin.org/post";
-      //let h = new Headers();
-      //h.append('Accept', 'application/json'); 
       const files = event.target.files;
       const formData = new FormData();
       formData.append('myFile', files[0]);
 
       let req = new Request(url, {
         method: 'POST',
-        body: formData
+        body: formData,
       });
-    
+
       fetch(req)
       .then(response => response.json())
       .then(data => {
         var file = data;
         file = file["files"]["myFile"];
-        retrieve_data(file);
+        file = JSON.parse(file);
+        retrieve_data(file, true);
       })
       .catch(error => {
         console.error(error);
-      });
+      })
     }
 
     $(document).ready(function(){
@@ -255,7 +254,7 @@
           if (!(midZones.length == 1 && 
               midZones[0].querySelector("#zone_title").value == "" &&
               midZones[0].querySelector("#zone_comment").value == "" &&
-              midZones[0].querySelectorAll('.draggable-question[type="outter"]').length == 0)) {
+              midZones[0].querySelectorAll('.draggable-question[type="outer"]').length == 0)) {
             jsonData.zones = [];
             for (let i = 0; i < midZones.length; i++) {
               jsonData.zones.push({
@@ -263,7 +262,7 @@
                 comment: midZones[i].querySelector("#zone_comment").value,
                 questions: []
               });
-              const midQuestions = midZones[i].querySelectorAll('.draggable-question[type="outter"]');
+              const midQuestions = midZones[i].querySelectorAll('.draggable-question[type="outer"]');
               for (let j = 0; j < midQuestions.length; j++) {
                 const alternatives = midQuestions[j].querySelectorAll('.draggable-question[type="inner"]');
                 if (alternatives.length > 0) {
@@ -299,6 +298,16 @@
         })
       });
     });
+
+    window.onbeforeunload = function() {
+      return "Are you sure?";
+    };
+
+    window.onkeydown = function(event) {
+      if (event.keyCode === 116) {
+        window.location.reload();
+      }
+    };
     </script>
 
   </body>
