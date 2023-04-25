@@ -53,6 +53,7 @@ group :test do
   gem 'cucumber-rails-training-wheels' # basic imperative step defs like "Then I should see..."
   gem 'database_cleaner' # required by Cucumber
   gem 'codeclimate-test-reporter', require: false
+  # gem 'capybara-webkit'
 end
 
 # make sure the following gems are in your production group:
@@ -75,3 +76,5 @@ gem "font-awesome-sass", "~> 6.4.0"
 
 gem 'jquery-rails', '~> 4.3', '>= 4.3.3'
 gem 'rails-ujs', '~> 0.1.0'
+gem 'database_cleaner'
+gem "selenium-webdriver"

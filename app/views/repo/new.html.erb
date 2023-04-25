@@ -20,7 +20,7 @@
                   <h4>Choose a repository to synchronize:</h4><br>
                   <%= form_with url: "/sync", method: :get do |form|%>
                     <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] }, {class: "form-control"} %>
-                    <%= form.button 'Synchronize', class: "btn btn-primary", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Synchronizing...".html_safe} %>
+                    <%= form.button 'Synchronize', class: "btn btn-primary", id: 'sync', data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Synchronizing...".html_safe} %>
                   <% end %>
                 </blockquote>
               </div>
