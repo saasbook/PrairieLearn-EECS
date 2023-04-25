@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   get '/repo', to: 'repo#new', as: 'repo'
   get '/sync', to: 'repo#sync', as: 'sync'
   post 'questions/search', to: 'questions#search', as: 'search_questions'
+  post '/user/profile', to: 'questions#index'
 end

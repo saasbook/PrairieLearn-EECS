@@ -36,6 +36,10 @@
             <button class="btn btn-primary" type="button" id="export">Export</button>
             <a id="downloadAnchorElem" style="display:none"></a>
           </li>
+          <li class="nav-item mx-1">
+            <input type="file" id="import" />
+        </form>
+          </li>
         </ul>
       </div>
     </nav>
@@ -174,6 +178,36 @@
             reject(err)
           }
         });
+      });
+    }
+
+    
+    document.querySelector('#import').addEventListener('change', event => {
+      handleSubmit(event);
+    });
+
+    const handleSubmit = event => {
+      url = "https://httpbin.org/post";
+      //let h = new Headers();
+      //h.append('Accept', 'application/json'); 
+      const files = event.target.files;
+      const formData = new FormData();
+      formData.append('myFile', files[0]);
+
+      let req = new Request(url, {
+        method: 'POST',
+        body: formData
+      });
+    
+      fetch(req)
+      .then(response => response.json())
+      .then(data => {
+        var file = data;
+        file = file["files"]["myFile"];
+        retrieve_data(file);
+      })
+      .catch(error => {
+        console.error(error);
       });
     }
 

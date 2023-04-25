@@ -40,6 +40,13 @@
 
 <script>
 
+function retrieveZones(question, container) {
+  //Make Zone element
+
+  //Add data
+  //Append to container
+}
+
 function retrieve_data(file) {
 
   var lastZone = document.querySelector('.zone:last-of-type');
@@ -51,27 +58,38 @@ function retrieve_data(file) {
   comment = file[id]["comment"];
   title = file[id]["title"];
 
-  console.log(questions);
 
   //Make the zone element
 
   makeNewZone(id);
 
-  //Get the zone
+  //Retrieve questions
   container = $("#" + id).find('.mcontainer')[0];
+  
   innerhtml = '';
-  questions.forEach((question) => {  
+  questions.forEach((question) => {
+
+    if("pool_id" in question) {  
+      pool = makePool(question["pool_id"]);
+      innerhtml += pool.outerHTML;
+
+    } else {
+
+    question_id = question["id"];
     innerhtml +=    '<tr>' + 
                     '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
-                    '<td>' + question + '</td>'+ 
+                    '<td>' + question_id + '</td>'+ 
                     '<span class="close deleteq" style="display:block">&times;</span>' + 
                     '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
                     '<label for="form-control" class="pts-txt"> Pt </label>' + 
                     '</p>'
                     + '</tr>';                   
-                  })
+    }
+    })
   container.innerHTML = innerhtml;
   $('#' + id).append(container);
+
+
 
   //Functionality for delete buttons
   $(".deleteq").click(function() {
@@ -92,8 +110,13 @@ function deleteZone(id) {
 
 function deleteQuestion(id, title) {
   let file = JSON.parse(window.localStorage.getItem("file"));
-  const index = file[id]["questions"].indexOf(title);
-  file[id]["questions"].splice(index, 1);
+  questions = file[id]["questions"];
+  for (let i = 0; i < questions.length; i++) {
+
+  if (questions[i]["id"] === title) {
+      questions.splice(i, 1);
+    }
+  }
   localStorage.removeItem("file");
   localStorage.setItem("file", JSON.stringify(file));
 }
@@ -151,13 +174,36 @@ function makeNewZone(new_id) {
     $(newZone).attr('id', new_id);
 };
 
+function checkRepeated(questions, pool, title) {
+  questions.forEach((question) => {
+    if (pool === true && ("pool_id" in question)) {
+      alt = question["alternatives"];
+      alt.forEach((question_pool) => {
+        if (question_pool["id"] === title) { 
+          return true;
+        }
+      });
+    } else if (pool === false) {
+      console.log("AAAA");
+      console.log(question["id"]);
+      if (question["id"]  === title) { 
+        return true;
+      }
+    }
+  });
+  return false;
+}
+
 function makeDroppable(container, type) {
   $(container).droppable({
     accept: ".draggable-question",
+    greedy: true,
     drop: function(event, ui) {
 
-      var item = $(ui.draggable);
 
+      var item = $(ui.draggable);
+      item.appendTo(this);
+      
       item.attr("type", type); 
       item.width($(this).width()-40);
 
@@ -170,11 +216,6 @@ function makeDroppable(container, type) {
       points.style.marginTop = "-1.5%";
       points.style.marginRight = "2.5%";
 
-      var close = item.find("span");
-      close.click(function() {
-          item.remove();
-      });
-      
       // toggle the visibility of the hidden input field and form elements
       var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
       if (type === "inner") {
@@ -189,39 +230,59 @@ function makeDroppable(container, type) {
       //Retrieve JSON file     
     
       let file = JSON.parse(window.localStorage.getItem("file"));
-
       var question_title = item.text();
       question_title = question_title.slice(0, question_title.length - 36);
       question_title = question_title.slice(9,);
-      
-      //ID of the zone
-      container_id = $(container).parent().attr('id');
-
-
+      //Check if the question has been used before (only unique ids allowed) 
       is_pool = $(container).attr("class").includes("pool");
-      console.log(is_pool);
-
-      
-
-      //Checking for repeated questions only for zones not pools rn
-
-      console.log(container_id);
-      if ((is_pool === false) && file[container_id]["questions"].includes(question_title)) {
-        return;
-      }
-
-      if((is_pool) === false) {
       //Adding questions to the file 
-      file[container_id]["questions"].push(question_title);
-      localStorage.removeItem("file");
-      localStorage.setItem("file", JSON.stringify(file));
-    }
+      if(is_pool === false) {
+        container_id = $(container).parent().attr('id');
+        var close = item.find("span");
+        close.click(function() {
+            item.remove();
+            question_title = $(this).parent().text();
+            question_title = question_title.slice(9, question_title.length - 36);
+            console.log(question_title);
+            deleteQuestion(container_id, question_title);
+        });
+        console.log(container_id);
+        
+        is_repeated = checkRepeated(file[container_id]["questions"], false, question_title);
+        console.log(is_repeated);
+        if (is_repeated === false) {
+          content = {"id": question_title, "points": 0};
+          file[container_id]["questions"].push(content);
+          localStorage.removeItem("file");
+          localStorage.setItem("file", JSON.stringify(file));
+        }
+    } else {
+      container_id = $(container).parent().parent().parent().parent().attr('id');
+      var close = item.find("span");
+      close.click(function() {
+          item.remove();
+          question_title = $(this).parent().text();
+          question_title = question_title.slice(9, question_title.length - 36);
+          console.log(question_title);
+          deleteQuestion(container_id, question_title);
+      });
+      questions = file[container_id]["questions"];
+      is_repeated = checkRepeated(questions, true, question_title);
+      if (is_repeated === false) {
 
-      
+      pool_id = $(container).parent().parent().attr('id');
+  
+      questions.forEach((question) => { 
+        if (("pool_id" in question) && question["pool_id"] === pool_id) {
+            content = {"id": question_title, "points": 0};  
+            question["alternatives"].push(content);
+            localStorage.removeItem("file");
+            localStorage.setItem("file", JSON.stringify(file));
+        }
+      });      
     }
-  }).sortable({
-    revert: false
-  });
+  }
+  }});
 }
 
 var count = 0;
@@ -238,7 +299,6 @@ $(document).ready(function() {
 
   let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
   let file = JSON.parse(window.localStorage.getItem("file"));
-
 
   if (num_zones == null ){
       localStorage.setItem("num_zones",  JSON.stringify(0));
@@ -290,6 +350,16 @@ $(document).ready(function() {
       // Find the .zone element that contains the clicked button
       var zone = $(this).closest('.zone')[0];
   
+      //Update file
+      zone_id = $(zone).attr('id');
+      console.log(zone_id);
+      pool_id = "pool_" + crypto.randomUUID();
+      let file = JSON.parse(window.localStorage.getItem("file"));
+      content = {"pool_id": pool_id, "title": "", "numberChoose": 0, "points": 0, "alternatives": []}
+      file[zone_id]["questions"].push(content)
+      localStorage.removeItem("file");
+      localStorage.setItem("file", JSON.stringify(file));
+
       // Add a new pool
       var container = zone.querySelector('.mcontainer');
       var pool = document.createElement('p');
@@ -307,6 +377,7 @@ $(document).ready(function() {
   
       var item = $(pool);
       item.attr("type", "outter"); 
+      item.attr("id", pool_id);
       item.width($(container).width()-40);
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];
@@ -393,5 +464,84 @@ $(document).ready(function() {
         }
     });
 });
+
+
+function makePool(pool_id) {
+  // Add a new pool
+  var pool = document.createElement('p');
+  pool.className = 'list-group-item draggable-question draggable-text';
+  pool.draggable = true;
+  pool.style.textAlign = "left";
+  pool.innerHTML = 
+    '<span class="close">&times;</span>' +
+    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0">' +
+    '<label for="form-control" class="pts-txt">Pts</label>' + 
+    '<input class="form-control col-md-1 mb-1" type="text" placeholder="0" id="numchoose">' + 
+    '<label for="form-control" class="pts-txt">Num choose</label>' +
+    '<input type="text" class="form-control col-md-4 mb-1 border-0" id="pool-title" style="background:white;" placeholder="Pool Title">';
+  
+  var item = $(pool);
+  item.attr("type", "outter"); 
+  item.attr("id", pool_id);
+  item.width($(container).width()-40);
+  item.find("span").css('display','block');
+  var points = item[0].getElementsByClassName("form-control")[0];
+  var numchoose = item[0].getElementsByClassName("form-control")[1];
+  var poolTitle = item[0].getElementsByClassName("form-control")[2];
+  item[0].style.height = "auto";
+  item[0].style.width = "auto";
+  poolTitle.style.display = "inline";
+  poolTitle.style.align = "left";
+  poolTitle.style.marginTop = "-0.75%";
+  poolTitle.style.marginRight = "2%";
+  numchoose.style.display = "inline";
+  numchoose.style.float = "right";
+  numchoose.style.marginTop = "-0.75%";
+  numchoose.style.marginRight = "2%";
+  points.style.display = "inline";
+  points.style.float = "right";
+  points.style.marginTop = "-0.75%";
+  points.style.marginRight = "2%";
+
+  var close = item.find("span");
+  close.click(function() {
+      item.remove();
+  });
+
+  // Add collapse container to dropped item if it doesn't exist already
+  var collapseContainer = item.find(".collapse");
+  if (collapseContainer.length == 0) {
+    var collapseId = "collapse-" + count;
+    count++;
+    collapseContainer = $("<div/>", {
+      class: "collapse",
+      id: collapseId,
+      html: "<div class='pool mcontainer'></div>"
+    });
+    console.log("AAA");
+    item.append(collapseContainer);
+    console.log(item);
+    console.log(item.parent());
+    makeDroppableForInner(collapseContainer.find(".mcontainer"));
+    var collapseButton = $("<button/>", {
+      class: "btn btn-sm",
+      style: "background-color: white;",
+      type: "button",
+      "data-toggle": "collapse",
+      "data-target": "#" + collapseId,
+      "aria-expanded": "true",
+      "aria-controls": collapseId,
+      html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
+    });
+    
+    collapseButton.on("click", function() {
+        $(this).find(".fa-chevron-down").toggleClass("fa-rotate-270");
+    });
+
+    item.prepend(collapseButton);
+  }
+  return pool;
+}
+
 </script>
 
