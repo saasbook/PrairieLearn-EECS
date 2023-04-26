@@ -51,10 +51,9 @@ function checkFields(fields) {
   });
 
   if (unsupportedFields !== ""){
-  let message = "The following fields aren't currently supported, they will be deleted in this editor. We encourage you to add them back later" + "\n" + unsupportedFields;
+  let message = "The following fields aren't currently supported and will be deleted in this editor. We encourage you to add them back later." + "\n" + unsupportedFields;
   alert(message);
   }
-  
 }
 
 function populate_configuration(file) {
@@ -80,14 +79,12 @@ function populate_configuration(file) {
   $("[name='endDate']").val(endDate);
   $("[name='startTime']").val(startTime);
   $("[name='endTime']").val(endTime);
-  
 }
 
 function populate_questions(file) {
   var lastZone = document.querySelector('.zone:last-of-type');
   $(lastZone).remove();
-
- Object.keys(file).forEach((id) => {
+  Object.keys(file).forEach((id) => {
   questions = file[id]["questions"];
   comment = file[id]["comment"];
   title = file[id]["title"];
@@ -103,7 +100,6 @@ function populate_questions(file) {
 
   //Retrieve questions
   container = $("#" + id).find('.mcontainer')[0];
-  
   innerhtml = '';
   questions.forEach((question) => {
     if(("alternatives" in question)) {  
@@ -115,7 +111,6 @@ function populate_questions(file) {
       //innerhtml = innerhtml.replace('id="pool-title"', 'id="pool-title" value="' + question["title"]);
       innerhtml += "</p>"
       container.innerHTML = innerhtml;
-
       innerhtml =  innerhtml.slice(0, innerhtml.length - 17);
 
       //Add questions to pool
@@ -145,14 +140,13 @@ function populate_questions(file) {
     }})
   
   container.innerHTML = innerhtml;
-  //Styling
   $('#' + id).append(container);
 
   //Making pools droppable
   $(container).find(".collapse").each(function() {
       //Make it droppable
       droppable_box = $(this).find(".mcontainer");
-            makeDroppableForInner(droppable_box);
+      makeDroppableForInner(droppable_box);
       //Get prev element
       prev = $(this).prev();
       //Detach
@@ -172,7 +166,6 @@ function populate_questions(file) {
 }
 
 function retrieve_data(file, imported) {
-
   if (imported === true) {
     fields = Object.keys(file);
     //Checking for unsupported fields
@@ -181,12 +174,9 @@ function retrieve_data(file, imported) {
     //Retrieve data of the configuration column
     populate_configuration(file);
     
-    //Retrieve zones,pools, and questions
     //Prepare file
-
     new_file = {};
     counter = 0
-
     if(file["zones"]) {
       file["zones"].forEach((zone) => {
         id = "zone" + counter.toString();
@@ -196,7 +186,6 @@ function retrieve_data(file, imported) {
       populate_questions(new_file);
   }
   }
-
 };
 
 function deleteZone(id) {
@@ -228,16 +217,15 @@ function makeNewZone(new_id) {
   if (lastZone === null) {
     newZone.className = 'zone';
 
-    // Find the first <hr> element in .sqcontainer
-    var hr = document.querySelector('.sqcontainer hr:first-of-type');
+  // Find the first <hr> element in .sqcontainer
+  var hr = document.querySelector('.sqcontainer hr:first-of-type');
     
-    // Insert the new .zone element after the <hr> element
-    hr.parentNode.insertBefore(newZone, hr.nextSibling);
-    //document.querySelector('.sqcontainer').appendChild(newZone);
-    
+  // Insert the new .zone element after the <hr> element
+  hr.parentNode.insertBefore(newZone, hr.nextSibling);
+  //document.querySelector('.sqcontainer').appendChild(newZone);  
   } else {
     newZone.classList.add('zone');
-    
+  
     // Create a new <hr> element
     var hr = document.createElement('hr');
     
@@ -298,10 +286,8 @@ function makeDroppable(container, type) {
 
       var item = $(ui.draggable).clone();
       item.appendTo(this);
-      
       item.attr("type", type); 
       item.width($(this).width()-40);
-
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];
       item[0].style.height = "auto";
@@ -310,7 +296,6 @@ function makeDroppable(container, type) {
       points.style.float = "right";
       points.style.marginTop = "-1.5%";
       points.style.marginRight = "2.5%";
-
       // toggle the visibility of the hidden input field and form elements
       var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
       if (type === "inner") {
@@ -320,7 +305,6 @@ function makeDroppable(container, type) {
         inputField.removeAttribute("hidden");
         $(points).next().show();
       }
-
       var close = item.find("span");
         close.click(function() {
             item.remove();
@@ -345,7 +329,6 @@ $(document).ready(function() {
     });
 
     // Add a new zone on click of + Zone button
-    
     $('#add_zones').click(function() {
       let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
       num_zones = Number(num_zones) + 1;
@@ -361,7 +344,6 @@ $(document).ready(function() {
     $('.sqcontainer').on('click', '.add-pool-btn', function() {
       // Find the .zone element that contains the clicked button
       var zone = $(this).closest('.zone')[0];
-  
       pool_id = "pool_" + crypto.randomUUID();
 
       // Add a new pool
@@ -378,7 +360,6 @@ $(document).ready(function() {
         '<label for="form-control" class="pts-txt">Num choose</label>' +
         '<input type="text" class="form-control col-md-4 mb-1 border-0" id="pool-title" style="background:white;" placeholder="Pool Title">';
       zone.querySelector('.mcontainer').appendChild(pool);
-  
       var item = $(pool);
       item.attr("type", "outter"); 
       item.attr("id", pool_id);
@@ -519,7 +500,7 @@ function makePool(pool_id) {
       html: "<div class='pool mcontainer'></div>"
     });
     item.append(collapseContainer);
-    //makeDroppableForInner(collapseContainer.find(".mcontainer"));
+    makeDroppableForInner(collapseContainer.find(".mcontainer"));
     var collapseButton = $("<button/>", {
       class: "btn btn-sm",
       style: "background-color: white;",
@@ -530,15 +511,12 @@ function makePool(pool_id) {
       "aria-controls": collapseId,
       html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
     });
-    
     collapseButton.on("click", function() {
         $(this).find(".fa-chevron-down").toggleClass("fa-rotate-270");
     });
-
     item.prepend(collapseButton);
   }
   return pool;
 }
-
 </script>
 
