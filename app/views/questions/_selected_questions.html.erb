@@ -101,6 +101,7 @@ function populate_questions(file) {
   //Retrieve questions
   container = $("#" + id).find('.mcontainer')[0];
   innerhtml = '';
+
   questions.forEach((question) => {
     if(("alternatives" in question)) {  
       pool = makePool(question["pool_id"]);
@@ -144,6 +145,13 @@ function populate_questions(file) {
 
   //Making pools droppable
   $(container).find(".collapse").each(function() {
+      //Add toggle Functionality
+      toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+      })
+    
       //Make it droppable
       droppable_box = $(this).find(".mcontainer");
       makeDroppableForInner(droppable_box);
@@ -404,8 +412,7 @@ $(document).ready(function() {
         item.append(collapseContainer);
         makeDroppableForInner(collapseContainer.find(".mcontainer"));
         var collapseButton = $("<button/>", {
-          class: "btn btn-sm",
-          id: "collapse_btn",
+          class: "btn btn-sm collapse_btn",
           style: "background-color: white;",
           type: "button",
           "data-toggle": "collapse",
@@ -414,13 +421,13 @@ $(document).ready(function() {
           "aria-controls": collapseId,
           html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
         });
-        
-        collapseButton.on("click", function() {
-            $(this).find(".fa-chevron-down").toggleClass("fa-rotate-270");
-        });
-
         item.prepend(collapseButton);
       }
+      toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+  })
     });
     
     // Remove zone on close button click
@@ -503,9 +510,8 @@ function makePool(pool_id) {
     item.append(collapseContainer);
     makeDroppableForInner(collapseContainer.find(".mcontainer"));
     var collapseButton = $("<button/>", {
-      class: "btn btn-sm",
-      id: "collapse_btn",
-      style: "background-color: red;",
+      class: "btn btn-sm collapse_btn",
+      style: "background-color: white;",
       type: "button",
       "data-toggle": "collapse",
       "data-target": "#" + collapseId,
@@ -513,20 +519,17 @@ function makePool(pool_id) {
       "aria-controls": collapseId,
       html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
     });
-
-    collapseButton.on("click", function() {
-        $(this).find(".fa-chevron-down").toggleClass("fa-rotate-270");
-    });
     item.prepend(collapseButton);
   }
+
+  toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+  })
+      
   return pool;
 }
-
-
-//document.getElementById('collapse_btn').addEventListener('click', event => {
-  //console.log(this.querySelector('i'));
-  //classList.toggle("fa-rotate-270");
-//});
 
 </script>
 
