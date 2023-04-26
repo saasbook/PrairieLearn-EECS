@@ -43,3 +43,4 @@ jobs:
         ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
         ./cc-test-reporter upload-coverage --id ${{ secrets.CC_TEST_REPORTER_ID }}
         ./cc-test-reporter after-build --id ${{ secrets.CC_TEST_REPORTER_ID }}
+        
