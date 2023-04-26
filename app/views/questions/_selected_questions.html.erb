@@ -321,57 +321,10 @@ function makeDroppable(container, type) {
         $(points).next().show();
       }
 
-
-      //Retrieve JSON file     
-    
-      let file = JSON.parse(window.localStorage.getItem("file"));
-      var question_title = item.text();
-      question_title = question_title.slice(0, question_title.length - 36);
-      question_title = question_title.slice(9,);
-      //Check if the question has been used before (only unique ids allowed) 
-      is_pool = $(container).attr("class").includes("pool");
-      //Adding questions to the file 
-      if(is_pool === false) {
-        container_id = $(container).parent().attr('id');
-        var close = item.find("span");
+      var close = item.find("span");
         close.click(function() {
             item.remove();
-            question_title = $(this).parent().text();
-            question_title = question_title.slice(9, question_title.length - 36);
-            deleteQuestion(container_id, question_title);
-        });        
-        is_repeated = checkRepeated(file[container_id]["questions"], false, question_title);
-        if (is_repeated === false) {
-          content = {"id": question_title, "points": 0};
-          file[container_id]["questions"].push(content);
-          localStorage.removeItem("file");
-          localStorage.setItem("file", JSON.stringify(file));
-        }
-    } else {
-      container_id = $(container).parent().parent().parent().parent().attr('id');
-      var close = item.find("span");
-      close.click(function() {
-          item.remove();
-          question_title = $(this).parent().text();
-          question_title = question_title.slice(9, question_title.length - 36);
-          deleteQuestion(container_id, question_title);
-      });
-      questions = file[container_id]["questions"];
-      is_repeated = checkRepeated(questions, true, question_title);
-      if (is_repeated === false) {
-
-      pool_id = $(container).parent().parent().attr('id');
-  
-      questions.forEach((question) => { 
-        if (("pool_id" in question) && question["pool_id"] === pool_id) {
-            content = {"id": question_title, "points": 0};  
-            question["alternatives"].push(content);
-            localStorage.removeItem("file");
-            localStorage.setItem("file", JSON.stringify(file));
-        }
-      });      
-    }
-  }
+        }); 
   }});
 }
 
@@ -440,14 +393,7 @@ $(document).ready(function() {
       // Find the .zone element that contains the clicked button
       var zone = $(this).closest('.zone')[0];
   
-      //Update file
-      zone_id = $(zone).attr('id');
       pool_id = "pool_" + crypto.randomUUID();
-      let file = JSON.parse(window.localStorage.getItem("file"));
-      content = {"pool_id": pool_id, "title": "", "numberChoose": 0, "points": 0, "alternatives": []}
-      file[zone_id]["questions"].push(content)
-      localStorage.removeItem("file");
-      localStorage.setItem("file", JSON.stringify(file));
 
       // Add a new pool
       var container = zone.querySelector('.mcontainer');
@@ -533,10 +479,6 @@ $(document).ready(function() {
 
         // Display the confirmation pop-up
         var confirmed = window.confirm(message);
-
-        //Remove from file
-        id = $(this).closest('.zone').attr('id');
-        deleteZone(id);
 
         // Check the user's response
         if (confirmed) {
