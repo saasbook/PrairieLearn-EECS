@@ -339,26 +339,6 @@ function makeDroppableForOutter(container) {
 }
 
 $(document).ready(function() {
-
-  let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
-  let file = JSON.parse(window.localStorage.getItem("file"));
-
-  if (num_zones == null ){
-      localStorage.setItem("num_zones",  JSON.stringify(0));
-  }
-
-  if (file == null || Object.keys(file).length === 0) {
-       content = {"title": "",
-       "comment": "",
-       "questions": []};
-       file = {"zone0": content};
-       localStorage.setItem("file", JSON.stringify(file));
-       $('.zone').attr('id', "zone0");
-   } else {
-    retrieve_data(file);
-   }
-
-
     // Make all existing containers droppable
     $('.mcontainer').each(function() {
         makeDroppableForOutter(this);
@@ -368,20 +348,9 @@ $(document).ready(function() {
     
     $('#add_zones').click(function() {
       let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
-      let file = JSON.parse(window.localStorage.getItem("file"));
-
       num_zones = Number(num_zones) + 1;
       new_id = 'zone' + num_zones.toString();
       makeNewZone(new_id);
-
-      //Update file with new zone
-      content = {"title": "",
-      "comment": "",
-      "questions": []};
- 
-      file[new_id] = content;
-      localStorage.removeItem("file");
-      localStorage.setItem("file", JSON.stringify(file));
 
       //Update and save num zones
       localStorage.removeItem("num_zones");
