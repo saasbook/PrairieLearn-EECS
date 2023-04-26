@@ -70,3 +70,14 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 # Capybara.javascript_driver = :webkit
 Capybara.default_driver = :selenium
 
+Capybara.register_driver :selenium do |app|
+  browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+  browser_options.args << '--headless'
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: browser_options
+  )
+end
+
