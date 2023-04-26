@@ -199,12 +199,22 @@
         let result = event.target.result;
         //Result contains obtained JSON file
         result = JSON.parse(result);
+        //Clear current screen
+        clearScreen();
+        //Populate all the fields
         retrieve_data(result, true);
       });
       reader.readAsText(file);   
     }
 
-  
+    function clearScreen() {
+      middle_column = $(".sqcontainer");
+      $(middle_column).html('<hr><div class="zone"><div class="form-row"><div class="col-md-auto mb-1">' + 
+      '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">' + 
+      '</div><div class="col-md-auto mb-1"><input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 230px;"  placeholder="Comment" aria-label="Comment">' + 
+      '</div><div class="col-auto"><button class="btn btn-default add-pool-btn" type="button">+Pool</button> </div><span class="close col-auto" id="delete_zone" style="color: red;">&times;</span></div><div class="mcontainer"></div></div><hr>');
+    }
+
     $(document).ready(function(){
       // trigger export
       $('#export').click(function(){
