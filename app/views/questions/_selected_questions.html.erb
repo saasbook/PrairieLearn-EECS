@@ -45,7 +45,6 @@ function checkFields(fields) {
   unsupportedFields = "";
 
   fields.forEach((field) => {
-    console.log(field);
     if ((availableFields.includes(field)) === false ) {
       unsupportedFields += field + " ";
     } 
@@ -76,14 +75,11 @@ function populate_questions(file) {
   $(lastZone).remove();
 
  Object.keys(file).forEach((id) => {
-
   questions = file[id]["questions"];
   comment = file[id]["comment"];
   title = file[id]["title"];
 
-
   //Make the zone element
-
   makeNewZone(id);
 
   //Retrieve questions
@@ -91,13 +87,16 @@ function populate_questions(file) {
   
   innerhtml = '';
   questions.forEach((question) => {
-
-    if("pool_id" in question) {  
+    if(("alternatives" in question)) {  
       pool = makePool(question["pool_id"]);
-      innerhtml += pool.outerHTML;
-
+      innerhtml += "<p class='list-group-item draggable-question draggable-text' draggable='true' type='outter' style='text-align: left; width: auto; height: auto;'>";
+      innerhtml += pool.innerHTML;
+      innerhtml += "</p>"
+      console.log(innerhtml);
+      container.innerHTML = innerhtml;
+      console.log(container);
+      
     } else {
-
     question_id = question["id"];
     innerhtml +=    '<tr>' + 
                     '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
@@ -107,10 +106,14 @@ function populate_questions(file) {
                     '<label for="form-control" class="pts-txt"> Pt </label>' + 
                     '</p>'
                     + '</tr>';                   
-    }
-    })
-  container.innerHTML = innerhtml;
-  $('#' + id).append(container);
+    }})
+  
+  //container.innerHTML = innerhtml;
+  //console.log(container);
+  //Styling
+  //$('#' + id).append(container);
+  //item = $('#' + id);
+  //console.log(item.innerHTML);
 
 
 
@@ -127,9 +130,7 @@ function populate_questions(file) {
 function retrieve_data(file, imported) {
 
   if (imported === true) {
-    console.log(file);
     fields = Object.keys(file);
-    console.log(fields);
     //Checking for unsupported fields
     checkFields(fields);
 
@@ -147,7 +148,6 @@ function retrieve_data(file, imported) {
       counter += 1;
     })
 
-    console.log(new_file);
     populate_questions(new_file);
   }
 
@@ -236,8 +236,6 @@ function checkRepeated(questions, pool, title) {
         }
       });
     } else if (pool === false) {
-      console.log("AAAA");
-      console.log(question["id"]);
       if (question["id"]  === title) { 
         return true;
       }
@@ -294,13 +292,9 @@ function makeDroppable(container, type) {
             item.remove();
             question_title = $(this).parent().text();
             question_title = question_title.slice(9, question_title.length - 36);
-            console.log(question_title);
             deleteQuestion(container_id, question_title);
-        });
-        console.log(container_id);
-        
+        });        
         is_repeated = checkRepeated(file[container_id]["questions"], false, question_title);
-        console.log(is_repeated);
         if (is_repeated === false) {
           content = {"id": question_title, "points": 0};
           file[container_id]["questions"].push(content);
@@ -314,7 +308,6 @@ function makeDroppable(container, type) {
           item.remove();
           question_title = $(this).parent().text();
           question_title = question_title.slice(9, question_title.length - 36);
-          console.log(question_title);
           deleteQuestion(container_id, question_title);
       });
       questions = file[container_id]["questions"];
@@ -403,7 +396,6 @@ $(document).ready(function() {
   
       //Update file
       zone_id = $(zone).attr('id');
-      console.log(zone_id);
       pool_id = "pool_" + crypto.randomUUID();
       let file = JSON.parse(window.localStorage.getItem("file"));
       content = {"pool_id": pool_id, "title": "", "numberChoose": 0, "points": 0, "alternatives": []}
@@ -569,11 +561,8 @@ function makePool(pool_id) {
       id: collapseId,
       html: "<div class='pool mcontainer'></div>"
     });
-    console.log("AAA");
     item.append(collapseContainer);
-    console.log(item);
-    console.log(item.parent());
-    makeDroppableForInner(collapseContainer.find(".mcontainer"));
+    //makeDroppableForInner(collapseContainer.find(".mcontainer"));
     var collapseButton = $("<button/>", {
       class: "btn btn-sm",
       style: "background-color: white;",
