@@ -112,6 +112,7 @@ function populate_questions(file) {
       innerhtml += pool.innerHTML;
       innerhtml = innerhtml.replace('id="numchoose"', 'id="numchoose" value="' + question["numberChoose"] + '"');
       innerhtml = innerhtml.replace('id="pool_points"', 'id="pool_points" value="' + question["points"] + '"');
+      //innerhtml = innerhtml.replace('id="pool-title"', 'id="pool-title" value="' + question["title"]);
       innerhtml += "</p>"
       container.innerHTML = innerhtml;
 
@@ -185,13 +186,15 @@ function retrieve_data(file, imported) {
 
     new_file = {};
     counter = 0
-    file["zones"].forEach((zone) => {
-      id = "zone" + counter.toString();
-      new_file[id] = zone;
-      counter += 1;
-    })
 
-    populate_questions(new_file);
+    if(file["zones"]) {
+      file["zones"].forEach((zone) => {
+        id = "zone" + counter.toString();
+        new_file[id] = zone;
+        counter += 1;
+      })
+      populate_questions(new_file);
+  }
   }
 
 };
