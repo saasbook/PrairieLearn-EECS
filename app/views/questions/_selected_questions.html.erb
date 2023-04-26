@@ -62,12 +62,25 @@ function populate_configuration(file) {
   type = file["type"];
   number = file["number"];
   set = file["set"];
-  allowAccess = file["allowAccess"];
+  allowAccess = file["allowAccess"][0];
+  credit = allowAccess["credit"];
+  role = allowAccess["role"];
+  startDate = allowAccess["startDate"].slice(0, 10);
+  endDate = allowAccess["endDate"].slice(0, 10);
+  startTime = allowAccess["startDate"].slice(11,);
+  endTime = allowAccess["endDate"].slice(11,);
 
   $("[name='title']").val(title);
   $("[name='type']").val(type);
   $("[name='number']").val(number);
   $("[name='set']").val(set);
+  $("[name='credit']").val(credit);
+  $("[name='role']").val(role);
+  $("[name='startDate']").val(startDate);
+  $("[name='endDate']").val(endDate);
+  $("[name='startTime']").val(startTime);
+  $("[name='endTime']").val(endTime);
+  
 }
 
 function populate_questions(file) {
@@ -82,6 +95,12 @@ function populate_questions(file) {
   //Make the zone element
   makeNewZone(id);
 
+  //Retrieve title and comment for each zone
+  title_item = $("#" + id).find("#zone_title");
+  title_item.val(title);
+  title_item = $("#" + id).find("#zone_comment");
+  title_item.val(comment);
+
   //Retrieve questions
   container = $("#" + id).find('.mcontainer')[0];
   
@@ -91,37 +110,34 @@ function populate_questions(file) {
       pool = makePool(question["pool_id"]);
       innerhtml += "<p class='list-group-item draggable-question draggable-text' draggable='true' type='outter' style='text-align: left; width: auto; height: auto;'>";
       innerhtml += pool.innerHTML;
+      innerhtml = innerhtml.replace('id="numchoose"', 'id="numchoose" value="' + question["numberChoose"] + '"');
+      innerhtml = innerhtml.replace('id="pool_points"', 'id="pool_points" value="' + question["points"] + '"');
       innerhtml += "</p>"
       container.innerHTML = innerhtml;
-
 
       innerhtml =  innerhtml.slice(0, innerhtml.length - 17);
 
       //Add questions to pool
       pool_questions = question["alternatives"];
+      pool_score = question["points"];
 
       pool_questions.forEach((pool_q) => {
         innerhtml +=    '<tr>' + 
-        '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
+        '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="inner">' +
         '<td>' + pool_q["id"] + '</td>'+ 
         '<span class="close deleteq" style="display:block">&times;</span>' + 
-        '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
-        '<label for="form-control" class="pts-txt"> Pt </label>' + 
+        '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: none; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
         '</p>'
         + '</tr>';   
       })
-
-      innerhtml += "</div></div></p>";
-
-
-      
+      innerhtml += "</div></div></p>";      
     } else {
     question_id = question["id"];
     innerhtml +=    '<tr>' + 
                     '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
                     '<td>' + question_id + '</td>'+ 
                     '<span class="close deleteq" style="display:block">&times;</span>' + 
-                    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
+                    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1"' + 'value="' + question["points"] + '"' + 'style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
                     '<label for="form-control" class="pts-txt"> Pt </label>' + 
                     '</p>'
                     + '</tr>';                   
@@ -131,20 +147,19 @@ function populate_questions(file) {
   //Styling
   $('#' + id).append(container);
 
-  //Fixing pool bug 
-  $(container).find(".collapse").each(function( index ) {
+  //Making pools droppable
+  $(container).find(".collapse").each(function() {
+      //Make it droppable
+      droppable_box = $(this).find(".mcontainer");
+            makeDroppableForInner(droppable_box);
       //Get prev element
       prev = $(this).prev();
-      console.log(prev);
       //Detach
       var element = $(this).detach();
       //Make the prev element your parent
       $(prev).append(element);
   });
   
-
-
-
   //Functionality for delete buttons
   $(".deleteq").click(function() {
       $(this).parent().remove();
@@ -545,7 +560,7 @@ function makePool(pool_id) {
   pool.style.textAlign = "left";
   pool.innerHTML = 
     '<span class="close">&times;</span>' +
-    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0">' +
+    '<input class="form-control col-md-1 mb-1" id="pool_points" type="text" name="assessment_credit" placeholder="0">' +
     '<label for="form-control" class="pts-txt">Pts</label>' + 
     '<input class="form-control col-md-1 mb-1" type="text" placeholder="0" id="numchoose">' + 
     '<label for="form-control" class="pts-txt">Num choose</label>' +
