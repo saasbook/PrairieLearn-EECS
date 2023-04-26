@@ -72,11 +72,14 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 - Login to GitHub via 3rd party authentication
 - Select a repository you would like to synchronize from the list (only private repositories will show up). Also, make sure there is a directory called 'questions' in your repo that contains all of the questions subdirectories. Then click 'Synchronize'; This might take a couple minutes so sit back and relax
 - Configure your assessment via the column on the right with all its metadata
+- The left column shows all of the questions in the user's repo.
+- User can search for a question using the keywords they remember.
+- Click +Zone to create a Zone of questions. Enter the zone title and zone comment at the top of the zone.
+- Click +Pool to create a pool of questions inside the zone, user can add comments at the entry box to remind them about the function of the questions.
 - Drag-and-drop questions from the left column to the middle column and set the points for each questions.
 - Click 'Export' to download your JSON file
 - Logout when you are done using the application
 
-(Video explaining this will be added soon)
 
 ---
 
@@ -99,6 +102,13 @@ For more information regarding PrairieLearn, go to https://prairielearn.readthed
 - Repository caching is not optimized (when a new commit id is found, we drop all entries of questions from that selected repository and pull the new ones)
 - Move JavaScript out of .erb files
 - Consider using AWS and modify API calls to use 'git pull' to create a traversable file directory instead of making API calls per folder
+
+### Spring 2023:
+
+- Zones and pools are available for users to use.
+- Can search for questinos using the search bar on the top left.
+- The questions shown now are shown using descriptive titles.
+
 
 ---
 
@@ -131,5 +141,8 @@ The application is making a single API calls for every directory in a repository
 - Haolin Zhu (haolinz@berkeley.edu)
 - Sanwu Luo (sanwuluo35@berkeley.edu)
 - Timotius Vincent (timotiusvincent@berkeley.edu)
-
+- Yuhan Dong (ydong19@berkeley.edu)
+- Guobin Liang (a544266477@berkeley.edu)
+- Fernanda Pisconte (fpisconte@berkeley.edu)
+- Chithra Anand (chithra.rajan@berkeley.edu)
 ---

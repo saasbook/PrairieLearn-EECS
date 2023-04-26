@@ -18,7 +18,6 @@ nav {
 }
 
 .qcol {
-  margin-top: 2%;
   float: right;
 }
 
@@ -39,6 +38,7 @@ nav {
   border-right: 1px solid gray;
   margin-left: 5px;
   margin-right: 5px;
+  height: 90%;
 }
 
 .rightcol {
@@ -48,7 +48,7 @@ nav {
 }
 
 .configs {
-  height: calc(100vh - 17rem);
+  height: auto;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -79,7 +79,9 @@ input, select {
 
 .mcontainer {
   margin: 2%;
-  height: calc(100vh - 17rem);
+  min-height: 15vh;
+  max-height: 100vh;
+  height: auto;
   overflow: auto;
 }
 
@@ -115,7 +117,7 @@ input, select {
 
 .zone {
   display: flex;
-  height: 200px; 
+  height: auto;
   flex-direction: column;
   margin: 2%;
   overflow-y: auto;
@@ -124,7 +126,15 @@ input, select {
 
 .sqcontainer {
   margin: 2%;
-  height: calc(100vh - 17rem);
+  height: 80vh;
   overflow: auto;
 }
 
+.gutter-2.row {
+  margin-right: -1px;
+  margin-left: -1px;
+}
+.gutter-2 > [class^="col-"], .gutter-2 > [class^=" col-"] {
+  padding-right: 2px;
+  padding-left: 2px;
+}

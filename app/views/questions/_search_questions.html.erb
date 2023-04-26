@@ -1,16 +1,14 @@
-<div class="qcontainer">
-<div class='question_title'><% @questions.each do |question| %>
+<div class='list-group question_title'><% @questions.each do |question| %>
     <tr>
-    <p class="list-group-item draggable-question draggable-text" draggable="true">
-        <td><%= question.title %></td>
+    <p class="list-group-item draggable-question draggable-text" name=<%= question.title %> draggable="true">
+        <td><%= question.descriptivetitle %></td>
         <span class="close" style="display:none">&times;</span>
 
-        <input class="form-control col-md-2 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=4>
+        <input class="form-control col-md-1 mb-1" hidden type="text" name="assessment_credit" placeholder="0" size=1>
         <label for="form-control" class="pts-txt" style="display: none">Pts</label>
-
     </p>
     </tr>
-<% end %></div>
+    <% end %>
 </div>
 
 <script>
@@ -20,12 +18,4 @@ $(".draggable-question").css('text-align','left').draggable({
     revert: "invalid"
 });
 
-const draggables = document.querySelectorAll('.draggable-question')
-for (let i = 0; i < draggables.length; i ++) {
-    const draggable = draggables[i];
-    const pointbox = draggable.getElementsByClassName("form-control");
-    pointbox[0].style.display = "inline";
-    pointbox[0].style.float = "right";
-    pointbox[0].style.marginTop = "-2%";
-}
 </script>
