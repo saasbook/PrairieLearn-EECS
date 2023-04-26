@@ -37,7 +37,7 @@
             <a id="downloadAnchorElem" style="display:none"></a>
           </li>
           <li class="nav-item mx-1">
-            <input type="file" id="import" style="display:none;" />
+            <input type="file" id="import" accept=".json" style="display:none;" />
             <input type="button" class="btn btn-primary" value="Import" onclick="document.getElementById('import').click();" />
         </form>
           </li>
@@ -181,36 +181,26 @@
         });
       });
     }
-
     
     document.querySelector('#import').addEventListener('change', event => {
-      handleSubmit(event);
+      const fileList = event.target.files;
+      console.log(fileList[0]);
+      readJSON(fileList[0]);
     });
 
-    const handleSubmit = event => {
-      url = "https://httpbin.org/post";
-      const files = event.target.files;
-      const formData = new FormData();
-      formData.append('myFile', files[0]);
-
-      let req = new Request(url, {
-        method: 'POST',
-        body: formData,
+    function readJSON(file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        let result = event.target.result;
+        //Result contains obtained JSON file
+        result = JSON.parse(result);
+        console.log(result);
+        retrieve_data(result, true);
       });
-
-      fetch(req)
-      .then(response => response.json())
-      .then(data => {
-        var file = data;
-        file = file["files"]["myFile"];
-        file = JSON.parse(file);
-        retrieve_data(file, true);
-      })
-      .catch(error => {
-        console.error(error);
-      })
+      reader.readAsText(file);   
     }
 
+  
     $(document).ready(function(){
       // trigger export
       $('#export').click(function(){
