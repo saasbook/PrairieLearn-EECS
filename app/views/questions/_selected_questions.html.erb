@@ -92,9 +92,28 @@ function populate_questions(file) {
       innerhtml += "<p class='list-group-item draggable-question draggable-text' draggable='true' type='outter' style='text-align: left; width: auto; height: auto;'>";
       innerhtml += pool.innerHTML;
       innerhtml += "</p>"
-      console.log(innerhtml);
       container.innerHTML = innerhtml;
-      console.log(container);
+
+
+      innerhtml =  innerhtml.slice(0, innerhtml.length - 17);
+
+      //Add questions to pool
+      pool_questions = question["alternatives"];
+
+      pool_questions.forEach((pool_q) => {
+        innerhtml +=    '<tr>' + 
+        '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle" draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
+        '<td>' + pool_q["id"] + '</td>'+ 
+        '<span class="close deleteq" style="display:block">&times;</span>' + 
+        '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
+        '<label for="form-control" class="pts-txt"> Pt </label>' + 
+        '</p>'
+        + '</tr>';   
+      })
+
+      innerhtml += "</div></div></p>";
+
+
       
     } else {
     question_id = question["id"];
@@ -108,12 +127,21 @@ function populate_questions(file) {
                     + '</tr>';                   
     }})
   
-  //container.innerHTML = innerhtml;
-  //console.log(container);
+  container.innerHTML = innerhtml;
   //Styling
-  //$('#' + id).append(container);
-  //item = $('#' + id);
-  //console.log(item.innerHTML);
+  $('#' + id).append(container);
+
+  //Fixing pool bug 
+  $(container).find(".collapse").each(function( index ) {
+      //Get prev element
+      prev = $(this).prev();
+      console.log(prev);
+      //Detach
+      var element = $(this).detach();
+      //Make the prev element your parent
+      $(prev).append(element);
+  });
+  
 
 
 
