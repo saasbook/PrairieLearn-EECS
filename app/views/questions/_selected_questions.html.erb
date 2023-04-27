@@ -262,7 +262,7 @@ function makeNewZone(new_id) {
     newZone.innerHTML = innerHtml;
     
     // Make the new zone droppable
-    makeDroppableForOutter(newZone.querySelector('.mcontainer'));
+    makeDroppableForOuter(newZone.querySelector('.mcontainer'));
 
     //Assign unique ID
     $(newZone).attr('id', new_id);
@@ -329,14 +329,14 @@ function makeDroppableForInner(container) {
   makeDroppable(container, "inner");
 }
 
-function makeDroppableForOutter(container) {
+function makeDroppableForOuter(container) {
   makeDroppable(container, "outer");
 }
 
 $(document).ready(function() {
     // Make all existing containers droppable
     $('.mcontainer').each(function() {
-        makeDroppableForOutter(this);
+        makeDroppableForOuter(this);
     });
 
     // Add a new zone on click of + Zone button
