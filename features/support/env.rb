@@ -13,6 +13,7 @@ SimpleCov.start
 # files.
 
 require 'cucumber/rails'
+require 'selenium-webdriver'
 
 # frozen_string_literal: true
 
@@ -65,4 +66,18 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+# Capybara.javascript_driver = :webkit
+Capybara.default_driver = :selenium
+
+Capybara.register_driver :selenium do |app|
+  browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+  browser_options.args << '--headless'
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: browser_options
+  )
+end
 
