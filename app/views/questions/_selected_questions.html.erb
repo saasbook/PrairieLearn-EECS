@@ -42,11 +42,11 @@
 function makeDroppable(container, type) {
   $(container).droppable({
     accept: ".draggable-question",
+    greedy: true,
     drop: function(event, ui) {
+
       var item = $(ui.draggable);
-      if (typeof item.attr('type') === 'undefined') {
-        item.attr("type", type);
-      }
+      item.appendTo(this);
       item.width($(this).width()-40);
       item.find("span").css('display','block');
       var points = item[0].getElementsByClassName("form-control")[0];
@@ -56,20 +56,23 @@ function makeDroppable(container, type) {
       points.style.float = "right";
       points.style.marginTop = "-1.5%";
       points.style.marginRight = "2.5%";
-
-      var close = item.find("span");
-      close.click(function() {
-          item.remove();
-      });
-      
       // toggle the visibility of the hidden input field and form elements
       var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
-      if (type === "outer") {
-        inputField.removeAttribute("hidden");
-        $(points).next().show();
+      if (typeof item.attr('type') === 'undefined') {
+        item.attr("type", type);
+        if (type === "inner") {
+          inputField.setAttribute("hidden", true);
+          $(points).next().hide();
+        } else {
+          inputField.removeAttribute("hidden");
+          $(points).next().show();
+        }
       }
-    }
-  }).sortable({
+      var close = item.find("span");
+        close.click(function() {
+            item.remove();
+        }); 
+  }}).sortable({
     revert: false
   });
 }
