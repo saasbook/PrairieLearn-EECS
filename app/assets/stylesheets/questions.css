@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -7,7 +6,7 @@ body {
 
 nav {
   width: 100%;
-  background: #62bfed;
+  background: #62BFED;
   padding-top: 1%;
   padding-bottom: 1%;
 }
@@ -15,7 +14,7 @@ nav {
 #name {
   margin-left: 2%;
   color: white;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .qcol {
@@ -28,10 +27,9 @@ nav {
   position: absolute;
 }
 
-.leftcol p,
-.middlecol p,
-.rightcol p {
+.leftcol p, .middlecol p, .rightcol p {
   text-align: center;
+
 }
 
 .middlecol {
@@ -46,6 +44,7 @@ nav {
 .rightcol {
   width: 30%;
   height: auto;
+
 }
 
 .configs {
@@ -55,16 +54,15 @@ nav {
 }
 
 p {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 160%;
 }
 
 .question_title {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-input,
-select {
+input, select {
   padding: 8px 25px;
   margin: 8px 0;
 }
@@ -103,7 +101,7 @@ select {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #62bfed;
+  background-color: #62BFED;
   color: white;
   text-align: right;
 }
@@ -136,8 +134,7 @@ select {
   margin-right: -1px;
   margin-left: -1px;
 }
-.gutter-2 > [class^="col-"],
-.gutter-2 > [class^=" col-"] {
+.gutter-2 > [class^="col-"], .gutter-2 > [class^=" col-"] {
   padding-right: 2px;
   padding-left: 2px;
 }
