@@ -36,6 +36,11 @@
             <button class="btn btn-primary" type="button" id="export">Export</button>
             <a id="downloadAnchorElem" style="display:none"></a>
           </li>
+          <li class="nav-item mx-1">
+            <input type="file" id="import" accept=".json" style="display:none;" />
+            <input type="button" id="import_back" class="btn btn-primary" value="Import"/>
+        </form>
+          </li>
         </ul>
       </div>
     </nav>
@@ -57,7 +62,7 @@
             </div>
             <div class="col-md-5 mb-3">
               <label class='question_title'>Credit:</label>
-              <input class="form-control" type="text" placeholder="Enter integer" name="credit" size=4>
+              <input class="form-control" type="text" placeholder="Enter integer" name="credit" id="credit" size=4>
             </div>
           </div>
           <div class="form-row">
@@ -175,6 +180,39 @@
           }
         });
       });
+    }
+
+    document.querySelector('#import_back').addEventListener('click', event => {
+      document.getElementById('import').click();
+    });
+
+
+    
+    document.querySelector('#import').addEventListener('change', event => {
+      const fileList = event.target.files;
+      readJSON(fileList[0]);
+    });
+
+    function readJSON(file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', (event) => {
+        let result = event.target.result;
+        //Result contains obtained JSON file
+        result = JSON.parse(result);
+        //Clear current screen
+        clearScreen();
+        //Populate all the fields
+        retrieve_data(result, true);
+      });
+      reader.readAsText(file);   
+    }
+
+    function clearScreen() {
+      middle_column = $(".sqcontainer");
+      $(middle_column).html('<hr><div class="zone"><div class="form-row"><div class="col-md-auto mb-1">' + 
+      '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">' + 
+      '</div><div class="col-md-auto mb-1"><input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 230px;"  placeholder="Comment" aria-label="Comment">' + 
+      '</div><div class="col-auto"><button class="btn btn-default add-pool-btn" type="button">+Pool</button> </div><span class="close col-auto" id="delete_zone" style="color: red;">&times;</span></div><div class="mcontainer"></div></div><hr>');
     }
 
     $(document).ready(function(){
