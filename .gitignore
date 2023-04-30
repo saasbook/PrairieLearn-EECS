@@ -40,3 +40,5 @@
 coverage
 
 master.key
+bin/rails
+cc-test-reporter

@@ -1,0 +1,33 @@
+# multiple tests suites
+# working example can be found at https://github.com/scottohara/loot
+
+language: ruby
+
+# Cache gems
+cache:
+  bundler: true
+
+env:
+  global:
+    CC_TEST_REPORTER_ID=b2c51ead32a5ba146275df79c6929633c193991d3e902ef1ecde39c80e3fd5a6
+  secure: "eqmcHAG2rN5I7L3rahSoEn4Wkciti5aE2NZMwCB5QJn6tDQxrhPP/0CVQM8wI2bqpyF2E9SZJSDj5fc9L64wv1fbUUw9NHyhHQnPIkR8cKnTF1xcm2GZIyPcJ+wGg61JJmwpgKlcf54poyNCXD55rVyVlJ9e3Qzx5YOsN9l18MxS2rNm5VuWiZ5jZBFhNDzPP7eu/zlt/y1FvrWr7nMia/40MxPGuiFlGYx4wQZIaBVR4fmbgUJoneUqGjGaaJyg5u6Ge6JpO6GOsklHh0K0L7vy1U+MCTuc1j4/ygnm4M5g60MrczRst7KkumY1wfMbPCwLHBYq7UVreDMnrKqCKoG/YJ7lVe1Xe/cnph0BO7mpiSL5nYzwAfVmmNTpZlTNfz5hx4lZYQVj0D+W1TUdqCk3npGZ83Wy5tZYSu/6XOIdCt6d+ucg2XJ2VuXG58YF5LP5cseZYYHVpmfK786QnZKlR/omWhviDDuTC/Ph6jN+NBPVUA0Iw8KUTJObO95yvpZvTRvLqmrnFJW+mCkyLqlIA8hsIdCmuQtXtCqy1TN5jAB2nJn4KGzxgyarJ6S/Ajm0qqCAvGBJ96VZKrvEEnTAsewC6PTNyiXGWJu+y6bgve9/h8h1UI1tDJ6vD5BwQkIJgQygjLnjOm7WIxNDhnyjosv9bqySdhgSaUJB2mE="  
+
+before_install:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - echo "$RAILS_MASTER_KEY" > config/master.key
+
+install:
+  - bundle install --without production --path=${BUNDLE_PATH:-vendor/bundle}  # Install ruby gems, excluding production only gems such as unicorn (already present by default in Travis)
+
+# Setup the database
+before_script: bundle exec rake db:create db:migrate
+
+# Run the test suites
+script:
+  - bundle exec cucumber
+  - bundle exec rspec
+  
+# Pipe the coverage data to Code Climate
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
