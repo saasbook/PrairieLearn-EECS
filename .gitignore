@@ -39,6 +39,6 @@
 /coverage
 coverage
 
-master.key
+config/master.key
 bin/rails
 cc-test-reporter
