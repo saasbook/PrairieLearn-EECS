@@ -19,7 +19,6 @@ jobs:
         curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         chmod +x ./cc-test-reporter
         ./cc-test-reporter before-build
-        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
     
     - name: Install bundler
       run: |
@@ -27,6 +26,8 @@ jobs:
     - name: Install Dependencies
       run: bundle install
     - name: Set up test database
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
         bundle exec rake db:setup
         bundle exec rake db:create db:migrate
