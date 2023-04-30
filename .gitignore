@@ -38,3 +38,7 @@
 # Ignore coverage
 /coverage
 coverage
+
+config/master.key
+bin/rails
+cc-test-reporter
