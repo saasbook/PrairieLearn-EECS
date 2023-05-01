@@ -26,14 +26,20 @@ jobs:
     - name: Install Dependencies
       run: bundle install
     - name: Set up test database
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
         bundle exec rake db:setup
         bundle exec rake db:create db:migrate
     - name: run Cucumber tests and capture coverage
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
         bundle exec cucumber
         ./cc-test-reporter format-coverage --output coverage/codeclimate.$SUITE.json --input-type simplecov
     - name: run RSpec tests
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
       run: |
         bundle exec rspec
         ./cc-test-reporter format-coverage --output coverage/codeclimate.$SUITE.json --input-type simplecov
@@ -43,3 +49,4 @@ jobs:
         ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
         ./cc-test-reporter upload-coverage --id ${{ secrets.CC_TEST_REPORTER_ID }}
         ./cc-test-reporter after-build --id ${{ secrets.CC_TEST_REPORTER_ID }}
+        
