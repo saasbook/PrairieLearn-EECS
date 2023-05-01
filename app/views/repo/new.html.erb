@@ -1,6 +1,9 @@
 <html>
 <head>
-  <!-- Bootstrap -->
+  <!-- Bootstrap, JQuery, FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="/assets/jquery_ujs.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
   <body>
@@ -15,9 +18,9 @@
               <div class="jumbotron">
                 <blockquote class="blockquote text-center align-middle">
                   <h4>Choose a repository to synchronize:</h4><br>
-                  <%= form_with url: "/sync", method: :get do |form| %>
+                  <%= form_with url: "/sync", method: :get do |form|%>
                     <%= form.select :repo_id, @repos.map { |repo| [repo.full_name] }, {class: "form-control"} %>
-                    <%= form.submit "Synchronize", :class => 'btn btn-primary' %>
+                    <%= form.button 'Synchronize', class: "btn btn-primary", id: 'sync', data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Synchronizing...".html_safe} %>
                   <% end %>
                 </blockquote>
               </div>

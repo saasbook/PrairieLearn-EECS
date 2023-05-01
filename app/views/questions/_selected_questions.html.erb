@@ -1,0 +1,535 @@
+<div class="gutter-2 row justify-content-end px-1">
+  <div class="col-md-auto">
+    <button class="btn btn-default" type="button" id="add_zones">+ Zone</button>
+  </div>
+  <div class="col-md-auto">
+    <button type="button" class="btn btn-default" data-toggle="collapse" href="#tutorial" role="button" aria-expanded="false" aria-controls="tutorial">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+<div class="collapse" id="tutorial">
+  <div class="card card-body">
+    Click +Zone to create a zone. Drag questions from left to right to include questions in the zone, or click +pool button to create a question pool.
+  </div>
+</div>
+<div class="sqcontainer">
+    <hr>
+    <div class="zone">
+        <div class="form-row">
+            <div class="col-md-auto mb-1">
+                <input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">
+            </div>
+            <div class="col-md-auto mb-1">
+                <input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 230px;"  placeholder="Comment" aria-label="Comment">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-default add-pool-btn" type="button">+Pool</button>
+            </div>
+            <span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>
+        </div>
+        <div class="mcontainer">
+        </div>
+    </div>
+    <hr>
+</div>
+
+
+<script>
+
+function checkFields(fields) {
+  const availableFields = ["uuid", "title", "type", "number", "set", "allowAccess", "zones"];
+  unsupportedFields = "";
+
+  fields.forEach((field) => {
+    if ((availableFields.includes(field)) === false ) {
+      unsupportedFields += field + " ";
+    } 
+  });
+
+  if (unsupportedFields !== ""){
+  let message = "The following fields aren't currently supported and will be deleted in this editor. We encourage you to add them back later." + "\n" + unsupportedFields;
+  alert(message);
+  }
+}
+
+function populate_configuration(file) {
+  title = file["title"];
+  type = file["type"];
+  number = file["number"];
+  set = file["set"];
+  allowAccess = file["allowAccess"][0];
+  credit = allowAccess["credit"];
+  role = allowAccess["role"];
+  startDate = allowAccess["startDate"].slice(0, 10);
+  endDate = allowAccess["endDate"].slice(0, 10);
+  startTime = allowAccess["startDate"].slice(11,);
+  endTime = allowAccess["endDate"].slice(11,);
+
+  $("[name='title']").val(title);
+  $("[name='type']").val(type);
+  $("[name='number']").val(number);
+  $("[name='set']").val(set);
+  $("[name='credit']").val(credit);
+  $("[name='role']").val(role);
+  $("[name='startDate']").val(startDate);
+  $("[name='endDate']").val(endDate);
+  $("[name='startTime']").val(startTime);
+  $("[name='endTime']").val(endTime);
+}
+
+function populate_questions(file) {
+  var lastZone = document.querySelector('.zone:last-of-type');
+  $(lastZone).remove();
+  Object.keys(file).forEach((id) => {
+  questions = file[id]["questions"];
+  comment = file[id]["comment"];
+  title = file[id]["title"];
+
+  //Make the zone element
+  makeNewZone(id);
+
+  //Retrieve title and comment for each zone
+  title_item = $("#" + id).find("#zone_title");
+  title_item.val(title);
+  title_item = $("#" + id).find("#zone_comment");
+  title_item.val(comment);
+
+  //Retrieve questions
+  container = $("#" + id).find('.mcontainer')[0];
+  innerhtml = '';
+
+  questions.forEach((question) => {
+    if(("alternatives" in question)) {  
+      pool = makePool(question["pool_id"]);
+      innerhtml += "<p class='list-group-item draggable-question draggable-text' draggable='true' type='outer' style='text-align: left; width: auto; height: auto;'>";
+      innerhtml += pool.innerHTML;
+      innerhtml = innerhtml.replace('id="numchoose"', 'id="numchoose" value="' + question["numberChoose"] + '"');
+      innerhtml = innerhtml.replace('id="pool_points"', 'id="pool_points" value="' + question["points"] + '"');
+      //innerhtml = innerhtml.replace('id="pool-title"', 'id="pool-title" value="' + question["title"]);
+      innerhtml += "</p>"
+      container.innerHTML = innerhtml;
+      innerhtml =  innerhtml.slice(0, innerhtml.length - 17);
+
+      //Add questions to pool
+      pool_questions = question["alternatives"];
+      pool_score = question["points"];
+
+      pool_questions.forEach((pool_q) => {
+        innerhtml +=    '<tr>' + 
+        '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle"' + 'name="' + pool_q["id"] + '"' + 'draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="inner">' +
+        '<td>' + pool_q["id"] + '</td>'+ 
+        '<span class="close deleteq" style="display:block">&times;</span>' + 
+        '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1" style="display: none; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
+        '</p>'
+        + '</tr>';   
+      })
+      innerhtml += "</div></div></p>";      
+    } else {
+    question_id = question["id"];
+    innerhtml +=    '<tr>' + 
+                    '<p class="list-group-item draggable-question draggable-text ui-draggable ui-draggable-handle"' + 'name="' + question["id"] + '"' + 'draggable="true" style="text-align: left; position: relative; width: auto; inset: 0px auto auto 0px; height: auto;" type="outer">' +
+                    '<td>' + question_id + '</td>'+ 
+                    '<span class="close deleteq" style="display:block">&times;</span>' + 
+                    '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0" size="1"' + 'value="' + question["points"] + '"' + 'style="display: inline; float: right; margin-top: -1.5%; margin-right: 2.5%;">' + 
+                    '<label for="form-control" class="pts-txt"> Pt </label>' + 
+                    '</p>'
+                    + '</tr>';                   
+    }})
+  
+  container.innerHTML = innerhtml;
+  $('#' + id).append(container);
+
+  //Making pools droppable
+  $(container).find(".collapse").each(function() {
+      //Add toggle Functionality
+      toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+      })
+    
+      //Make it droppable
+      droppable_box = $(this).find(".mcontainer");
+      makeDroppableForInner(droppable_box);
+      //Get prev element
+      prev = $(this).prev();
+      //Detach
+      var element = $(this).detach();
+      //Make the prev element your parent
+      $(prev).append(element);
+  });
+  
+  //Functionality for delete buttons
+  $(".deleteq").click(function() {
+      $(this).parent().remove();
+      question_title = $(this).parent().text();
+      question_title = question_title.slice(0, question_title.length - 5);
+      deleteQuestion(id, question_title);
+  });
+})
+}
+
+function retrieve_data(file, imported) {
+  if (imported === true) {
+    fields = Object.keys(file);
+    //Checking for unsupported fields
+    checkFields(fields);
+
+    //Retrieve data of the configuration column
+    populate_configuration(file);
+    
+    //Prepare file
+    new_file = {};
+    counter = 0
+    if(file["zones"]) {
+      file["zones"].forEach((zone) => {
+        id = "zone" + counter.toString();
+        new_file[id] = zone;
+        counter += 1;
+      })
+      populate_questions(new_file);
+  }
+  }
+};
+
+function deleteZone(id) {
+  let file = JSON.parse(window.localStorage.getItem("file"));
+  delete file[id];
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+}
+
+function deleteQuestion(id, title) {
+  let file = JSON.parse(window.localStorage.getItem("file"));
+  questions = file[id]["questions"];
+  for (let i = 0; i < questions.length; i++) {
+
+  if (questions[i]["id"] === title) {
+      questions.splice(i, 1);
+    }
+  }
+  localStorage.removeItem("file");
+  localStorage.setItem("file", JSON.stringify(file));
+}
+
+function makeNewZone(new_id) {
+  // Get the last .zone element
+  var lastZone = document.querySelector('.zone:last-of-type');
+    
+  // Create a new .zone element
+  var newZone = document.createElement('div');
+  if (lastZone === null) {
+    newZone.className = 'zone';
+
+  // Find the first <hr> element in .sqcontainer
+  var hr = document.querySelector('.sqcontainer hr:first-of-type');
+    
+  // Insert the new .zone element after the <hr> element
+  hr.parentNode.insertBefore(newZone, hr.nextSibling);
+  //document.querySelector('.sqcontainer').appendChild(newZone);  
+  } else {
+    newZone.classList.add('zone');
+  
+    // Create a new <hr> element
+    var hr = document.createElement('hr');
+    
+    // Add the <hr> after the last <div class='zone'>
+    lastZone.parentNode.insertBefore(hr, lastZone.nextSibling);
+    lastZone.parentNode.insertBefore(newZone, hr.nextSibling);
+    }
+    
+    // Create the inner HTML for the new .zone element
+    var innerHtml = '<div class="form-row">' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_title" size=1 style="min-width: 190px;" placeholder="Zone Title" aria-label="Title">' +
+            '</div>' +
+            '<div class="col-md-auto mb-1">' +
+            '<input class="form-control" type="text" id="zone_comment" size=1 style="min-width: 240px;"  placeholder="Comment" aria-label="Comment">' +
+            '</div>' +
+            '<div class="col-auto">' +
+            '<button class="btn btn-default add-pool-btn" type="button">+Pool</button>' +
+            '</div>' +
+            '<span class="close col-auto" id="delete_zone" style="color: red;">&times;</span>' +
+            '</div>' +
+            '<div class="mcontainer">' +
+            '</div>';
+    
+    // Set the inner HTML of the new .zone element
+    newZone.innerHTML = innerHtml;
+    
+    // Make the new zone droppable
+    makeDroppableForOuter(newZone.querySelector('.mcontainer'));
+
+    //Assign unique ID
+    $(newZone).attr('id', new_id);
+};
+
+function checkRepeated(questions, pool, title) {
+  questions.forEach((question) => {
+    if (pool === true && ("pool_id" in question)) {
+      alt = question["alternatives"];
+      alt.forEach((question_pool) => {
+        if (question_pool["id"] === title) { 
+          return true;
+        }
+      });
+    } else if (pool === false) {
+      if (question["id"]  === title) { 
+        return true;
+      }
+    }
+  });
+  return false;
+}
+
+function makeDroppable(container, type) {
+  $(container).droppable({
+    accept: ".draggable-question",
+    greedy: true,
+    drop: function(event, ui) {
+
+      var item = $(ui.draggable);
+      item.appendTo(this);
+      item.width($(this).width()-40);
+      item.find("span").css('display','block');
+      var points = item[0].getElementsByClassName("form-control")[0];
+      item[0].style.height = "auto";
+      item[0].style.width = "auto";
+      points.style.display = "inline";
+      points.style.float = "right";
+      points.style.marginTop = "-1.5%";
+      points.style.marginRight = "2.5%";
+      // toggle the visibility of the hidden input field and form elements
+      var inputField = points.parentNode.querySelector("input[name='assessment_credit']");
+      if (typeof item.attr('type') === 'undefined') {
+        item.attr("type", type);
+        if (type === "inner") {
+          inputField.setAttribute("hidden", true);
+          $(points).next().hide();
+        } else {
+          inputField.removeAttribute("hidden");
+          $(points).next().show();
+        }
+      }
+      var close = item.find("span");
+        close.click(function() {
+            item.remove();
+        }); 
+  }}).sortable({
+    revert: false
+  });
+}
+
+var count = 0;
+
+function makeDroppableForInner(container) {
+  makeDroppable(container, "inner");
+}
+
+function makeDroppableForOuter(container) {
+  makeDroppable(container, "outer");
+}
+
+$(document).ready(function() {
+    // Make all existing containers droppable
+    $('.mcontainer').each(function() {
+        makeDroppableForOuter(this);
+    });
+
+    // Add a new zone on click of + Zone button
+    $('#add_zones').click(function() {
+      let num_zones = JSON.parse(window.localStorage.getItem("num_zones"));
+      num_zones = Number(num_zones) + 1;
+      new_id = 'zone' + num_zones.toString();
+      makeNewZone(new_id);
+
+      //Update and save num zones
+      localStorage.removeItem("num_zones");
+      localStorage.setItem("num_zones", JSON.stringify(num_zones));
+    });
+    
+    // Add a new pool on click of + pool button
+    $('.sqcontainer').on('click', '.add-pool-btn', function() {
+      // Find the .zone element that contains the clicked button
+      var zone = $(this).closest('.zone')[0];
+      pool_id = "pool_" + crypto.randomUUID();
+
+      // Add a new pool
+      var container = zone.querySelector('.mcontainer');
+      var pool = document.createElement('p');
+      pool.className = 'list-group-item draggable-question draggable-text';
+      pool.draggable = true;
+      pool.style.textAlign = "left";
+      pool.innerHTML = 
+        '<span class="close">&times;</span>' +
+        '<input class="form-control col-md-1 mb-1" type="text" name="assessment_credit" placeholder="0">' +
+        '<label for="form-control" class="pts-txt">Pts</label>' + 
+        '<input class="form-control col-md-1 mb-1" type="text" placeholder="0" id="numchoose">' + 
+        '<label for="form-control" class="pts-txt">Num choose</label>' +
+        '<input type="text" class="form-control col-md-4 mb-1 border-0" id="pool-title" style="background:white;" placeholder="Pool Title">';
+      zone.querySelector('.mcontainer').appendChild(pool);
+      var item = $(pool);
+      item.attr("type", "outer"); 
+      item.attr("id", pool_id);
+      item.width($(container).width()-40);
+      item.find("span").css('display','block');
+      var points = item[0].getElementsByClassName("form-control")[0];
+      var numchoose = item[0].getElementsByClassName("form-control")[1];
+      var poolTitle = item[0].getElementsByClassName("form-control")[2];
+      item[0].style.height = "auto";
+      item[0].style.width = "auto";
+      poolTitle.style.display = "inline";
+      poolTitle.style.align = "left";
+      poolTitle.style.marginTop = "-0.75%";
+      poolTitle.style.marginRight = "2%";
+      numchoose.style.display = "inline";
+      numchoose.style.float = "right";
+      numchoose.style.marginTop = "-0.75%";
+      numchoose.style.marginRight = "2%";
+      points.style.display = "inline";
+      points.style.float = "right";
+      points.style.marginTop = "-0.75%";
+      points.style.marginRight = "2%";
+
+      var close = item.find("span");
+      close.click(function() {
+          item.remove();
+      });
+
+      // Add collapse container to dropped item if it doesn't exist already
+      var collapseContainer = item.find(".collapse");
+      if (collapseContainer.length == 0) {
+        var collapseId = "collapse-" + count;
+        count++;
+        collapseContainer = $("<div/>", {
+          class: "collapse",
+          id: collapseId,
+          html: "<div class='pool mcontainer'></div>"
+        });
+        item.append(collapseContainer);
+        makeDroppableForInner(collapseContainer.find(".mcontainer"));
+        var collapseButton = $("<button/>", {
+          class: "btn btn-sm collapse_btn",
+          style: "background-color: white;",
+          type: "button",
+          "data-toggle": "collapse",
+          "data-target": "#" + collapseId,
+          "aria-expanded": "false",
+          "aria-controls": collapseId,
+          html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
+        });
+        item.prepend(collapseButton);
+      }
+      toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+  })
+    });
+    
+    // Remove zone on close button click
+    $(document).on('click', '.zone .close', function() {
+        // Define the confirmation message
+        var title =  $(this).closest('.zone').find('#zone_title').val().trim();
+        var message = "Are you sure you want to delete zone " + title + "?";
+
+        // Display the confirmation pop-up
+        var confirmed = window.confirm(message);
+
+        // Check the user's response
+        if (confirmed) {
+            var count = $('.zone').length;
+            var currentZone = $(this).closest('.zone');
+            if (count > 1) {
+              // Get the <hr> element
+              var hr = currentZone.prev();
+
+              // Remove the <hr> element
+              hr.remove();
+            }
+            currentZone.remove();
+        }
+    });
+});
+
+function makePool(pool_id) {
+  // Add a new pool
+  var pool = document.createElement('p');
+  pool.className = 'list-group-item draggable-question draggable-text';
+  pool.draggable = true;
+  pool.style.textAlign = "left";
+  pool.innerHTML = 
+    '<span class="close">&times;</span>' +
+    '<input class="form-control col-md-1 mb-1" id="pool_points" type="text" name="assessment_credit" placeholder="0">' +
+    '<label for="form-control" class="pts-txt">Pts</label>' + 
+    '<input class="form-control col-md-1 mb-1" type="text" placeholder="0" id="numchoose">' + 
+    '<label for="form-control" class="pts-txt">Num choose</label>' +
+    '<input type="text" class="form-control col-md-4 mb-1 border-0" id="pool-title" style="background:white;" placeholder="Pool Title">';
+  
+  var item = $(pool);
+  item.attr("type", "outer"); 
+  item.attr("id", pool_id);
+  item.width($(container).width()-40);
+  item.find("span").css('display','block');
+  var points = item[0].getElementsByClassName("form-control")[0];
+  var numchoose = item[0].getElementsByClassName("form-control")[1];
+  var poolTitle = item[0].getElementsByClassName("form-control")[2];
+  item[0].style.height = "auto";
+  item[0].style.width = "auto";
+  poolTitle.style.display = "inline";
+  poolTitle.style.align = "left";
+  poolTitle.style.marginTop = "-0.75%";
+  poolTitle.style.marginRight = "2%";
+  numchoose.style.display = "inline";
+  numchoose.style.float = "right";
+  numchoose.style.marginTop = "-0.75%";
+  numchoose.style.marginRight = "2%";
+  points.style.display = "inline";
+  points.style.float = "right";
+  points.style.marginTop = "-0.75%";
+  points.style.marginRight = "2%";
+
+  var close = item.find("span");
+  close.click(function() {
+      item.remove();
+  });
+
+  // Add collapse container to dropped item if it doesn't exist already
+  var collapseContainer = item.find(".collapse");
+  if (collapseContainer.length == 0) {
+    var collapseId = "collapse-" + count;
+    count++;
+    collapseContainer = $("<div/>", {
+      class: "collapse",
+      id: collapseId,
+      html: "<div class='pool mcontainer'></div>"
+    });
+    item.append(collapseContainer);
+    makeDroppableForInner(collapseContainer.find(".mcontainer"));
+    var collapseButton = $("<button/>", {
+      class: "btn btn-sm collapse_btn",
+      style: "background-color: white;",
+      type: "button",
+      "data-toggle": "collapse",
+      "data-target": "#" + collapseId,
+      "aria-expanded": "true",
+      "aria-controls": collapseId,
+      html: "<i class='fas fa-chevron-down fa-2xs fa-rotate-270'></i>"
+    });
+    item.prepend(collapseButton);
+  }
+
+  toggle_btn = $(container).find(".collapse_btn");
+      $(toggle_btn).click(function() {
+        arrow = $(toggle_btn).find("i");
+        $(arrow).toggleClass("fa-rotate-270");
+  })
+      
+  return pool;
+}
+
+</script>
